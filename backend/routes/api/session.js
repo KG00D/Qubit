@@ -1,58 +1,65 @@
 const express = require('express');
-const router = express.Router();
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User } = require('../../db/models');
-const { check, validationResult } = require('express-validator');
+const { Op } = require('sequelize');
+const bcrypt = require('bcryptjs');
+const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { User } = require('../../db/models');
+
+const router = express.Router();
+
+// backend validation for login
 const validateLogin = [
-  check('email')
-    .exists({ checkFalsy: true })
-    .withMessage('Email is required'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .withMessage('Password is required'),
-  handleValidationErrors,
+    check('credential')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Please provide a valid email'),
+    check('password')
+        .exists({ checkFalsy: true })
+        .withMessage('Please provide a password.'),
+    handleValidationErrors
 ];
 
-router.post(
-  '/',
-  validateLogin,
-  async (req, res, next) => {
-    const { email, password } = req.body;
 
-    const user = await User.login({ email, password });
+// Log in
+router.post('/', async (req, res, next) => {
+    const { credential, password } = req.body;
+    console.log(credential, password, "************")
+    const user = await User.unscoped().findOne({
+        where: {
+            [Op.or]: {
+                email: credential
+            }
+        }
+    });
 
-    if (!user) {
-      const errorObj = {
-        message: 'Invalid credentials',
-        statusCode: 401
-      }
-      return res.status(401).json(errorObj);
+    if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+        const err = new Error('Login failed');
+        err.status = 401;
+        err.title = 'Login failed';
+        err.errors = { credential: 'The provided credentials were invalid.' };
+        return next(err);
     }
 
-    await setTokenCookie(res, user);
-    console.log('Response Data:', user);
+    const safeUser = {
+        id: user.id,
+        email: user.email
+    };
+
+    await setTokenCookie(res, safeUser);
 
     return res.json({
-      user
+        user: safeUser
     });
-  }
-);
-
-router.delete('/', (_req, res) => {
-  res.clearCookie('token');
-  return res.json({ message: 'success' });
 });
 
-router.get('/', restoreUser, (req, res) => {
-  const { user } = req;
-  if (user) {
-    return res.json({ user: user.toSafeObject(),})
-        }
-  else {
-    return res.json({ user: null });
-  }
+// Log out
+router.delete('/',(_req, res) => {
+    res.clearCookie('token');
+    return res.json({ message: 'success' });
 });
+
+
 
 module.exports = router;

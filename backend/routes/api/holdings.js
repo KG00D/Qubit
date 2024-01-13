@@ -13,16 +13,12 @@ router.get('/', async (req, res, next) => {
         const accounts = await Holding.findAll({
             attributes: [
                 'accountId',
-                'securityName',
-                'tickerSymbol',
+                'holdingName',
+                'holdingIdentifier',
                 'quantity',
-                'price',
-                'totalValue',
-                'costBasis',
-                'institutionPrice',
-                'institutionValue',
-                'securityId',
-                'manualFlag'
+                'averagePricePaid',
+                'positionOpenDate',
+                'currency'
             ]
         });
         res.json(accounts); 

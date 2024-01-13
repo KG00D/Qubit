@@ -1,25 +1,23 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Account, Holding, Transaction } = require('../../db/models');
+const { Account } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 router.use(restoreUser)
+// const userId = 1;
 
 router.get('/', async (req, res, next) => {
     try {
         const accounts = await Account.findAll({
+            // where: {userId: userId},
             attributes: [
-                'accountId',
                 'name',
-                'officialName',
-                'subtype',
+                'subType',
                 'type',
-                'availBalance',
-                'currentBalance',
-                'isoCurrencyCode',
+                'accountBalance',
                 'manualFlag'
             ]
         });
@@ -29,36 +27,57 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:accountId/holding', async (req, res, next) => {
+router.post('/', requireAuth, async (req, res, next) => {
     try {
-        const accountId = req.params.accountId;
-
-        const holdings = await Holding.findAll({
-            where: { accountId: accountId },
-            attributes: [
-                'accountId',
-                'securityName',
-                'tickerSymbol',
-                'quantity',
-                'price',
-                'totalValue',
-                'costBasis',
-                'institutionPrice',
-                'institutionValue',
-                'securityId',
-                'manualFlag'
-            ],
-            // Uncomment the following if you need to include data from the Account model
-            // include: [{
-            //     model: Account,
-            //     attributes: ['name', 'type', ...] 
-            // Specify the attributes you need from Account
-            // }]
+        const { name, subType, type, accountBalance, manualFlag } = req.body;
+        const newAccount = await Account.create({
+            userId: req.user.id, 
+            name, 
+            subType, 
+            type, 
+            accountBalance, 
+            manualFlag
         });
-        res.json(holdings); 
+        return res.json({ accountId: newAccount.id}) 
     } catch (error) {
         next(error); 
     }
 });
+
+router.put('/', requireAuth, async (req, res) => {
+    try {
+        const { userId, name, subType, type, accountBalance, manualFlag } = req.body;
+        const newAccount = await Account.create({
+            userId: req.user.id, name, subType, typpe, accountBalance, manualFlag
+        });
+        return res.json({ accountId: newAccount.id}) 
+    } catch (error) {
+        next(error); 
+    }
+});
+
+router.delete('/:accountId', requireAuth, async (req, res) => {
+    try {
+      const id = req.params.accountId;
+      const userId = req.user.id;
+      const group = await Account.findByPk(id);
+  
+      if (!group) {
+        return res.status(404).json({ message: "Account couldn't be found" });
+      }
+  
+      if (userId === group.organizerId) {
+        await group.destroy();
+        return res.status(200).json({ message: "Successfully deleted" });
+      } else {
+        return res.status(403).json({ message: "No dice" });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+
 
 module.exports = router;

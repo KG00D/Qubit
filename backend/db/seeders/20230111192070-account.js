@@ -18,8 +18,16 @@ module.exports = {
         subtype: '401k',
         type: 'investment',
         accountBalance: 23631.9805,
-        currencyCode: 'USD',
-        manualFlag: true,
+        manualFlag: true
+      },
+      {
+        id: 2,
+        userId: 1,
+        name: 'CitiBank',
+        subtype: null,
+        type: 'Banking',
+        accountBalance: 23631.9805,
+        manualFlag: true
       }
     ], { exclude: ['id'] });
   },
