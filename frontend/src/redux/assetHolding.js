@@ -1,44 +1,48 @@
-const FETCH_HOLDINGS_START = 'FETCH_HOLDINGS_START';
-const FETCH_HOLDINGS_SUCCESS = 'FETCH_HOLDINGS_SUCCESS';
-const FETCH_HOLDINGS_FAIL = 'FETCH_HOLDINGS_FAIL';
+const FETCH_ASSETHOLDINGS_START = 'FETCH_ASSETHOLDINGS_START';
+const FETCH_ASSETHOLDINGS_SUCCESS = 'FETCH_ASSETHOLDINGS_SUCCESS';
+const FETCH_ASSETHOLDINGS_FAIL = 'FETCH_ASSETHOLDINGS_FAIL';
 
-const fetchHoldingsStart = () => ({ type: FETCH_HOLDINGS_START });
-const fetchHoldingsSuccess = HOLDINGS => ({ type: FETCH_HOLDINGS_SUCCESS, payload: HOLDINGS });
-const fetchHoldingsFail = error => ({ type: FETCH_HOLDINGS_FAIL, payload: error });
+const fetchAssetHoldingsStart = () => ({ type: FETCH_ASSETHOLDINGS_START });
+const fetchAssetHoldingsSuccess = HOLDINGS => ({ type: FETCH_ASSETHOLDINGS_SUCCESS, payload: HOLDINGS });
+const fetchAssetHoldingsFail = error => ({ type: FETCH_ASSETHOLDINGS_FAIL, payload: error });
 
-export const fetchHoldings = (accountId) => {
+export const fetchAssetHoldings = (accountId) => {
     return async dispatch => {
-        dispatch(fetchHoldingsStart());
+        dispatch(fetchAssetHoldingsStart());
         try {
             const response = await fetch(`/api/assetholdings/${accountId}`);
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch holdings');
             }
             const holdings = await response.json();
-            dispatch(fetchHoldingsSuccess(holdings));
+            console.log(holdings, 'HERE IS MY FETCH ASSET RESPONSE')
+
+            dispatch(fetchAssetHoldingsSuccess(holdings));
         } catch (error) {
-            dispatch(fetchHoldingsFail(error.message));
+            dispatch(fetchAssetHoldingsFail(error.message));
         }
     };
 };
 
+
 const initialState = {
-    holdings: [],
+    assetHoldings: null,
     loading: false,
     error: null
 };
 
-const holdingsReducer = (state = initialState, action) => {
+const assetHoldingsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_HOLDINGS_START:
+        case FETCH_ASSETHOLDINGS_START:
             return { ...state, loading: true, error: null };
-        case FETCH_HOLDINGS_SUCCESS:
-            return { ...state, loading: false, HOLDINGS: action.payload };
-        case FETCH_HOLDINGS_FAIL:
+        case FETCH_ASSETHOLDINGS_SUCCESS:
+            return { ...state, loading: false, assetHoldings: action.payload };
+        case FETCH_ASSETHOLDINGS_FAIL:
             return { ...state, loading: false, error: action.payload };
         default:
             return state;
     }
 };
 
-export default holdingsReducer;
+export default assetHoldingsReducer;

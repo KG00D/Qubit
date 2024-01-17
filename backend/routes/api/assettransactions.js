@@ -1,44 +1,141 @@
-
 const express = require('express');
 const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Account, Holding, Transaction } = require('../../db/models');
+const { Account, assetTransaction } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 router.use(restoreUser)
 
-
-
-router.get('/:holdingId/transaction', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
-        const holdingId = req.params.holdingId;
+        const accountId = req.params.accountId;
+        const accounts = await Account.findOne({
+            attributes: ['id', 'name', 'type'],
+            where: {id: accountId}
+        });
 
-        const transactions = await Holding.findAll({
-            where: { holdingId: holdingId },
+        if (!accounts) {
+            return res.status(404).json({ message: "Account Not Found" });
+        }
+        const assetTransactions = await assetTransaction.findAll({
+            where: { accountId: accountId },
             attributes: [
+                'holdingId',
                 'accountId',
                 'securityName',
-                'tickerSymbol',
-                'quantity',
+                'holdingName',
+                'amount',
+                'date',
+                'fees',
+                'transactionDescription',
                 'price',
-                'totalValue',
-                'costBasis',
-                'institutionPrice',
-                'institutionValue',
-                'securityId',
-                'manualFlag'
-            ],
-            // Uncomment the following if you need to include data from the Account model
-            // include: [{
-            //     model: Account,
-            //     attributes: ['name', 'type', ...] 
-            // Specify the attributes you need from Account
-            // }]
+                'quantity'
+            ]
         });
-        res.json(transactions); 
+        const normalizedAssetTransactions = assetTransactions.reduce((acc, transactions) => {
+            acc[transactions.transactionIdentifier] = transactions;
+            return acc;
+        }, {});
+
+        const responseData = {
+            account: accounts,
+            assetTransactions: normalizedAssetTransactions
+        };
+
+        res.json(responseData);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 });
+
+router.get('/accountId', async (req, res, next) => {
+    try {
+        const accountId = req.params.accountId;
+        const accounts = await Account.findOne({
+            attributes: ['id', 'name', 'type'],
+            where: {id: accountId}
+        });
+
+        if (!accounts) {
+            return res.status(404).json({ message: "Account Not Found" });
+        }
+
+        const assetTransactions = await assetTransaction.findAll({
+            where: { accountId: accountId },
+            attributes: [
+                'holdingId',
+                'accountId',
+                'securityName',
+                'holdingName',
+                'amount',
+                'date',
+                'fees',
+                'transactionDescription',
+                'price',
+                'quantity'
+            ]
+        });
+        const normalizedAssetTransactions = assetTransactions.reduce((acc, transactions) => {
+            acc[transactions.transactionIdentifier] = transactions;
+            return acc;
+        }, {});
+
+        const responseData = {
+            account: accounts,
+            assetTransactions: normalizedAssetTransactions
+        };
+
+        res.json(responseData);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// router.get('/', async (req, res, next) => {
+//     try {
+//         const accountId = req.params.accountId;
+//         const accounts = await Account.findOne({
+//             attributes: ['id', 'name', 'type'],
+//             where: {id: accountId}
+//         });
+
+//         if (!accounts) {
+//             return res.status(404).json({ message: "Account Not Found" });
+//         }
+
+//         const assetTransactions = await assetTransaction.findAll({
+//             where: { accountId: accountId },
+//             attributes: [
+//                 'holdingId',
+//                 'accountId',
+//                 'securityName',
+//                 'holdingName',
+//                 'amount',
+//                 'date',
+//                 'fees',
+//                 'transactionDescription',
+//                 'price',
+//                 'quantity'
+//             ]
+//         });
+//         const normalizedAssetTransactions = assetTransactions.reduce((acc, transactions) => {
+//             acc[transactions.transactionIdentifier] = transactions;
+//             return acc;
+//         }, {});
+
+//         const responseData = {
+//             account: accounts,
+//             assetTransactions: normalizedAssetTransactions
+//         };
+
+//         res.json(responseData);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
+
+
+
+module.exports = router;

@@ -75,37 +75,48 @@ router.post('/', requireAuth, async (req, res, next) => {
     }
 });
 
-router.put('/:id', requireAuth, async (req, res) => {
+router.put('/:id', requireAuth, async (req, res, next) => {
     try {
-        const { currentUserId, name, subType, type, accountBalance, manualFlag } = req.body;
-        const newAccount = await Account.updatw({
-            userId: req.user.id, name, subType, type, accountBalance, manualFlag
-        });
-        return res.json({ accountId: newAccount.id}) 
+        const id = req.params.id;
+        const userId = req.user.id;
+        const { name, subType, type, accountBalance, manualFlag } = req.body;
+
+        const account = await Account.findByPk(id);
+        
+        if (!account) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+
+        if (account.userId !== userId) {
+            return res.status(403).json({ message: "You do not have permission to update this account" });
+        }
+
+        await account.update({ name, subType, type, accountBalance, manualFlag });
+        return res.json({ accountId: account.id, message: "Account updated successfully" }); 
     } catch (error) {
         next(error); 
     }
 });
 
-router.delete('/:id', requireAuth, async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res, next) => {
     try {
-      const id = req.params.accountId;
-      const userId = req.user.id;
-      const group = await Account.findByPk(id);
-  
-      if (!group) {
-        return res.status(404).json({ message: "Account couldn't be found" });
-      }
-  
-      if (userId === group.organizerId) {
-        await group.destroy();
-        return res.status(200).json({ message: "Successfully deleted" });
-      } else {
-        return res.status(403).json({ message: "No dice" });
-      }
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Internal server error" });
+        const id = req.params.id;
+        const userId = req.user.id;
+
+        const account = await Account.findByPk(id);
+
+        if (!account) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+
+        if (account.userId !== userId) {
+            return res.status(403).json({ message: "You do not have permission to delete this account" });
+        }
+
+        await account.destroy();
+        return res.status(200).json({ message: "Account successfully deleted" });
+    } catch (error) {
+        next(error); 
     }
 });
 
