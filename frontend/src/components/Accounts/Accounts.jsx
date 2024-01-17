@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+// import { fetchAccounts, createAccount, updateAccount, deleteAccount } from "../../redux/account";
 import { fetchAccounts } from "../../redux/account";
 
 
@@ -20,7 +21,9 @@ const Accounts = () => {
             <ul>
                 {accounts.map(account => (
                     <li key={account.id}>
-                        Name: {account.name}, Type: {account.type}, Balance: {account.accountBalance}
+                        Name: {account.name}, 
+                        Type: {account.type}, 
+                        Balance: {account.accountBalance}
                     </li>
                 ))}
             </ul>

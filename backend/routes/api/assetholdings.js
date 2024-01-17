@@ -10,38 +10,15 @@ const router = express.Router();
 router.use(restoreUser)
 
 router.get('/', async (req, res, next) => {
-    try {  
-        const assetholdings = await assetHolding.findAll({
-            attributes: [
-                'accountId',
-                'holdingName',
-                'holdingIdentifier',
-                'quantity',
-                'averagePricePaid',
-                'positionOpenDate',
-                'currency'
-            ]
-        });
-        const responseData = {
-            account: account,
-            assetholdings: assetholdings
-        };
-
-        res.json(responseData);
-    } catch (error) {
-        next(error);
-    }
-});
-
-router.get('/assetholdings/:accountId', async (req, res, next) => {
     try {
         const accountId = req.params.accountId;
         const accounts = await Account.findOne({
             attributes: ['id', 'name', 'type'],
             where: {id: accountId}
-        })
+        });
+
         if (!accounts) {
-            return res.status(404).json({ message: "Account Not Found"})
+            return res.status(404).json({ message: "Account Not Found" });
         }
 
         const assetholdings = await assetHolding.findAll({
@@ -56,9 +33,15 @@ router.get('/assetholdings/:accountId', async (req, res, next) => {
                 'currency'
             ]
         });
+
+        const normalizedAssetHoldings = assetholdings.reduce((acc, holding) => {
+            acc[holding.holdingIdentifier] = holding;
+            return acc;
+        }, {});
+
         const responseData = {
-            account: account,
-            assetholdings: assetholdings
+            account: accounts,
+            assetHoldings: normalizedAssetHoldings
         };
 
         res.json(responseData);
@@ -68,25 +51,47 @@ router.get('/assetholdings/:accountId', async (req, res, next) => {
 });
 
 
-router.post('/:accountId/assetholdings', restoreUser, requireAuth, async (req, res) => {
+router.get('/:accountId', async (req, res, next) => {
     try {
-        const { accountId, name, officialName, subtype, type, availBalance, 
-        currentBalance, isoCurrencyCode, manualFlag } = req.body;
-        const newAccount = await Account.create({
-            accountId,
-            name,
-            officialName,
-            subtype,
-            type,
-            availBalance,
-            currentBalance,
-            isoCurrencyCode,
-            manualFlag
+        const accountId = req.params.accountId;
+        const accounts = await Account.findOne({
+            attributes: ['id', 'name', 'type'],
+            where: {id: accountId}
         });
-        return res.status(201).json(newAccount);
+
+        if (!accounts) {
+            return res.status(404).json({ message: "Account Not Found" });
+        }
+
+        const assetholdings = await assetHolding.findAll({
+            where: { accountId: accountId },
+            attributes: [
+                'accountId',
+                'holdingName',
+                'holdingIdentifier',
+                'quantity',
+                'averagePricePaid',
+                'positionOpenDate',
+                'currency'
+            ]
+        });
+
+        const normalizedAssetHoldings = assetholdings.reduce((acc, holding) => {
+            acc[holding.holdingIdentifier] = holding;
+            return acc;
+        }, {});
+
+        const responseData = {
+            account: accounts,
+            assetHoldings: normalizedAssetHoldings
+        };
+
+        res.json(responseData);
     } catch (error) {
-        return res.status(400).json({ error: error.message });
+        next(error);
     }
 });
+
+
 
 module.exports = router;
