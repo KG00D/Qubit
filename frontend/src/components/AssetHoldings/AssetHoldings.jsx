@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAssetHoldings } from "../../redux/assetHolding";
 
+
 const AssetHoldings = () => {
     const { accountId } = useParams(); 
     const dispatch = useDispatch();

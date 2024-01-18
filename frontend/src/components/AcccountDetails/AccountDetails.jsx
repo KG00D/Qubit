@@ -21,6 +21,7 @@ const AccountDetails = () => {
             <h2>Account Details</h2>
             {accountDetail && (
                 <div>
+                    
                     <p>Name: {accountDetail.name}</p>
                     <p>Type: {accountDetail.type}</p>
                     <p>Balance: {accountDetail.accountBalance}</p>
