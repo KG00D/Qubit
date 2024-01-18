@@ -16,6 +16,7 @@ router.get('/:id', async (req, res, next) => {
 
         const account = await Account.findByPk(id, {
             attributes: [
+                'id',
                 'name',
                 'subType',
                 'type',
@@ -39,6 +40,7 @@ router.get('/', async (req, res, next) => {
         const currentUserId = req.user.id;
         const accounts = await Account.findAll({
             attributes: [
+                'id',
                 'name',
                 'subType',
                 'type',

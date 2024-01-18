@@ -1,3 +1,5 @@
+import { csrfFetch } from './csrf';
+
 const FETCH_ACCOUNTS_START = 'FETCH_ACCOUNTS_START';
 const FETCH_ACCOUNTS_SUCCESS = 'FETCH_ACCOUNTS_SUCCESS';
 const FETCH_ACCOUNTS_FAIL = 'FETCH_ACCOUNTS_FAIL';
@@ -42,7 +44,7 @@ export const fetchAccounts = () => {
     return async dispatch => {
         dispatch(fetchAccountsStart());
         try {
-            const response = await fetch('/api/accounts');
+            const response = await csrfFetch('/api/accounts');
             if (!response.ok) {
                 throw new Error('Failed to fetch accounts');
             }
@@ -58,7 +60,7 @@ export const fetchAccountDetails = (accountId) => {
     return async dispatch => {
         dispatch(fetchAccountDetailStart());
         try {
-            const response = await fetch(`/api/accounts/${accountId}`);
+            const response = await csrfFetch(`/api/accounts/${accountId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch account details');
             }
@@ -71,10 +73,10 @@ export const fetchAccountDetails = (accountId) => {
     };
 };
 
-const createAccount = accountDetails => async dispatch => {
+export const createAccount = accountDetails => async dispatch => {
     dispatch(createAccountStart());
     try {
-        const response = await fetch('/api/accounts', {
+        const response = await csrfFetch('/api/accounts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,10 +94,10 @@ const createAccount = accountDetails => async dispatch => {
     }
 };
   
-  const updateAccount = (id, updatedDetails) => async dispatch => {
+export const updateAccount = (accountId, updatedDetails) => async dispatch => {
     dispatch(updateAccountStart());
     try {
-        const response = await fetch(`/api/accounts/${id}`, {
+        const response = await csrfFetch(`/api/accounts/${accountId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,10 +115,10 @@ const createAccount = accountDetails => async dispatch => {
     }
 };
   
-  const deleteAccount = id => async dispatch => {
+export const deleteAccount = id => async dispatch => {
     dispatch(deleteAccountStart());
     try {
-        const response = await fetch(`/api/accounts/${id}`, { method: 'DELETE' });
+        const response = await csrfFetch(`/api/accounts/${id}`, { method: 'DELETE' });
         if (!response.ok) {
             throw new Error('Failed to delete account');
         }
@@ -154,10 +156,13 @@ const accountsReducer = (state = initialState, action) => {
         case CREATE_ACCOUNT_FAIL:
             return { ...state, accounts: [...state.accounts, action.payload], loading: false };
         case UPDATE_ACCOUNT_START:
+            return { ...state, loading: true };
+        case UPDATE_ACCOUNT_SUCCESS:
+            console.log(action);
             return { 
                 ...state, 
                 accounts: state.accounts.map(account => 
-                    account.id === action.payload.accountId ? { ...account, ...action.payload } : account
+                    account.id === action.payload.id ? { ...account, ...action.payload } : account
                 ), 
                 loading: false 
             };
