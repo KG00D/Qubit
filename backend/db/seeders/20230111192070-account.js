@@ -5,8 +5,6 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  
 }
-console.log('Running the Account Seeder')
-
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

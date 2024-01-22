@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('assetTransactions', {
+    return queryInterface.createTable('accountTransactions', {
       id: {
           type: Sequelize.INTEGER,
           allowNull: false,
@@ -18,7 +18,7 @@ module.exports = {
             type: Sequelize.INTEGER,
             allowNull: false,
                 references: {
-                  model: 'assetHoldings',
+                  model: 'accountHoldings',
                   key: 'id'
                 }
         },
@@ -83,6 +83,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('assetTransactions');
+    return queryInterface.dropTable('accountTransactions');
   }
 };

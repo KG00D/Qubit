@@ -2,17 +2,17 @@
 const { Model, DECIMAL, BOOLEAN } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class assetHolding extends Model {
+  class accountHolding extends Model {
     static associate(models) {
-      assetHolding.belongsTo(models.Account, { 
+      accountHolding.belongsTo(models.Account, { 
         foreignKey: 'accountId' });
-        assetHolding.hasMany(models.assetTransaction, { 
+        accountHolding.hasMany(models.accountTransaction, { 
         foreignKey: 'holdingId'
       });
     }
 }
 
-assetHolding.init({
+accountHolding.init({
     accountId: DataTypes.INTEGER,
     holdingName: DataTypes.STRING,
     holdingIdentifier: DataTypes.STRING,
@@ -22,7 +22,7 @@ assetHolding.init({
     currency: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'assetHolding',
+    modelName: 'accountHolding',
   });
-  return assetHolding;
+  return accountHolding;
 };

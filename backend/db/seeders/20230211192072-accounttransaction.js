@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
 
-    await queryInterface.bulkInsert('assetTransactions', [
+    await queryInterface.bulkInsert('accountTransactions', [
         {
             holdingId: 1,
             accountId: 1,
@@ -111,7 +111,7 @@ module.exports = {
     ], { exclude: ['id'] });
 },
 down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('assetTransactions', null, {});
+    await queryInterface.bulkDelete('accountTransactions', null, {});
     }
 };
 

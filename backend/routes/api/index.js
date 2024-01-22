@@ -4,8 +4,8 @@ const { User } = require('../../db/models');
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const accountsRouter = require('./accounts.js');
-const holdingsRouter = require('./assetholdings.js');
-const transactionsRouter = require('./assettransactions.js');
+const holdingsRouter = require('./accountholdings.js');
+const transactionsRouter = require('./accounttransactions.js');
 
 
 //You can use requireAuth as middleware for routes that require sign in
@@ -16,8 +16,8 @@ router.use(restoreUser);
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/accounts', accountsRouter);
-router.use('/assetholdings', holdingsRouter);
-router.use('/assettransactions', transactionsRouter);
+router.use('/accounts/:accountId/accountholdings', holdingsRouter);
+router.use('/accounts/:accountId/accountholdings/:holdingId/accounttransactions', transactionsRouter);
 
 // Restore user
 router.get('/restore-user', (req, res) => {
