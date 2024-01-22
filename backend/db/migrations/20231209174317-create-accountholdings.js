@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('assetHoldings', {
+    return queryInterface.createTable('accountHoldings', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -60,7 +60,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('assetHoldings');
+    await queryInterface.dropTable('accountHoldings');
   }
 };
 

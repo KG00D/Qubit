@@ -2,17 +2,17 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class assetTransaction extends Model {
+  class accountTransaction extends Model {
     static associate(models) {
-      assetTransaction.belongsTo(models.assetHolding, {
+      accountTransaction.belongsTo(models.accountHolding, {
           foreignKey: 'holdingId',
       });
-      assetTransaction.belongsTo(models.Account, {
+      accountTransaction.belongsTo(models.Account, {
           foreignKey: 'accountId',
       });
   }
 }
-assetTransaction.init({
+accountTransaction.init({
     holdingId: DataTypes.INTEGER,
     accountId: DataTypes.INTEGER,
     securityName: DataTypes.STRING,
@@ -27,8 +27,8 @@ assetTransaction.init({
     type: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'assetTransaction',
+    modelName: 'accountTransaction',
   });
 
-  return assetTransaction;
+  return accountTransaction;
 };
