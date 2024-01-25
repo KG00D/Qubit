@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { updateAccount, createAccount, deleteAccount } from '../../redux/account';
+import { useState, useEffect } from 'react';
 
 const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
     const [updatedAccount, setUpdatedAccount] = useState(account);
@@ -30,7 +28,7 @@ const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
                         <input
                             type="text"
                             name="name"
-                            value={updatedAccount.name}
+                            value={updatedAccount.name || ''}
                             onChange={handleInputChange}
                         />
                     </label>
@@ -39,7 +37,7 @@ const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
                         <input
                             type="text"
                             name="type"
-                            value={updatedAccount.type}
+                            value={updatedAccount.type || ''}
                             onChange={handleInputChange}
                         />
                     </label>
@@ -48,7 +46,7 @@ const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
                         <input
                             type="number"
                             name="accountBalance"
-                            value={updatedAccount.accountBalance}
+                            value={updatedAccount.accountBalance || ''}
                             onChange={handleInputChange}
                         />
                     </label>

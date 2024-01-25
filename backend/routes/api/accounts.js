@@ -1,16 +1,14 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Account, accountHolding, accountTransaction } = require('../../db/models');
-// const holdingsRouter = require('./accountholdings.js')
+const { Account } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 router.use(restoreUser)
 
-router.get('/:id', async (req, res, next) => {
-    console.log('account id is ', req.params.id)
+router.get('/:id', requireAuth, async (req, res, next) => {
     try {
         const id = req.params.id;
         const currentUserId = req.user.id;
@@ -21,7 +19,6 @@ router.get('/:id', async (req, res, next) => {
                 'name',
                 'subType',
                 'type',
-                'accountBalance',
                 'manualFlag'
             ],
             where: { userId: currentUserId }
@@ -36,7 +33,8 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
-router.get('/', async (req, res, next) => {
+
+router.get('/', requireAuth, async (req, res, next) => {
     try {
         const currentUserId = req.user.id;
         const accounts = await Account.findAll({
@@ -45,7 +43,6 @@ router.get('/', async (req, res, next) => {
                 'name',
                 'subType',
                 'type',
-                'accountBalance',
                 'manualFlag'
             ],
             where: { userId: currentUserId }
@@ -63,13 +60,12 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
     try {
-        const { name, subType, type, accountBalance, manualFlag } = req.body;
+        const { name, subType, type, manualFlag } = req.body;
         const newAccount = await Account.create({
             userId: req.user.id, 
             name, 
             subType, 
             type, 
-            accountBalance, 
             manualFlag
         });
         return res.json({ accountId: newAccount.id}) 
@@ -82,7 +78,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     try {
         const id = req.params.id;
         const userId = req.user.id;
-        const { name, subType, type, accountBalance, manualFlag } = req.body;
+        const { name, subType, type, manualFlag } = req.body;
 
         const account = await Account.findByPk(id);
         
@@ -94,7 +90,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
             return res.status(403).json({ message: "You do not have permission to update this account" });
         }
 
-        await account.update({ name, subType, type, accountBalance, manualFlag });
+        await account.update({ name, subType, type, manualFlag });
         return res.json({ accountId: account.id, message: "Account updated successfully" }); 
     } catch (error) {
         next(error); 

@@ -2,9 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Accounts from '../components/Accounts'
-import AccountDetails from '../components/AcccountDetails';
-import AssetHoldings from '../components/AssetHoldings';
-// import AssetTransactions from '../components/AssetTransactions';
+import AccountHoldings from '../components/AccountHoldings';
+import HoldingTransactions from '../components/HoldingTransactions';
+import HomepageComponent from '../components/HomePageComponent';
 import Layout from './Layout';
 import Splash from '../components/Splash';
 
@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Splash />,
+        element: <HomepageComponent />,
       },
       {
         path: "login",
@@ -25,22 +25,17 @@ export const router = createBrowserRouter([
         element: <SignupFormPage />,
       },
       {
-        path: "accounts/:id", 
-        element: <AccountDetails />
-      },
-      {
-        path: "accounts",
+        path: "/accounts",
         element: <Accounts />
       },
       {
-        path: "assetholdings/:accountId",
-        element: <AssetHoldings />
+        path: "accounts/:accountId/accountholdings",
+        element: <AccountHoldings />
+      },
+      {
+        path: "accounts/:accountId/accountholdings/:holdingId/accounttransactions",
+        element: <HoldingTransactions />
       }
-      // ,
-      // {
-      //   path: "assettransactions/:holdingId",
-      //   element: <AssetTransactions />
-      // }
     ],
   },
 

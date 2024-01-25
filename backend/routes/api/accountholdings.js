@@ -2,7 +2,6 @@ const express = require('express');
 const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
 const { accountHolding, Account } = require('../../db/models');
-// const router = express.Router({ mergeParams: true });
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router({ mergeParams: true });

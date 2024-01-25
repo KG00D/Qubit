@@ -1,3 +1,39 @@
 .profile-dropdown {
     position: absolute;
 }
+/* Navigation.css */
+
+.nav-bar {
+    display: flex; /* Use flexbox for the navbar */
+    justify-content: space-between; /* Space out nav items */
+    align-items: center; /* Align items vertically */
+    background-color: #3a476a; /* Assume your nav bar has a black background */
+    padding: 0px; /* Add some padding on the sides */
+    height: 40px;
+  }
+  
+  .nav-bar ul {
+    display: flex; /* Make the list a flex container */
+    list-style: none; /* Remove list bullets */
+    margin: 0; /* Reset default margins */
+    padding: 0; /* Reset default padding */
+    width: 100%; /* Full width to spread out list items */
+    justify-content: space-between; /* Spread list items */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .nav-bar ul li {
+    display: flex; /* Use flex to align link items */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+  }
+  
+  /* Adjust this as needed for your design */
+  .home-button {
+    flex-grow: 1; /* Allows it to grow and push other items to the right */
+  }
+  
+  .profile-button-container {
+    margin-left: auto; /* Pushes the profile button to the right */
+  }
+  

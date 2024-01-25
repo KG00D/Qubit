@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     subType: DataTypes.STRING,
     type: DataTypes.STRING,
-    accountBalance: DataTypes.DECIMAL,
     manualFlag: DataTypes.BOOLEAN
   }, {
     sequelize,
