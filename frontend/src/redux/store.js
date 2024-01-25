@@ -8,14 +8,16 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import accountsReducer from "./account";
-import assetHoldingsReducer from "./assetHolding";
-// import transactionsReducer from "./assetTransaction";
+import accountHoldingsReducer from "./accountHolding";
+import transactionsReducer from "./holdingTransactions";
+import balancesReducer from "./accountBalances";
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     accounts: accountsReducer,
-    holdings: assetHoldingsReducer,
-    // transactions: transactionsReducer
+    holdings: accountHoldingsReducer,
+    transactions: transactionsReducer,
+    balances: balancesReducer
 });
 
 let enhancer;

@@ -12,7 +12,7 @@ function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  if (sessionUser) return <Navigate to="/accounts" replace={true} />;
 
   const handleSubmit = async (e) => {
     console.log(e)
@@ -28,7 +28,7 @@ function LoginFormPage() {
      if (serverResponse) {
        setErrors(serverResponse);
      } else {
-       navigate("/");
+       navigate("/accounts");
      }
   };
 

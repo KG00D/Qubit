@@ -14,11 +14,10 @@ const removeUser = () => ({
 });
 
 
-
-
 export const thunkAuthenticate = () => async (dispatch) => {
     try{
         const response = await csrfFetch("/api/restore-user");
+        
         if (response.ok) {
             const data = await response.json();
             dispatch(setUser(data));
@@ -34,7 +33,6 @@ export const thunkLogin = (credentials) => async dispatch => {
         method: "POST",
         body: JSON.stringify({credential: email, password})
     });
-
     if (response.ok) {
         const data = await response.json();
         dispatch(setUser(data));

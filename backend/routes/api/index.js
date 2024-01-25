@@ -5,6 +5,8 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const accountsRouter = require('./accounts.js');
 const holdingsRouter = require('./accountholdings.js');
+const balancesRouter = require('./accountbalances');
+const totalBalancesRouter = require('./accountbalancesbydate.js');
 const transactionsRouter = require('./accounttransactions.js');
 
 
@@ -17,6 +19,9 @@ router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/accounts', accountsRouter);
 router.use('/accounts/:accountId/accountholdings', holdingsRouter);
+router.use('/accounts/:accountId/accountbalances', balancesRouter);
+router.use('/accountbalancesbydate', totalBalancesRouter);
+router.use('/accountbalances', balancesRouter)
 router.use('/accounts/:accountId/accountholdings/:holdingId/accounttransactions', transactionsRouter);
 
 // Restore user
