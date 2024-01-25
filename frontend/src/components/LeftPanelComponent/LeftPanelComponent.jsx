@@ -66,7 +66,7 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
                 <h1 onClick={toggleAccounts}>Accounts</h1>
                 {isAccountsOpen && accounts.map(account => (
                     <div key={account.id} className="account-item" >
-                        <p className='accounts-dropdown'>{account.name}</p>
+                        <p className='accounts-name'>{account.name}</p>
                         <button className="edit-icon" onClick={(e) => handleEditIconClick(e, account)}>✏️</button>
                     </div>
                 ))}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import "./EditAccountModal.css";
 
 const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
     const [updatedAccount, setUpdatedAccount] = useState(account);
