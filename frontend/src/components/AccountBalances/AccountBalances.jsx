@@ -18,20 +18,20 @@ const AccountBalances = ({ accountId }) => {
         setIsModalOpen(true);
     };
 
-    const handleUpdate = (id, updatedAccount) => {
-        dispatch(updateAccountBalance(id, updatedAccount))
-            .then(() => {
-                dispatch(fetchAccountBalances());
-            })
-            .finally(() => {
-                closeModal();
-            });
-    };
+    // const handleUpdate = (id, updatedAccount) => {
+    //     dispatch(updateAccountBalance(id, updatedAccount))
+    //         .then(() => {
+    //             dispatch(fetchAccountBalances());
+    //         })
+    //         .finally(() => {
+    //             closeModal();
+    //         });
+    // };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setCurrentAccount(null);
-    };
+    // const closeModal = () => {
+    //     setIsModalOpen(false);
+    //     setCurrentAccount(null);
+    // };
 
     return (
         <div>

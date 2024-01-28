@@ -1,27 +1,62 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateAccount, deleteAccount, addAccount } from '../../redux/account';
 
-const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
-    const [updatedAccount, setUpdatedAccount] = useState(account);
+const EditAccountModal = ({ account, onClose, isAddMode }) => {
+    const dispatch = useDispatch();
+
+    const emptyAccount = {
+        name: '',
+        type: '',
+        subType: '',
+        accountBalance: '',
+    };
+    const initialAccount = isAddMode ? emptyAccount : account;
+
+
+    const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
 
     useEffect(() => {
-        setUpdatedAccount(account);
-    }, [account]);
+        setUpdatedAccount(initialAccount);
+    }, [isAddMode]);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUpdatedAccount({ ...updatedAccount, [name]: value });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onUpdate(account.id, updatedAccount);
-        onClose();
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (isAddMode) {
+    //         dispatch(addAccount(updatedAccount));
+    //     } else {
+    //         dispatch(updateAccount(account.id, updatedAccount));
+    //     }
+    //     onClose();
+    // };
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isAddMode) {
+        await dispatch(addAccount(updatedAccount));
+    } else {
+        await dispatch(updateAccount(account.id, updatedAccount));
+    }
+    onClose();
+};
+
+
+    const handleDelete = () => {
+        if (!isAddMode) {
+            dispatch(deleteAccount(account.id));
+            onClose();
+        }
     };
 
     return (
         <div className="modal-backdrop">
             <div className="modal-content">
-                <h2>Edit Account</h2>
+                <h2>{isAddMode ? 'Add Account' : 'Edit Account'}</h2>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Name:
@@ -42,17 +77,32 @@ const EditAccountModal = ({ account, onClose, onUpdate, onDelete }) => {
                         />
                     </label>
                     <label>
-                        Balance:
+                        Sub Type:
                         <input
-                            type="number"
+                            type="text"
+                            name="subType"
+                            value={updatedAccount.subType || ''}
+                            onChange={handleInputChange}
+                        />
+                    </label>
+                           <label>
+                        Sub Type:
+                        <input
+                            type="text"
                             name="accountBalance"
                             value={updatedAccount.accountBalance || ''}
                             onChange={handleInputChange}
                         />
                     </label>
-                    <button type="submit">Save Changes</button>
-                    <button type="button" onClick={() => onDelete(account.id)}>Delete Account</button>
-                    <button type="button" onClick={onClose}>Cancel</button>
+                    <button type="submit">{isAddMode ? 'Add Account' : 'Save Changes'}</button>
+                    {/* <button type="button" onClick={onClose}>Cancel</button> */}
+
+                    {!isAddMode && (
+                        <>
+                            <button type="button" onClick={handleDelete}>Delete Account</button>
+                            <button type="button" onClick={onClose}>Cancel</button>
+                        </>
+                    )}
                 </form>
             </div>
         </div>

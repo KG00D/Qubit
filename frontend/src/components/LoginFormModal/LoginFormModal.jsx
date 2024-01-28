@@ -15,7 +15,6 @@ function LoginFormModal() {
   const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
-    console.log(e)
     e.preventDefault();
 
     const serverResponse = await dispatch(

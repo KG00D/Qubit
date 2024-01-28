@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAccounts, deleteAccount, updateAccount } from "../../redux/account";
-import EditAccountModal from '../EditAccountModal';
+import { fetchAccounts} from "../../redux/account";
+// import EditAccountModal from '../EditAccountModal';
 
 const Accounts = () => {
     const dispatch = useDispatch();
@@ -18,30 +18,30 @@ const Accounts = () => {
         setIsModalOpen(true);
     };
 
-    const handleUpdate = (id, updatedAccount) => {
-        dispatch(updateAccount(id, updatedAccount))
-            .then(() => {
-                dispatch(fetchAccounts());
-            })
-            .finally(() => {
-                closeModal();
-            });
-    };
+    // const handleUpdate = (id, updatedAccount) => {
+    //     dispatch(updateAccount(id, updatedAccount))
+    //         .then(() => {
+    //             dispatch(fetchAccounts());
+    //         })
+    //         .finally(() => {
+    //             closeModal();
+    //         });
+    // };
 
-    const handleDelete = (id) => {
-        dispatch(deleteAccount(id))
-        .then(() => {
-            dispatch(fetchAccounts());
-        })
-        .finally(() => {
-            closeModal();
-        });
-    };
+    // const handleDelete = (id) => {
+    //     dispatch(deleteAccount(id))
+    //     .then(() => {
+    //         dispatch(fetchAccounts());
+    //     })
+    //     .finally(() => {
+    //         closeModal();
+    //     });
+    // };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setCurrentAccount(null);
-    };
+    // const closeModal = () => {
+    //     setIsModalOpen(false);
+    //     setCurrentAccount(null);
+    // };
 
     return (
         <div>
@@ -59,14 +59,14 @@ const Accounts = () => {
                     </li>
                 ))}
             </ul>
-            {isModalOpen && 
+            {/* {isModalOpen && 
                 <EditAccountModal 
                     account={currentAccount} 
                     onClose={closeModal} 
                     onDelete={handleDelete} 
                     onUpdate={handleUpdate} 
                 />
-            }
+            } */}
         </div>
     );
 };

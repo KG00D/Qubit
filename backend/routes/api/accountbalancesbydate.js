@@ -15,11 +15,9 @@ router.get('/', requireAuth, async (req, res, next) => {
                 attributes: []
             }],
             attributes: [
-                // [Sequelize.fn('date', Sequelize.col('AccountBalances.balanceDate')), 'balanceDate'],
                 'balanceDate',
                 [Sequelize.fn('sum', Sequelize.col('AccountBalances.accountBalance')), 'totalBalance']
             ],
-            // group: [Sequelize.fn('date', Sequelize.col('AccountBalances.balanceDate'))],
             group: 'balanceDate',
             order: [[Sequelize.fn('date', Sequelize.col('AccountBalances.balanceDate')), 'ASC']]
         });
@@ -29,6 +27,7 @@ router.get('/', requireAuth, async (req, res, next) => {
             res.status(404).json({ message: "Total balances not found" });
         }
     } catch (error) {
+        console.error(error);
         next(error);
     }
 });

@@ -50,16 +50,14 @@ export const fetchAccountHoldings = (accountId) => {
             }
 
             const holdings = await response.json();
-            console.log('API response:', holdings); 
 
             dispatch(fetchAccountHoldingsSuccess(holdings));
         } catch (error) {
             console.error('Fetch error:', error);
             dispatch(fetchAccountHoldingsFail(error.message));
-        }
+            }
+        };
     };
-    };
-    
 
     export const createHolding = (accountId, holdingDetails) => async dispatch => {
         dispatch(createHoldingStart());
@@ -83,7 +81,6 @@ export const fetchAccountHoldings = (accountId) => {
     };
     
 export const updateHolding = (accountId, holdingId, updatedDetails) => async dispatch => {
-    console.log(`Updating holding: /api/accounts/${accountId}/holdings/${holdingId}`, updatedDetails);
 
         dispatch(updateHoldingStart());
         try {
@@ -99,6 +96,7 @@ export const updateHolding = (accountId, holdingId, updatedDetails) => async dis
                 throw new Error('Failed to update holding');
             }
             const data = await response.json();
+            console.log('UPDATE FROM accountHOLDGS BEING FIRED.')
             dispatch(updateHoldingSuccess(data));
         } catch (error) {
             dispatch(updateHoldingFail(error.message));
@@ -122,7 +120,7 @@ export const deleteHolding = (accountId, holdingId) => async dispatch => {
 
 const initialState = {
     holdings: {},
-    holdingDetail: null,
+    // holdingDetail: null,
     loading: false,
     error: null
 };
@@ -132,7 +130,6 @@ const accountHoldingsReducer = (state = initialState, action) => {
         case FETCH_ACCOUNTHOLDINGS_START:
             return { ...state, loading: true, error: null };
         case FETCH_ACCOUNTHOLDINGS_SUCCESS:
-            console.log('Reducer payload:', action.payload);
             return { 
                 ...state,
                 [action.payload.account.id]: {

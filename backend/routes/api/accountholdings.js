@@ -9,8 +9,6 @@ const router = express.Router({ mergeParams: true });
 router.use(restoreUser)
 
 router.get('/', async (req, res, next) => {
-    console.log("URL: ", req.url);
-    console.log("Account ID: ", req.params.accountId);
     
     try {
         const accountId = req.params.accountId;
@@ -22,8 +20,7 @@ router.get('/', async (req, res, next) => {
                 'name',
                 'subType',
                 'type',
-                'accountBalance',
-                'manualFlag'
+                'accountBalance'
             ],
             where: { userId: currentUserId }
         });
@@ -63,7 +60,7 @@ router.get('/', async (req, res, next) => {
 });
 
 
-router.post('/:accountId/holdings', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
         const accountId = req.params.accountId;
         const { holdingName, holdingIdentifier, quantity, averagePricePaid, positionOpenDate, currency } = req.body;
@@ -85,10 +82,8 @@ router.post('/:accountId/holdings', async (req, res, next) => {
 });
 
 router.put('/:holdingId', async (req, res, next) => {
-    console.log("PUT request to /accounts/:accountId/accountholdings/:holdingId", req.params);
     try {
         const { holdingId, accountId } = req.params;
-        console.log(holdingId, accountId, 'HERE ARE THE GD IDS #######')
         const { holdingName, holdingIdentifier, quantity, averagePricePaid, positionOpenDate, currency } = req.body;
 
         const holding = await accountHolding.findOne({
