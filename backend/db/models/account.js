@@ -13,8 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     subType: DataTypes.STRING,
-    type: DataTypes.STRING,
-    manualFlag: DataTypes.BOOLEAN
+    type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Account',

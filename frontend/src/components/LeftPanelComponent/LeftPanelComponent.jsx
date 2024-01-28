@@ -1,19 +1,31 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
+import { useSelector } from 'react-redux';
 import "./LeftPanelComponent.css";
 import EditAccountModal from '../EditAccountModal';
 
 const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerformanceClick }) => {
     const dispatch = useDispatch();
+
+    
     const { accounts } = useSelector(state => state.accounts);
+    
     const [isAccountsOpen, setIsAccountsOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isReportsOpen, setIsReportsOpen] = useState(false); 
+    const [isAddMode, setIsAddMode] = useState(false);
+    const [isReportsOpen, setIsReportsOpen] = useState(false);
     const [selectedAccountForEdit, setSelectedAccountForEdit] = useState(null);
 
-    const toggleAccounts = () => {
-        setIsAccountsOpen(!isAccountsOpen);
-    };
+   const toggleAccounts = () => {
+    const newIsAccountsOpen = !isAccountsOpen;
+    setIsAccountsOpen(newIsAccountsOpen);
+   
+    //    if (newIsAccountsOpen) {
+    //     dispatch(fetchAccounts());
+    // }
+};
+
 
     const toggleReports = () => { 
         setIsReportsOpen(!isReportsOpen);
@@ -31,20 +43,24 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
     };
 
     const handleUpdateAccount = (accountId, updatedAccount) => {
-        // Placeholder for update logic
-        console.log('Updated account:', accountId, updatedAccount);
+        //dispatch(updateAccount(accountId, updatedAccount));
         handleCloseEditModal();
     };
 
     const handleDeleteAccount = (accountId) => {
-        // Placeholder for delete logic
-        console.log('Deleted account:', accountId);
+        //dispatch(deleteAccount(accountId))
         handleCloseEditModal();
     };
 
         const handleAccountPerformanceClick = () => {
         onAccountPerformanceClick();
+        };
+    
+        const handleAddAccountClick = () => {
+        setIsAddMode(true);
+        setIsEditModalOpen(true);
     };
+
 
     return (
         <div className="left-panel">
@@ -62,25 +78,36 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
             </div>
 
             {/* Accounts Section with Edit Icon */}
+            {/* Accounts Section with Add Icon */}
             <div className="accounts-section">
                 <h1 onClick={toggleAccounts}>Accounts</h1>
+                <span className="add-icon" onClick={handleAddAccountClick}> + </span>
                 {isAccountsOpen && accounts.map(account => (
-                    <div key={account.id} className="account-item" >
+                    <div key={account.id} className="account-item">
                         <p className='accounts-dropdown'>{account.name}</p>
                         <button className="edit-icon" onClick={(e) => handleEditIconClick(e, account)}>✏️</button>
                     </div>
                 ))}
             </div>
 
+            {/* Edit/Add Account Modal */}
+            {isEditModalOpen && (
+                <EditAccountModal
+                    account={isAddMode ? {} : selectedAccountForEdit}
+                    onClose={handleCloseEditModal}
+                    isAddMode={isAddMode}
+                />
+            )}
+
             {/* Edit Account Modal */}
-            {isEditModalOpen && selectedAccountForEdit && (
+            {/* {isEditModalOpen && selectedAccountForEdit && (
                 <EditAccountModal
                     account={selectedAccountForEdit}
                     onClose={handleCloseEditModal}
                     onUpdate={handleUpdateAccount}
                     onDelete={handleDeleteAccount}
                 />
-            )}
+            )} */}
 
             {/* Reports Section */}
              <div className="reports-section">

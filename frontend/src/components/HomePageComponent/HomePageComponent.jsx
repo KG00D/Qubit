@@ -30,10 +30,10 @@ const HomepageComponent = () => {
         }
     };
 
-    const handleResetToDefaultView = () => {
-        setViewAccountHoldings(false);
-        setSelectedAccountId(null); 
-    };
+    // const handleResetToDefaultView = () => {
+    //     setViewAccountHoldings(false);
+    //     setSelectedAccountId(null); 
+    // };
 
     const totalBalancesData = useSelector(state => state.balances.totalBalancesByDate);
     const latestBalance = totalBalancesData[totalBalancesData.length - 1]?.totalBalance || 0;

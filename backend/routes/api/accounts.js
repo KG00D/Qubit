@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Account } = require('../../db/models');
+const { Account, accountHolding } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
@@ -19,7 +19,6 @@ router.get('/:id', requireAuth, async (req, res, next) => {
                 'name',
                 'subType',
                 'type',
-                'manualFlag'
             ],
             where: { userId: currentUserId }
         });
@@ -42,8 +41,7 @@ router.get('/', requireAuth, async (req, res, next) => {
                 'id',
                 'name',
                 'subType',
-                'type',
-                'manualFlag'
+                'type'
             ],
             where: { userId: currentUserId }
         });
@@ -60,17 +58,37 @@ router.get('/', requireAuth, async (req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
     try {
-        const { name, subType, type, manualFlag } = req.body;
+        const { name, subType, type } = req.body;
         const newAccount = await Account.create({
             userId: req.user.id, 
             name, 
             subType, 
-            type, 
-            manualFlag
+            type
         });
         return res.json({ accountId: newAccount.id}) 
     } catch (error) {
-        next(error); 
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/:accountId/holdings', async (req, res, next) => {
+    try {
+        const accountId = req.params.accountId;
+        const { holdingName, holdingIdentifier, quantity, averagePricePaid, positionOpenDate, currency } = req.body;
+
+        const newHolding = await accountHolding.create({
+            accountId,
+            holdingName,
+            holdingIdentifier,
+            quantity,
+            averagePricePaid,
+            positionOpenDate,
+            currency
+        });
+
+        res.status(201).json(newHolding);
+    } catch (error) {
+        next(error);
     }
 });
 
@@ -78,7 +96,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     try {
         const id = req.params.id;
         const userId = req.user.id;
-        const { name, subType, type, manualFlag } = req.body;
+        const { name, subType, type } = req.body;
 
         const account = await Account.findByPk(id);
         
@@ -90,8 +108,15 @@ router.put('/:id', requireAuth, async (req, res, next) => {
             return res.status(403).json({ message: "You do not have permission to update this account" });
         }
 
-        await account.update({ name, subType, type, manualFlag });
-        return res.json({ accountId: account.id, message: "Account updated successfully" }); 
+        const updatedAccount = await account.update({ name, subType, type });
+
+        return res.json({
+            id: updatedAccount.id,
+            name: updatedAccount.name,
+            subType: updatedAccount.subType,
+            type: updatedAccount.type,
+            message: "Account updated successfully"
+        }); 
     } catch (error) {
         next(error); 
     }

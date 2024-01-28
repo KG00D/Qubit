@@ -68,7 +68,6 @@ export const fetchTotalBalancesByDate = () => async dispatch => {
             throw new Error('Failed to fetch total balances');
         }
         const totalBalances = await response.json();
-        console.log(totalBalances, 'HERES TOTAL BALANCES')
         dispatch(fetchTotalBalancesSuccess(totalBalances));
     } catch (error) {
         dispatch(fetchTotalBalancesFail(error.message));

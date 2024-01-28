@@ -1,28 +1,70 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateHolding, deleteHolding, fetchAccountHoldings, createHolding } from "../../redux/accountHolding";
 
-const EditHoldingModal = ({ holding, onClose, onUpdate, onDelete }) => {
-    const [updatedHolding, setUpdatedHolding] = useState(holding);
+const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
+    const dispatch = useDispatch();
+
+    const defaultHolding = {
+        holdingName: '',
+        holdingIdentifier: '',
+        quantity: '',
+        averagePricePaid: '',
+        positionOpenDate: '',
+        currency: '',
+    };
+    
+    const initialHolding = isAdding ? defaultHolding : holding;
+    // const [updatedHolding, setUpdatedHolding] = useState(initialHolding);
+    const [updatedHolding, setUpdatedHolding] = useState(isAdding ? defaultHolding : holding);
+
 
     useEffect(() => {
-        setUpdatedHolding(holding);
-    }, [holding]);
+    //     setUpdatedHolding(initialHolding);
+    // }, [initialHolding, isAdding]);
+            if (!isAdding && holding) {
+            setUpdatedHolding(holding);
+        }
+    }, [holding, isAdding]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUpdatedHolding({ ...updatedHolding, [name]: value });
     };
 
+    const handleUpdate = (updatedHolding) => {
+        dispatch(updateHolding(accountId, holding.id, updatedHolding))
+            .then(() => dispatch(fetchAccountHoldings(accountId)))
+            .finally(onClose);
+    };
+
+    const handleDelete = () => {
+        dispatch(deleteHolding(accountId, holding.id))
+            .then(() => dispatch(fetchAccountHoldings(accountId)))
+            .finally(onClose);
+    };
+
+        const handleAddNewHolding = () => {
+        dispatch(createHolding(accountId, updatedHolding))
+            .then(() => dispatch(fetchAccountHoldings(accountId)))
+            .finally(onClose);
+    };
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        onUpdate(holding.id, updatedHolding); 
-        onClose();
+        if (isAdding) {
+            handleAddNewHolding(updatedHolding);
+        } else {
+            handleUpdate(updatedHolding); 
+        }
     };
 
  
-    return (
+  return (
         <div className="modal-backdrop">
             <div className="modal-content">
-                <h2>Edit Holding</h2>
+                <h2>{isAdding ? 'Add New Holding' : 'Edit Holding'}</h2>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Holding Name:
@@ -78,8 +120,10 @@ const EditHoldingModal = ({ holding, onClose, onUpdate, onDelete }) => {
                             onChange={handleInputChange}
                         />
                     </label>
-                    <button type="submit">Save Changes</button>
-                    <button type="button" onClick={() => onDelete(holding.id)}>Delete Holding</button>
+                    <button type="submit">{isAdding ? 'Add Holding' : 'Save Changes'}</button>
+                    {!isAdding && (
+                        <button type="button" onClick={() => handleDelete(holding.id)}>Delete Holding</button>
+                    )}
                     <button type="button" onClick={onClose}>Cancel</button>
                 </form>
             </div>

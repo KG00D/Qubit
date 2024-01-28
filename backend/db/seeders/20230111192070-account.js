@@ -15,8 +15,7 @@ module.exports = {
         name: 'Plaid 401k',
         subtype: '401k',
         type: 'investment',
-        accountBalance: 23631.9805,
-        manualFlag: true
+        accountBalance: 23631.9805
       },
       {
         id: 2,
@@ -24,8 +23,7 @@ module.exports = {
         name: 'CitiBank',
         subtype: null,
         type: 'Banking',
-        accountBalance: 23631.9805,
-        manualFlag: true
+        accountBalance: 23631.9805
       },
       {
         id: 3,
@@ -33,8 +31,7 @@ module.exports = {
         name: 'Fidelity',
         subtype: null,
         type: 'Brokerage',
-        accountBalance: 23631.9805,
-        manualFlag: true
+        accountBalance: 23631.9805
       }
     ], { exclude: ['id'] });
   },

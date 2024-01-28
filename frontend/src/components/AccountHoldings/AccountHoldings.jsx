@@ -1,26 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAccountHoldings, deleteHolding, updateHolding } from "../../redux/accountHolding";
-import EditHoldingsModal from '../EditHoldingsModal'; 
+import { fetchAccountHoldings } from "../../redux/accountHolding";
+import EditHoldingsModal from '../EditHoldingsModal';
 import "./AccountHoldings.css";
 
-const AccountHoldings = ({ accountId }) => { 
+const AccountHoldings = () => {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentHolding, setCurrentHolding] = useState(null);
-    
-    const holdingsData = useSelector(state => state.holdings[accountId]?.accountHoldings);
+    const [isAddingNewHolding, setIsAddingNewHolding] = useState(false);
+
+    const accounts = useSelector(state => state.accounts.accounts);
+    const holdingsData = useSelector(state => state.holdings);
     const loading = useSelector(state => state.holdings.loading);
     const error = useSelector(state => state.holdings.error);
-    
+
     useEffect(() => {
-        if (accountId) {
-            dispatch(fetchAccountHoldings(accountId));
-        }
-    }, [dispatch, accountId]);
+        accounts.forEach(account => {
+            dispatch(fetchAccountHoldings(account.id));
+        });
+    }, [dispatch, accounts]);
 
     const calculateTotalGain = (quantity, averagePricePaid, currentPrice) => {
-        // I need to get the current price from somewhere....
         return (currentPrice - averagePricePaid) * quantity;
     };
 
@@ -32,9 +33,9 @@ const AccountHoldings = ({ accountId }) => {
         return quantity * currentPrice;
     };
 
-
     const handleEditClick = (holding) => {
         setCurrentHolding(holding);
+        setIsAddingNewHolding(false);
         setIsModalOpen(true);
     };
 
@@ -43,89 +44,90 @@ const AccountHoldings = ({ accountId }) => {
         setCurrentHolding(null);
     };
 
-    const handleUpdate = (holdingId, updatedHolding) => {
-        dispatch(updateHolding(accountId, holdingId, updatedHolding))
-            .then(() => {
-                dispatch(fetchAccountHoldings(accountId));
-            })
-            .finally(handleCloseModal);
-    };
-
-    const handleDelete = (holdingId) => {
-        dispatch(deleteHolding(accountId, holdingId))
-            .then(() => {
-                dispatch(fetchAccountHoldings(accountId));
-            })
-            .finally(handleCloseModal);
-    };
+    let totalPortfolioValue = 0;
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
     return (
         <div>
-            <table>
-                <thead>
-                    <h2 className='holdings-performance'>Account Holdings & Performance</h2>
-                    <tr>
-                        <th>Holding Name</th>
-                        <th>Symbol</th>
-                        <th>Qty #</th>
-                        <th>Average Price Paid</th>
-                        <th>Total Cost</th>
-                        <th>Total Gain</th>
-                        <th>Total Gain %</th>
-                        <th>Value</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {holdingsData && Object.values(holdingsData).map((holding) => {
-                        const totalGain = calculateTotalGain(holding.quantity, holding.averagePricePaid, holding.currentPrice); // Assume holding.currentPrice exists
-                        const totalGainPercent = calculateTotalGainPercent(totalGain, holding.averagePricePaid, holding.quantity);
-                        const value = calculateValue(holding.quantity, holding.currentPrice);
-                        const totalCost = calculateValue(holding.averagePricePaid, holding.quantity);
-    
-                        return (
-                            <tbody>
-                            <tr key={holding.holdingIdentifier}>
-                                <td>{holding.holdingName}</td>
-                                <td>{holding.holdingIdentifier}</td>
-                                <td>{holding.quantity}</td>
-                                <td>${holding.averagePricePaid}</td>
-                                <td>${totalCost.toFixed(2)}</td>
-                                <td>${totalGain.toFixed(2)}</td>
-                                <td>{totalGainPercent.toFixed(2)}%</td>
-                                <td>${value.toFixed(2)}</td>
-                                <td>
-                                    <button onClick={() => handleEditClick(holding)}>Edit</button>
-                                </td>
-                                </tr>
-                                </tbody>
-//                             <tfoot>
-//   <tr>
-//     <td colSpan="8">Sum of account values or other footer content here</td>
-//   </tr>
-// </tfoot>
+            {accounts.map(account => {
+                let accountTotalValue = 0;
 
-                        );
-                    })}
-                </tbody>
-            </table>
-            {holdingsData && Object.values(holdingsData).length === 0 && <p>No holdings found for this account.</p>}
+                const accountHoldings = holdingsData[account.id]?.accountHoldings;
+                if (accountHoldings) {
+                    accountTotalValue = Object.values(accountHoldings).reduce((total, holding) => {
+                        const value = calculateValue(holding.quantity, holding.currentPrice);
+                        return total + value;
+                    }, 0);
+                }
+
+                totalPortfolioValue += accountTotalValue;
+
+                return (
+                    <div key={account.id}>
+                        <h2>{account.name} Holdings & Performance</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Holding Name</th>
+                                    <th>Symbol</th>
+                                    <th>Qty #</th>
+                                    <th>Average Price Paid</th>
+                                    <th>Total Cost</th>
+                                    <th>Total Gain</th>
+                                    <th>Total Gain %</th>
+                                    <th>Value</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {accountHoldings
+                                    ? Object.values(accountHoldings).map(holding => {
+                                        const totalGain = calculateTotalGain(holding.quantity, holding.averagePricePaid, holding.currentPrice);
+                                        const totalGainPercent = calculateTotalGainPercent(totalGain, holding.averagePricePaid, holding.quantity);
+                                        const value = calculateValue(holding.quantity, holding.currentPrice);
+                                        const totalCost = calculateValue(holding.averagePricePaid, holding.quantity);
+
+                                        return (
+                                            <tr key={holding.holdingIdentifier}>
+                                                <td>{holding.holdingName}</td>
+                                                <td>{holding.holdingIdentifier}</td>
+                                                <td>{holding.quantity}</td>
+                                                <td>${holding.averagePricePaid}</td>
+                                                <td>${totalCost.toFixed(2)}</td>
+                                                <td>${totalGain.toFixed(2)}</td>
+                                                <td>{totalGainPercent.toFixed(2)}%</td>
+                                                <td>${value.toFixed(2)}</td>
+                                                <td>
+                                                    <button onClick={() => handleEditClick(holding)}>Edit</button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                    : <tr><td colSpan="9">No holdings found for this account.</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                        <p>Account Total Value: ${accountTotalValue.toFixed(2)}</p>
+                    </div>
+                );
+            })}
+            <div className="portfolio-total">
+                <h3>Total Portfolio Value: ${totalPortfolioValue.toFixed(2)}</h3>
+            </div>
+
             {isModalOpen && (
                 <EditHoldingsModal
-                    holding={currentHolding}
-                    onClose={handleCloseModal}
-                    onUpdate={handleUpdate}
-                    onDelete={handleDelete}
+                    accountId={currentHolding?.accountId}
+                    holding={isAddingNewHolding ? null : currentHolding}
+                    onClose={() => setIsModalOpen(false)}
+                    onRefresh={() => accounts.forEach(account => dispatch(fetchAccountHoldings(account.id)))}
+                    isAdding={isAddingNewHolding}
                 />
             )}
         </div>
     );
-};
+}
 
 export default AccountHoldings;
-
-
-
