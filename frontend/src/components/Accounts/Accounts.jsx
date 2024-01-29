@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAccounts} from "../../redux/account";
+import { fetchAccounts  } from "../../redux/account";
 // import EditAccountModal from '../EditAccountModal';
 
 const Accounts = () => {

@@ -47,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     adjusted: {
       type: DataTypes.BOOLEAN,
       allowNull: false
+    },
+    closeDate: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
   }, {
     sequelize,
