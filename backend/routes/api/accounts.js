@@ -1,27 +1,58 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Account } = require('../../db/models');
+const { Account, User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 router.use(restoreUser)
-// const userId = 1;
 
-router.get('/', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
+    console.log('account id is ', req.params.id)
     try {
-        const accounts = await Account.findAll({
-            // where: {userId: userId},
+        const id = req.params.id;
+        const currentUserId = req.user.id;
+
+        const account = await Account.findByPk(id, {
             attributes: [
                 'name',
                 'subType',
                 'type',
                 'accountBalance',
                 'manualFlag'
-            ]
+            ],
+            where: { userId: currentUserId }
         });
-        res.json(accounts); 
+        if (account) {
+            res.json(account);
+        } else {
+            res.status(404).json({ message: "Account not found" });
+        }
+    } catch (error) {
+        next(error); 
+    }
+});
+
+router.get('/', async (req, res, next) => {
+    try {
+        const currentUserId = req.user.id;
+        const accounts = await Account.findAll({
+            attributes: [
+                'name',
+                'subType',
+                'type',
+                'accountBalance',
+                'manualFlag'
+            ],
+            where: { userId: currentUserId }
+        });
+
+        if (accounts && accounts.length > 0) {
+            res.json(accounts);
+        } else {
+            res.status(404).json({ message: "No accounts found for this user." });
+        }
     } catch (error) {
         next(error); 
     }
@@ -44,40 +75,49 @@ router.post('/', requireAuth, async (req, res, next) => {
     }
 });
 
-router.put('/', requireAuth, async (req, res) => {
+router.put('/:id', requireAuth, async (req, res, next) => {
     try {
-        const { userId, name, subType, type, accountBalance, manualFlag } = req.body;
-        const newAccount = await Account.create({
-            userId: req.user.id, name, subType, typpe, accountBalance, manualFlag
-        });
-        return res.json({ accountId: newAccount.id}) 
+        const id = req.params.id;
+        const userId = req.user.id;
+        const { name, subType, type, accountBalance, manualFlag } = req.body;
+
+        const account = await Account.findByPk(id);
+        
+        if (!account) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+
+        if (account.userId !== userId) {
+            return res.status(403).json({ message: "You do not have permission to update this account" });
+        }
+
+        await account.update({ name, subType, type, accountBalance, manualFlag });
+        return res.json({ accountId: account.id, message: "Account updated successfully" }); 
     } catch (error) {
         next(error); 
     }
 });
 
-router.delete('/:accountId', requireAuth, async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res, next) => {
     try {
-      const id = req.params.accountId;
-      const userId = req.user.id;
-      const group = await Account.findByPk(id);
-  
-      if (!group) {
-        return res.status(404).json({ message: "Account couldn't be found" });
-      }
-  
-      if (userId === group.organizerId) {
-        await group.destroy();
-        return res.status(200).json({ message: "Successfully deleted" });
-      } else {
-        return res.status(403).json({ message: "No dice" });
-      }
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Internal server error" });
+        const id = req.params.id;
+        const userId = req.user.id;
+
+        const account = await Account.findByPk(id);
+
+        if (!account) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+
+        if (account.userId !== userId) {
+            return res.status(403).json({ message: "You do not have permission to delete this account" });
+        }
+
+        await account.destroy();
+        return res.status(200).json({ message: "Account successfully deleted" });
+    } catch (error) {
+        next(error); 
     }
-  });
-
-
+});
 
 module.exports = router;
