@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHoldingTransactions } from "../../redux/holdingTransactions";
-import EditTransactionsModal from '../EditTransactionsModal';
+// import { fetchHoldingTransactions } from "../../redux/holdingTransactions";
+// import EditTransactionsModal from '../EditTransactionsModal';
 
 const HoldingTransactions = () => {
     const { accountId, holdingId } = useParams();

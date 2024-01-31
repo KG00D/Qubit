@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateAccount, deleteAccount, addAccount } from '../../redux/account';
+import './EditAccountModal.css'
 
 const EditAccountModal = ({ account, onClose, isAddMode }) => {
     const dispatch = useDispatch();
@@ -11,18 +12,28 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
         subType: '',
         accountBalance: '',
     };
+
+    // const initialAccount = isAddMode ? emptyAccount : account;
+    // const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
+
     const initialAccount = isAddMode ? emptyAccount : account;
-
-
     const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
+    
+    // useEffect(() => {
+    //     setUpdatedAccount(initialAccount);
+    // }, [isAddMode]);
 
     useEffect(() => {
-        setUpdatedAccount(initialAccount);
-    }, [isAddMode]);
+            console.log('useEffect triggered');
+            console.log('isAddMode:', isAddMode);
+            console.log('account:', account);
+        setUpdatedAccount(isAddMode ? emptyAccount : account);
+    }, [isAddMode, account]);
 
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+         const { name, value } = e.target;
+        console.log('Input Change:', name, value);
         setUpdatedAccount({ ...updatedAccount, [name]: value });
     };
 
@@ -58,6 +69,8 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
             <div className="modal-content">
                 <h2>{isAddMode ? 'Add Account' : 'Edit Account'}</h2>
                 <form onSubmit={handleSubmit}>
+                <button type="button" onClick={onClose}>Cancel</button>
+
                     <label>
                         Name:
                         <input

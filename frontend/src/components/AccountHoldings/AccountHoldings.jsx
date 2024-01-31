@@ -17,9 +17,11 @@ const AccountHoldings = () => {
 
     useEffect(() => {
         accounts.forEach(account => {
-            dispatch(fetchAccountHoldings(account.id));
+            if (!holdingsData[account.id]) {
+                dispatch(fetchAccountHoldings(account.id));
+            }
         });
-    }, [dispatch, accounts]);
+    }, [accounts, dispatch]);
 
     const calculateTotalGain = (quantity, averagePricePaid, currentPrice) => {
         return (currentPrice - averagePricePaid) * quantity;
@@ -122,7 +124,6 @@ const AccountHoldings = () => {
                     accountId={currentHolding?.accountId}
                     holding={isAddingNewHolding ? null : currentHolding}
                     onClose={() => setIsModalOpen(false)}
-                    onRefresh={() => accounts.forEach(account => dispatch(fetchAccountHoldings(account.id)))}
                     isAdding={isAddingNewHolding}
                 />
             )}

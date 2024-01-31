@@ -59,26 +59,30 @@ export const fetchAccountHoldings = (accountId) => {
         };
     };
 
+
     export const createHolding = (accountId, holdingDetails) => async dispatch => {
-        dispatch(createHoldingStart());
-        try {
-            const response = await csrfFetch(`/api/accounts/${accountId}/accountholdings`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify(holdingDetails),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to create holding');
-            }
-            const data = await response.json();
-            dispatch(createHoldingSuccess(data));
-        } catch (error) {
-            dispatch(createHoldingFail(error.message));
+    dispatch(createHoldingStart());
+    try {
+        const response = await csrfFetch(`/api/accounts/${accountId}/accountholdings`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(holdingDetails),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to create holding');
         }
-    };
+        const data = await response.json();
+        dispatch(createHoldingSuccess(data));
+
+        dispatch(fetchAccountHoldings(accountId));
+    } catch (error) {
+        dispatch(createHoldingFail(error.message));
+    }
+};
+
     
 export const updateHolding = (accountId, holdingId, updatedDetails) => async dispatch => {
 
@@ -96,8 +100,9 @@ export const updateHolding = (accountId, holdingId, updatedDetails) => async dis
                 throw new Error('Failed to update holding');
             }
             const data = await response.json();
-            console.log('UPDATE FROM accountHOLDGS BEING FIRED.')
             dispatch(updateHoldingSuccess(data));
+            dispatch(fetchAccountHoldings(accountId));
+
         } catch (error) {
             dispatch(updateHoldingFail(error.message));
         }
@@ -112,6 +117,8 @@ export const deleteHolding = (accountId, holdingId) => async dispatch => {
                 throw new Error('Failed to delete holding');
             }
             dispatch(deleteHoldingSuccess(holdingId));
+            dispatch(fetchAccountHoldings(accountId));
+
         } catch (error) {
             dispatch(deleteHoldingFail(error.message));
         }

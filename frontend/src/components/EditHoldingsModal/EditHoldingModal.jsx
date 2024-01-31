@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateHolding, deleteHolding, fetchAccountHoldings, createHolding } from "../../redux/accountHolding";
+import { updateHolding, deleteHolding, createHolding } from "../../redux/accountHolding";
 
 const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
     const dispatch = useDispatch();
@@ -15,13 +15,10 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
     };
     
     const initialHolding = isAdding ? defaultHolding : holding;
-    // const [updatedHolding, setUpdatedHolding] = useState(initialHolding);
     const [updatedHolding, setUpdatedHolding] = useState(isAdding ? defaultHolding : holding);
 
-
     useEffect(() => {
-    //     setUpdatedHolding(initialHolding);
-    // }, [initialHolding, isAdding]);
+
             if (!isAdding && holding) {
             setUpdatedHolding(holding);
         }
@@ -34,22 +31,18 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
 
     const handleUpdate = (updatedHolding) => {
         dispatch(updateHolding(accountId, holding.id, updatedHolding))
-            .then(() => dispatch(fetchAccountHoldings(accountId)))
             .finally(onClose);
     };
 
     const handleDelete = () => {
         dispatch(deleteHolding(accountId, holding.id))
-            .then(() => dispatch(fetchAccountHoldings(accountId)))
             .finally(onClose);
     };
-
+    
         const handleAddNewHolding = () => {
         dispatch(createHolding(accountId, updatedHolding))
-            .then(() => dispatch(fetchAccountHoldings(accountId)))
-            .finally(onClose);
+        .finally(onClose);
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();

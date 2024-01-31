@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+
 
 import { useSelector } from 'react-redux';
 import "./LeftPanelComponent.css";
 import EditAccountModal from '../EditAccountModal';
 
-const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerformanceClick }) => {
+const LeftPanelComponent = ({ data: netWorth,
+    onAccountClick,
+    onAccountPerformanceClick,
+    onAccountTransactionsClick
+    }) => {
+    
     const dispatch = useDispatch();
 
-    
     const { accounts } = useSelector(state => state.accounts);
     
     const [isAccountsOpen, setIsAccountsOpen] = useState(false);
@@ -17,15 +24,10 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
     const [isReportsOpen, setIsReportsOpen] = useState(false);
     const [selectedAccountForEdit, setSelectedAccountForEdit] = useState(null);
 
-   const toggleAccounts = () => {
+    const toggleAccounts = () => {
     const newIsAccountsOpen = !isAccountsOpen;
-    setIsAccountsOpen(newIsAccountsOpen);
-   
-    //    if (newIsAccountsOpen) {
-    //     dispatch(fetchAccounts());
-    // }
-};
-
+    setIsAccountsOpen(newIsAccountsOpen);   
+    };
 
     const toggleReports = () => { 
         setIsReportsOpen(!isReportsOpen);
@@ -40,27 +42,33 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
     const handleCloseEditModal = () => {
         setIsEditModalOpen(false);
         setSelectedAccountForEdit(null);
+        setIsAddMode(false);
     };
 
-    const handleUpdateAccount = (accountId, updatedAccount) => {
-        //dispatch(updateAccount(accountId, updatedAccount));
-        handleCloseEditModal();
-    };
+    // const handleUpdateAccount = (accountId, updatedAccount) => {
+    //     handleCloseEditModal();
+    // };
 
-    const handleDeleteAccount = (accountId) => {
-        //dispatch(deleteAccount(accountId))
-        handleCloseEditModal();
-    };
+    // const handleDeleteAccount = (accountId) => {
+    //     handleCloseEditModal();
+    // };
 
-        const handleAccountPerformanceClick = () => {
+    const handleAccountPerformanceClick = () => {
         onAccountPerformanceClick();
-        };
-    
-        const handleAddAccountClick = () => {
-        setIsAddMode(true);
-        setIsEditModalOpen(true);
     };
 
+    const handleAccountTransactionsClick = (accountId) => {
+    if (typeof onAccountTransactionsClick === 'function') {
+        onAccountTransactionsClick(accountId);
+    } else {
+        console.error("onAccountTransactionsClick is not defined");
+        }
+    };
+
+    const handleAddAccountClick = () => {
+    setIsAddMode(true);
+    setIsEditModalOpen(true);
+    };
 
     return (
         <div className="left-panel">
@@ -68,20 +76,11 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
                 <p>Net Worth</p>
                 <p className='net-worth-value'>${netWorth.toLocaleString()}</p>
             </div>
-            <div className='assets'>
-                <p>Assets</p>
-                {/* TODO: Add line chart stuff */}
-            </div>
-            <div className='liabilities'>
-                <p>Liabilities</p>
-                {/* TODO: Add line chart stuff */}
-            </div>
-
-            {/* Accounts Section with Edit Icon */}
-            {/* Accounts Section with Add Icon */}
             <div className="accounts-section">
-                <h1 onClick={toggleAccounts}>Accounts</h1>
-                <span className="add-icon" onClick={handleAddAccountClick}> + </span>
+                <h1 onClick={toggleAccounts}>
+                    Accounts
+                    <FontAwesomeIcon icon={isAccountsOpen ? faMinus : faPlus} />
+                </h1>
                 {isAccountsOpen && accounts.map(account => (
                     <div key={account.id} className="account-item">
                         <p className='accounts-dropdown'>{account.name}</p>
@@ -111,20 +110,23 @@ const LeftPanelComponent = ({ data: netWorth, onAccountClick, onAccountPerforman
 
             {/* Reports Section */}
              <div className="reports-section">
-                <h1 onClick={toggleReports}>Reports</h1>
+                <h1 onClick={toggleReports}>
+                    Reports
+                    <FontAwesomeIcon icon={isReportsOpen ? faMinus : faPlus} />
+                </h1>
                 {isReportsOpen && (
                     <div className="reports-dropdown">
-                        <ul><a href="#" onClick={handleAccountPerformanceClick}>Account Performance</a></ul>
-                        <ul><a href="/report-1">Portfolio Performance</a></ul>
-                        <ul><a href="/report-2">Account Performance</a></ul>
-                        <ul><a href="/report-3">Asset Performance</a></ul>
-                        <ul><a href="/report-4">Gains & Losses</a></ul>
-                        <ul><a href="/report-5">Portfolio Value & Benchmark</a></ul>
+                        <ul><button onClick={handleAccountPerformanceClick}>Account Performance</button></ul>
+                        <ul><button onClick={handleAccountTransactionsClick}>Account Transactions</button></ul>
+                    
                     </div>
                 )}
             </div>
             <p>Arbitrage-AI</p>
             <p>Qubit Score</p>
+             <button className="add-account-button" onClick={handleAddAccountClick}>
+        Add Account
+    </button>
         </div>
     );
 };

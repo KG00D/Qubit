@@ -111,3 +111,5 @@ const NetWorthOverTime = ({ data }) => {
 };
 
 export default NetWorthOverTime;
+
+

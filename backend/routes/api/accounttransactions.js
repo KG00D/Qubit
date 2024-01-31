@@ -8,58 +8,116 @@ const router = express.Router({ mergeParams: true });
 
 router.use(restoreUser)
 
-router.get('/', async (req, res, next) => {
-    console.log("Route accessed");
-    console.log("Account ID:", req.params.accountId);
-    console.log("Holding ID:", req.params.holdingId);
-    
+router.get('/', requireAuth, async (req, res, next) => {
     try {
-        const { accountId, holdingId } = req.params;
+        const { accountId, holdingId } = req.query;
+        const currentUserId = req.user.id;
 
-        const account = await Account.findByPk(accountId, {
-            attributes: ['id', 'name', 'type']
-        });
-
-        if (!account) {
-            return res.status(404).json({ message: "Account Not Found" });
+        let filters = {};
+        if (accountId) {
+            filters.accountId = accountId;
         }
-
-        const holding = await accountHolding.findOne({
-            where: { id: holdingId, accountId: accountId }
-        });
-
-        if (!holding) {
-            return res.status(404).json({ message: "Holding Not Found" });
+        if (holdingId) {
+            filters.holdingId = holdingId;
         }
 
         const accountTransactions = await accountTransaction.findAll({
-            where: { accountId: accountId, holdingId: holdingId },
+            where: filters,
+            include: [{
+                model: Account,
+                where: { userId: currentUserId },
+                attributes: [], 
+            }],
             attributes: [
-                'holdingId',
-                'accountId',
-                'securityName',
-                'holdingName',
-                'amount',
-                'date',
-                'fees',
-                'transactionDescription',
-                'price',
-                'quantity'
-            ]
+                'id', 'holdingId', 'accountId', 'securityName', 'holdingName', 'amount',
+                'date', 'fees', 'transactionDescription', 'price', 'quantity'
+            ],
         });
 
-        res.json({
-            account: account,
-            holding: holding,
-            transactions: accountTransactions
-        });
+        res.json(accountTransactions);
     } catch (error) {
         next(error);
     }
 });
 
+router.post('/', requireAuth, async (req, res, next) => {
+    try {
+        const { securityName, amount, date, transactionDescription, price, quantity, subType, type } = req.body;
+        const currentUserId = req.user.id;
 
+        const userAccount = await Account.findOne({ where: { userId: currentUserId } });
+        const newTransaction = await accountTransaction.create({
+            securityName,
+            amount,
+            date,
+            transactionDescription,
+            price,
+            quantity,
+            subType,
+            type,
+            accountId: userAccount.id, 
+        });
 
+        res.status(201).json(newTransaction);
+    } catch (error) {
+        next(error);
+    }
+});
 
+router.put('/:transactionId', requireAuth, async (req, res, next) => {
+    try {
+        const { transactionId } = req.params;
+        const { securityName, amount, date, transactionDescription, price, quantity, subType, type } = req.body;
+        const currentUserId = req.user.id;
+
+        const transaction = await accountTransaction.findOne({ 
+            where: { id: transactionId },
+            include: [{ model: Account, where: { userId: currentUserId } }]
+        });
+
+        if (!transaction) {
+            return res.status(403).send('Not authorized to update this transaction');
+        }
+
+        await accountTransaction.update({
+            securityName,
+            amount,
+            date,
+            transactionDescription,
+            price,
+            quantity,
+            subType,
+            type
+        }, {
+            where: { id: transactionId }
+        });
+
+        const updatedTransaction = await accountTransaction.findByPk(transactionId);
+        res.json(updatedTransaction);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.delete('/:transactionId', requireAuth, async (req, res, next) => {
+    try {
+        const { transactionId } = req.params;
+        const currentUserId = req.user.id;
+
+        const transaction = await accountTransaction.findOne({ 
+            where: { id: transactionId },
+            include: [{ model: Account, where: { userId: currentUserId } }]
+        });
+
+        if (!transaction) {
+            return res.status(403).send('Not authorized to delete this transaction');
+        }
+
+        await accountTransaction.destroy({ where: { id: transactionId } });
+        res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+});
 
 module.exports = router;

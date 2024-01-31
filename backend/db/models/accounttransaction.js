@@ -18,7 +18,7 @@ accountTransaction.init({
     securityName: DataTypes.STRING,
     holdingName: DataTypes.STRING,
     amount: DataTypes.DECIMAL,
-    date: DataTypes.DATEONLY,
+    date: DataTypes.DATE,
     fees: DataTypes.DECIMAL,
     transactionDescription: DataTypes.STRING,
     price: DataTypes.DECIMAL,
