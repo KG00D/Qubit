@@ -1,4 +1,5 @@
-// Action Types
+import { csrfFetch } from "./csrf";
+
 const FETCH_TRANSACTIONS_START = 'FETCH_TRANSACTIONS_START';
 const FETCH_TRANSACTIONS_SUCCESS = 'FETCH_TRANSACTIONS_SUCCESS';
 const FETCH_TRANSACTIONS_FAIL = 'FETCH_TRANSACTIONS_FAIL';
@@ -27,10 +28,13 @@ const updateTransactionFail = error => ({ type: UPDATE_TRANSACTION_FAIL, payload
 const deleteTransactionSuccess = transactionId => ({ type: DELETE_TRANSACTION_SUCCESS, payload: transactionId });
 const deleteTransactionFail = error => ({ type: DELETE_TRANSACTION_FAIL, payload: error });
 
-export const fetchHoldingTransactions = (accountId, holdingId) => async dispatch => {
+export const fetchAccountTransactions = (accountId = null, holdingId = null) => async dispatch => {
     dispatch(fetchTransactionsStart());
+    let endpoint = '/api/accounttransactions';
+    if (accountId) endpoint += `?accountId=${accountId}`;
+    if (holdingId) endpoint += `&holdingId=${holdingId}`;
     try {
-        const response = await fetch(`/api/accounts/${accountId}/accountholdings/${holdingId}/accounttransactions`);
+        const response = await csrfFetch(endpoint);
         if (!response.ok) {
             throw new Error('Failed to fetch transactions');
         }
@@ -41,9 +45,9 @@ export const fetchHoldingTransactions = (accountId, holdingId) => async dispatch
     }
 };
 
-export const addTransaction = (accountId, holdingId, transactionData) => async dispatch => {
+export const addTransaction = (transactionData) => async dispatch => {
     try {
-        const response = await fetch(`/api/accounts/${accountId}/accountholdings/${holdingId}/accounttransactions`, {
+        const response = await csrfFetch(`/api/accounttransactions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(transactionData)
@@ -58,10 +62,14 @@ export const addTransaction = (accountId, holdingId, transactionData) => async d
     }
 };
 
-export const updateTransaction = (accountId, holdingId, transactionId, transactionData) => async dispatch => {
+
+export const updateTransaction = (transactionId, transactionData) => async dispatch => {
+    console.log("Updating transaction:", transactionId, transactionData);
+
     dispatch(updateTransactionStart());
     try {
-        const response = await fetch(`/api/accounts/${accountId}/accountholdings/${holdingId}/accounttransactions/${transactionId}`, {
+        console.log("Sending API request to update transaction");
+        const response = await csrfFetch(`/api/accounttransactions/${transactionId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,19 +77,24 @@ export const updateTransaction = (accountId, holdingId, transactionId, transacti
             },
             body: JSON.stringify(transactionData),
         });
+        console.log("API request sent, response status:", response.status);
         if (!response.ok) {
             throw new Error('Failed to update transaction');
         }
         const updatedTransaction = await response.json();
+        console.log("Transaction updated successfully:", updatedTransaction);
+
         dispatch(updateTransactionSuccess(updatedTransaction));
     } catch (error) {
+        console.error("Error in updating transaction:", error);
         dispatch(updateTransactionFail(error.message));
     }
 };
 
-export const deleteTransaction = (accountId, holdingId, transactionId) => async dispatch => {
+
+export const deleteTransaction = (transactionId) => async dispatch => {
     try {
-        const response = await fetch(`/api/accounts/${accountId}/accountholdings/${holdingId}/accounttransactions/${transactionId}`, {
+        const response = await csrfFetch(`/api/accounttransactions/${transactionId}`, {
             method: 'DELETE'
         });
         if (!response.ok) {
@@ -92,6 +105,7 @@ export const deleteTransaction = (accountId, holdingId, transactionId) => async 
         dispatch(deleteTransactionFail(error.message));
     }
 };
+
 
 const initialState = {
     accounts: [],

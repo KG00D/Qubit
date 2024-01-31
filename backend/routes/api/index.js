@@ -22,7 +22,7 @@ router.use('/accounts/:accountId/accountholdings', holdingsRouter);
 router.use('/accounts/:accountId/accountbalances', balancesRouter);
 router.use('/accountbalancesbydate', totalBalancesRouter);
 router.use('/accountbalances', balancesRouter)
-router.use('/accounts/:accountId/accountholdings/:holdingId/accounttransactions', transactionsRouter);
+router.use('/accounttransactions', transactionsRouter);
 
 // Restore user
 router.get('/restore-user', (req, res) => {

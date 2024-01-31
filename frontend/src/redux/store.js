@@ -9,7 +9,7 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import accountsReducer from "./account";
 import accountHoldingsReducer from "./accountHolding";
-import transactionsReducer from "./holdingTransactions";
+import transactionsReducer from "./accountTransactions";
 import balancesReducer from "./accountBalances";
 
 const rootReducer = combineReducers({
