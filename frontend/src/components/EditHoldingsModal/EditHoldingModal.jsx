@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateHolding, deleteHolding, createHolding } from "../../redux/accountHolding";
+import "./EditHoldingModal.css";
 
 const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
     const dispatch = useDispatch();
@@ -55,10 +56,10 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
 
  
   return (
-        <div className="modal-backdrop">
-            <div className="modal-content">
-                <h2>{isAdding ? 'Add New Holding' : 'Edit Holding'}</h2>
-                <form onSubmit={handleSubmit}>
+    <div className="modal-backdrop">
+        <div className="modal">
+            <h2>{isAdding ? 'Add New Holding' : 'Edit Holding'}</h2>
+            <form onSubmit={handleSubmit} className="modal-form">
                     <label>
                         Holding Name:
                         <input
@@ -113,11 +114,13 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
                             onChange={handleInputChange}
                         />
                     </label>
-                    <button type="submit">{isAdding ? 'Add Holding' : 'Save Changes'}</button>
-                    {!isAdding && (
-                        <button type="button" onClick={() => handleDelete(holding.id)}>Delete Holding</button>
-                    )}
-                    <button type="button" onClick={onClose}>Cancel</button>
+                    <div className="modal-buttons">
+                        <button type="submit" className="modal-button submit">{isAdding ? 'Add Holding' : 'Save Changes'}</button>
+                        {!isAdding && (
+                            <button type="button" className="modal-button delete" onClick={() => handleDelete(holding.id)}>Delete Holding</button>
+                        )}
+                        <button type="button" className="modal-button cancel" onClick={onClose}>Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>

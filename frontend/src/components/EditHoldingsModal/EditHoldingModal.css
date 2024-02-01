@@ -1,0 +1,136 @@
+.modal-backdrop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+    text-align: center;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-form label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 14px;
+    color: #333;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.modal-form input[type="text"],
+.modal-form input[type="number"],
+.modal-form input[type="date"] {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.modal-form input[type="text"]:focus,
+.modal-form input[type="number"]:focus,
+.modal-form input[type="date"]:focus {
+    outline: none;
+    border-color: #0057B8;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-button {
+    padding: 15px 30px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.modal-button.submit {
+    background-color: #0057B8;
+}
+
+.modal-button.delete {
+    background-color: #E63946;
+}
+
+.modal-button.cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.modal-button:hover {
+    transform: translateY(-2px);
+}
+
+.modal-button.submit:hover {
+    background-color: #004A99;
+}
+
+.modal-button.delete:hover {
+    background-color: #C53030;
+}
+
+.modal-button.cancel:hover {
+    background-color: #bbb;
+}
+
+@media (max-width: 768px) {
+
+    .modal-form input[type="text"],
+    .modal-form input[type="number"],
+    .modal-form input[type="date"] {
+        padding: 10px;
+    }
+
+    .modal-button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .modal {
+        width: 90%;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .modal-buttons .modal-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

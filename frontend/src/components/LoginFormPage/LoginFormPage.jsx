@@ -27,7 +27,7 @@ function LoginFormPage() {
      if (serverResponse) {
        setErrors(serverResponse);
      } else {
-       navigate("/accounts");
+      navigate("/");
      }
   };
 

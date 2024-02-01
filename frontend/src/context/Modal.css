@@ -19,6 +19,61 @@
 }
 
 #modal-content {
-    position: absolute;
+    position: relative;
     background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    width: 30%;
+    /* Adjusts the width of the modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Adds a subtle shadow for depth */
+}
+
+#modal-content h2 {
+    text-align: center;
+    color: #333;
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 20px;
+    /* Space between the title and the form */
+}
+
+#modal-content form {
+    display: flex;
+    flex-direction: column;
+    /* Stacks the inputs vertically */
+    gap: 15px;
+    /* Space between each form element */
+}
+
+input[type="email"],
+input[type="password"] {
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f7f7f7;
+    /* Slightly off-white for the input background */
+}
+
+input[type="submit"] {
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    /* A vibrant green for the button */
+    color: white;
+    transition: background-color 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    #modal-content {
+        width: 80%;
+    }
 }

@@ -23,6 +23,13 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
     //     setUpdatedAccount(initialAccount);
     // }, [isAddMode]);
 
+    const handleBackdropClick = (e) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+
+
     useEffect(() => {
             console.log('useEffect triggered');
             console.log('isAddMode:', isAddMode);
@@ -64,58 +71,60 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
         }
     };
 
-    return (
-        <div className="modal-backdrop">
+      return (
+        <div className="modal-backdrop" onClick={handleBackdropClick}>
             <div className="modal-content">
                 <h2>{isAddMode ? 'Add Account' : 'Edit Account'}</h2>
-                <form onSubmit={handleSubmit}>
-                <button type="button" onClick={onClose}>Cancel</button>
-
-                    <label>
+                <form onSubmit={handleSubmit} className="account-form">
+                    <label className="account-label">
                         Name:
                         <input
                             type="text"
                             name="name"
                             value={updatedAccount.name || ''}
                             onChange={handleInputChange}
+                            className="account-input"
                         />
                     </label>
-                    <label>
+                    <label className="account-label">
                         Type:
                         <input
                             type="text"
                             name="type"
                             value={updatedAccount.type || ''}
                             onChange={handleInputChange}
+                            className="account-input"
                         />
                     </label>
-                    <label>
+                    <label className="account-label">
                         Sub Type:
                         <input
                             type="text"
                             name="subType"
                             value={updatedAccount.subType || ''}
                             onChange={handleInputChange}
+                            className="account-input"
                         />
                     </label>
-                           <label>
-                        Sub Type:
+                    <label className="account-label">
+                        Account Balance:
                         <input
                             type="text"
                             name="accountBalance"
                             value={updatedAccount.accountBalance || ''}
                             onChange={handleInputChange}
+                            className="account-input"
                         />
                     </label>
-                    <button type="submit">{isAddMode ? 'Add Account' : 'Save Changes'}</button>
-                    {/* <button type="button" onClick={onClose}>Cancel</button> */}
-
-                    {!isAddMode && (
-                        <>
-                            <button type="button" onClick={handleDelete}>Delete Account</button>
-                            <button type="button" onClick={onClose}>Cancel</button>
-                        </>
-                    )}
+                    <div className="account-buttons">
+                        <button type="submit" className="account-button submit">{isAddMode ? 'Add Account' : 'Save Changes'}</button>
+                        {!isAddMode && (
+                            <>
+                                <button type="button" className="account-button delete" onClick={handleDelete}>Delete Account</button>
+                                <button type="button" className="account-button cancel-account-add-button" onClick={onClose}>Cancel</button>
+                            </>
+                        )}
+                    </div>
                 </form>
             </div>
         </div>
