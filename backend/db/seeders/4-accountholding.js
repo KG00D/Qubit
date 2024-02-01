@@ -11,7 +11,6 @@ module.exports = {
 
     await queryInterface.bulkInsert('accountHoldings', [
       {
-        id: 1,
         accountId: 1,
         holdingName: 'Apple Stock',
         holdingIdentifier: 'AAPL',
@@ -21,7 +20,6 @@ module.exports = {
         currency: 'USD'
       },
       {
-        id: 2,
         accountId: 1,
         holdingName: 'Tesla',
         holdingIdentifier: 'TSLA',
@@ -31,7 +29,6 @@ module.exports = {
         currency: 'USD'
       },
       {
-        id: 3,
         accountId: 3,
         holdingName: 'Tesla',
         holdingIdentifier: 'TSLA',

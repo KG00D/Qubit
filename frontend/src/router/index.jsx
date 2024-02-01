@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
-import Accounts from '../components/Accounts'
+import Accounts from '../components/Accounts';
 import AccountHoldings from '../components/AccountHoldings';
 import AccountTransactions from '../components/AccountTransactions';
 import HomepageComponent from '../components/HomePageComponent';
+import LandingPage from '../components/LandingPage';
 import Layout from './Layout';
 import Splash from '../components/Splash';
 
@@ -14,7 +15,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomepageComponent />,
+        element: <Splash />,
+      },
+      {
+        path: "/homepage",
+        element: <HomepageComponent />
       },
       {
         path: "login",

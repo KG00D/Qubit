@@ -28,11 +28,9 @@ const HomepageComponent = () => {
     };
 
     const handleAccountPerformanceClick = () => {
-        // if (accounts.length > 0) {
-            setSelectedAccountId(accounts.length > 0 ? accounts[0].id : null);
-            setViewAccountHoldings(true);
-            setViewAccountTransactions(false);
-        // }
+        setSelectedAccountId(accounts.length > 0 ? accounts[0].id : null);
+        setViewAccountHoldings(true);
+        setViewAccountTransactions(false);
     };
 
     const handleAccountTransactionsClick = (accountId) => {
@@ -47,6 +45,10 @@ const HomepageComponent = () => {
         setSelectedAccountId(null); 
     };
 
+    const handleStartHereClick = () => {
+    console.log("Start Here button clicked!");
+        // Add your logic here for what should happen when the button is clicked
+    };
 
 
     const totalBalancesData = useSelector(state => state.balances.totalBalancesByDate);
@@ -60,21 +62,27 @@ const HomepageComponent = () => {
                     data={netWorth}
                     onAccountClick={handleAccountClick}
                     onAccountPerformanceClick={handleAccountPerformanceClick}
-                     onAccountTransactionsClick={handleAccountTransactionsClick}
+                    onAccountTransactionsClick={handleAccountTransactionsClick}
                 />
                 {/* ... other sidebar content ... */}
             </div>
-             <div className="right-content">
-                {viewAccountHoldings && selectedAccountId && (
-                    <AccountHoldings accountId={selectedAccountId} />
+            <div className="right-content">
+                {accounts.length === 0 ? (
+                    <button onClick={handleStartHereClick}>Start Here</button>
+                ) : (
+                    <>
+                        {viewAccountHoldings && selectedAccountId && (
+                            <AccountHoldings accountId={selectedAccountId} />
+                        )}
+                        {viewAccountTransactions && selectedAccountId && (
+                            <AccountTransactions accountId={selectedAccountId} />
+                        )}
+                        {!viewAccountHoldings && !viewAccountTransactions && (
+                            <NetWorthOverTime data={totalBalancesData} />
+                        )}
+                        <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button>
+                    </>
                 )}
-                {viewAccountTransactions && selectedAccountId && (
-                    <AccountTransactions accountId={selectedAccountId} />
-                )}
-                {!viewAccountHoldings && !viewAccountTransactions && (
-                    <NetWorthOverTime data={totalBalancesData} />
-                )}
-                <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button>
             </div>
         </div>
     );

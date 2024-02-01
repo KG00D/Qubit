@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Account.belongsTo(models.User, {foreignKey: 'userId'});
       Account.hasMany(models.accountHolding, {foreignKey: 'accountId'});
-      Account.hasMany(models.debtHolding, {foreignKey: 'accountId'});
     }
   }
   Account.init({

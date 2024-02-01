@@ -1,139 +1,173 @@
 .left-panel {
-    background-color: #ffffff;
-    color: #333333; 
-    width: 300px; 
-    border-right: 5px solid #e0e0e0; 
-    height: 100vh; 
-    overflow-y: auto; 
-    padding-left: 7px;
-    padding-right: 2px;
-    font-family: Railway;
-    font-size: 14px;
-  }
-  
-  .net-worth {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    /* font-style: italic; */
-    font-family: 'Bitter', serif;
-  }
-
-  .net-worth-value {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 38px;
-    font-style: italic;
-    margin-bottom: 20px;
-    font-family: 'Bitter', serif;
-  }
-  
-  .assets, .liabilities {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
-  
-  .section-header {
-    font-size: 18px;
-    font-weight: bold;
-    border-bottom: 1px solid #e0e0e0; 
-    padding-bottom: 5px;
-    margin-top: 20px; 
-    margin-bottom: 10px; 
-  }
-  
-  .section-item {
-    background-color: #f5f5f5; 
-    padding: 10px;
-    border-radius: 5px; 
-    margin-bottom: 10px; 
-  }
-  
-  .alert-message {
-    color: #d32f2f; 
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .link-button {
-    background-color: #1565c0; 
-    color: rgb(255, 255, 255);
-    padding: 10px 15px;
-    text-align: center;
-    border-radius: 5px;
-    display: block; 
-    width: 100%;
-    box-sizing: border-box; 
-    text-decoration: none; 
-    margin-top: 10px;
-  }
-  
-  .link-another-account {
-    background-color: #4caf50; 
-  }
-
-  .reports-dropdown {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.3s ease-out;
+  background-color: #ffffff;
+  color: #333333;
+  width: 300px;
+  border-right: 5px solid #e0e0e0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 15px;
+  /* Adjusted for consistency */
+  font-family: 'Railway', sans-serif;
+  /* Corrected the font family name */
+  font-size: 14px;
 }
 
-.accounts-dropdown {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        max-height: 50;
-        transition: max-height 0.3s ease-out;
+.net-worth,
+.section-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 5px;
+  font-family: 'Railway', sans-serif;
+  /* Using the same font family for consistency */
 }
 
-  .reports-section h2 {
-      cursor: pointer;
-  }
+.net-worth-value {
+  font-size: 38px;
+  font-style: italic;
+  margin: 10px 0;
+  /* Simplified margin for top and bottom */
+  font-family: 'Railway', sans-serif;
+  /* Using the same font family for consistency */
+}
 
-  .reports-section .reports-dropdown {
-      max-height: 500px;
-      transition: max-height 0.3s ease-in;
-  }
-  
+.section-item {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  /* Using flexbox for internal alignment */
+  align-items: center;
+  /* Vertically center the items */
+  justify-content: space-between;
+  /* Space between the items */
+}
+
+.link-button,
+.add-account-button {
+  background-color: #1565c0;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  border-radius: 5px;
+  display: block;
+  width: calc(100% - 24px);
+  /* Adjust width to account for padding */
+  box-sizing: border-box;
+  text-decoration: none;
+  margin-top: 10px;
+  font-family: 'Railway', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  /* Smooth background color transition */
+}
+
 .add-account-button {
   background: linear-gradient(to right, #196BCA, #6433E0);
-  background-color: #196BCA;
-  color: #fff;
-  font-family: Trebuchet MS;
+  padding: 10px 20px;
+  /* Reduced padding for a smaller button */
   font-size: 18px;
+  /* Optional: Reduce font size if the button looks too big */
+  border-radius: 8px;
   font-weight: 800;
-  font-style: normal;
-  text-decoration: none;
-  padding: 13px 34px;
-  border: 0px solid #000;
-  border-radius: 10px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.add-account-button span {
-  margin-left: 34px;
+  margin: 10px auto;
+  /* Added margin auto for horizontal centering */
   display: block;
-  width: 49px;
-  height: 29px;
-  /* background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiPg0KICA8ZGVmcz4NCiAgICA8Y2xpcFBhdGggaWQ9ImNsaXAtcGF0aCI+DQogICAgICA8cmVjdCB4PSItNCIgeT0iLTI1IiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0ibm9uZSIvPg0KICAgIDwvY2xpcFBhdGg+DQogICAgPGNsaXBQYXRoIGlkPSJjbGlwLXBhdGgtMiI+DQogICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlXzEiIGRhdGEtbmFtZT0iUmVjdGFuZ2xlIDEiIHdpZHRoPSIxNDIiIGhlaWdodD0iMTAwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMC4zMzMgOS4xMjgpIiBmaWxsPSJub25lIi8+DQogICAgPC9jbGlwUGF0aD4NCiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbmVhci1ncmFkaWVudCIgeDE9IjAuOTg2IiB5MT0iMC41MDciIHgyPSItMC4wMjgiIHkyPSIwLjUyMiIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPg0KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZmIi8+DQogICAgICA8c3RvcCBvZmZzZXQ9IjAuNTMxIiBzdG9wLWNvbG9yPSIjZDlkOWQ5Ii8+DQogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9ImdyYXkiLz4NCiAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50LTIiIHgxPSIwLjk4NiIgeTE9IjAuNDkzIiB4Mj0iLTAuMDI4IiB5Mj0iMC40NzgiIHhsaW5rOmhyZWY9IiNsaW5lYXItZ3JhZGllbnQiLz4NCiAgPC9kZWZzPg0KICA8ZyBpZD0iU2Nyb2xsX0dyb3VwXzEiIGRhdGEtbmFtZT0iU2Nyb2xsIEdyb3VwIDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQgMjUpIiBjbGlwLXBhdGg9InVybCgjY2xpcC1wYXRoKSIgc3R5bGU9Imlzb2xhdGlvbjogaXNvbGF0ZSI+DQogICAgPGcgaWQ9ImxvZ28tdyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwLjMzMyAtOS4xMjgpIiBjbGlwLXBhdGg9InVybCgjY2xpcC1wYXRoLTIpIj4NCiAgICAgIDxnIGlkPSJHcm91cF80MCIgZGF0YS1uYW1lPSJHcm91cCA0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNC45NDEgNC40ODkpIj4NCiAgICAgICAgPGcgaWQ9Ikdyb3VwXzM4IiBkYXRhLW5hbWU9Ikdyb3VwIDM4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDAuMDAxKSI+DQogICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZV82MyIgZGF0YS1uYW1lPSJSZWN0YW5nbGUgNjMiIHdpZHRoPSI3NS44ODciIGhlaWdodD0iMjUuMjk2IiByeD0iMTIuNjQ4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOC4wMzMgMzcuMjI1KSByb3RhdGUoNDUpIiBmaWxsPSJ1cmwoI2xpbmVhci1ncmFkaWVudCkiLz4NCiAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlXzY0IiBkYXRhLW5hbWU9IlJlY3RhbmdsZSA2NCIgd2lkdGg9Ijc1Ljg4NyIgaGVpZ2h0PSIyNS4yOTYiIHJ4PSIxMi42NDgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgNTMuNjYpIHJvdGF0ZSgtNDUpIiBmaWxsPSIjZmZmIi8+DQogICAgICAgICAgPGNpcmNsZSBpZD0iRWxsaXBzZV8xIiBkYXRhLW5hbWU9IkVsbGlwc2UgMSIgY3g9IjcuODQyIiBjeT0iNy44NDIiIHI9IjcuODQyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMS4xMyA0NS4wODEpIiBmaWxsPSIjZDlkYmZmIi8+DQogICAgICAgIDwvZz4NCiAgICAgICAgPGcgaWQ9Ikdyb3VwXzM5IiBkYXRhLW5hbWU9Ikdyb3VwIDM5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4MC4wNzkgMCkiPg0KICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGVfNjMtMiIgZGF0YS1uYW1lPSJSZWN0YW5nbGUgNjMiIHdpZHRoPSI3NS44ODciIGhlaWdodD0iMjUuMjk2IiByeD0iMTIuNjQ4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MS41NDcgNTUuMTEyKSByb3RhdGUoMTM1KSIgZmlsbD0idXJsKCNsaW5lYXItZ3JhZGllbnQtMikiLz4NCiAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlXzY0LTIiIGRhdGEtbmFtZT0iUmVjdGFuZ2xlIDY0IiB3aWR0aD0iNzUuODg3IiBoZWlnaHQ9IjI1LjI5NiIgcng9IjEyLjY0OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTMuODA3IDcxLjU0Nykgcm90YXRlKC0xMzUpIiBmaWxsPSIjZmZmIi8+DQogICAgICAgICAgPGNpcmNsZSBpZD0iRWxsaXBzZV8xLTIiIGRhdGEtbmFtZT0iRWxsaXBzZSAxIiBjeD0iNy44NDIiIGN5PSI3Ljg0MiIgcj0iNy44NDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0Ljg4IDQ1LjA4MikiIGZpbGw9IiNkOWRiZmYiLz4NCiAgICAgICAgPC9nPg0KICAgICAgPC9nPg0KICAgIDwvZz4NCiAgPC9nPg0KPC9zdmc+DQo=); */
-  background-repeat: no-repeat;
-  background-size: contain;
-  transform: rotate(-90deg);
+  /* Ensures the button is a block-level element */
+  width: auto;
+  /* Allows the button to shrink to fit its content */
+  text-align: center;
+  /* Ensures text is centered within the button */
 }
 
 .add-account-button:hover {
   background: linear-gradient(to right, #5482d0, #7d5ee3);
-  background-color: #5482d0;
 }
 
 .add-account-button:active {
-  transform: scale(0.95);
+  transform: translateY(2px);
+  /* Subtle button press effect */
+}
+
+.alert-message {
+  color: #d32f2f;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Remove any unnecessary rotation and image background on the span */
+.add-account-button span {
+  margin-left: 10px;
+  /* Adjusted for proper spacing */
+  display: inline-block;
+  /* Changed to inline-block for better control */
+  /* Removed rotation and background image properties */
+}
+
+/* Ensures dropdowns have a consistent look and feel */
+.reports-dropdown,
+.accounts-dropdown {
+  display: flex; /* Enables flexbox */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically, effective if there is a height set */
+}
+
+/* Dropdowns expand to show content */
+.reports-section .reports-dropdown,
+.accounts-section .accounts-dropdown {
+  max-height: 1000px;
+  /* Adjusted for potential content size */
+  transition: max-height 0.3s ease-in;
+}
+
+/* Improvements for hover and active states */
+.link-button:hover {
+  background-color: #1976d2;
+  /* A slightly lighter shade for hover */
+}
+
+.link-button:active {
+  background-color: #145a9e;
+  /* A slightly darker shade for active */
+}
+
+.accounts-dropdown li {
+  width: 100%;
+  /* Each item takes full width of the parent */
+  text-align: center;
+  /* Text inside each item is centered */
+  margin-bottom: 5px;
+  /* Adds a little space between items */
+}
+
+/* Consistent box shadows for a subtle depth effect */
+.section-item,
+.link-button,
+.add-account-button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjustments for responsive design */
+@media (max-width: 600px) {
+  .left-panel {
+    padding: 10px;
+    /* Reduced padding on smaller screens */
+  }
+
+  .net-worth-value,
+  .section-header {
+    font-size: 16px;
+    /* Adjusted font sizes for readability */
+  }
+
+  .link-button,
+  .add-account-button {
+    padding: 10px;
+    /* Smaller buttons for smaller screens */
+  }
 }

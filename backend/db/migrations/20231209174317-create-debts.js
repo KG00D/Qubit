@@ -7,22 +7,21 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('debtHoldings', {
+    return queryInterface.createTable('Debts', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
-      accountId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER, 
         references: { 
-          model: 'Accounts', 
-          key: 'id' 
-        },
+          model: 'Users', 
+          key: 'id' },
       },
-      holdingName: {
+      debtName: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -35,6 +34,10 @@ module.exports = {
         allowNull: true
       },
       term: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      remainingPayments: {
         type: Sequelize.INTEGER,
         allowNull: true
       },
@@ -52,7 +55,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('debtHoldings');
+    await queryInterface.dropTable('Debts');
   }
 };
 

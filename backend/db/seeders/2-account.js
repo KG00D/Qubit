@@ -10,7 +10,6 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Accounts', [
       {
-        id: 1,
         userId: 1,
         name: 'Plaid 401k',
         subtype: '401k',
@@ -18,7 +17,6 @@ module.exports = {
         accountBalance: 23631.9805
       },
       {
-        id: 2,
         userId: 1,
         name: 'CitiBank',
         subtype: null,
@@ -26,7 +24,6 @@ module.exports = {
         accountBalance: 23631.9805
       },
       {
-        id: 3,
         userId: 2,
         name: 'Fidelity',
         subtype: null,

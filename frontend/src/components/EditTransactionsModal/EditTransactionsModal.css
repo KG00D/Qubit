@@ -1,0 +1,144 @@
+/* EditTransactionsModal Styles to Match holdingsModal Appearance */
+
+.modal-backdrop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.transactions-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: auto;
+    /* Adjust width as needed, or use max-width for larger screens */
+}
+
+.transactions-modal-content h2 {
+    text-align: center;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.transactions-modal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.transactions-modal-form label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 14px;
+    color: #333;
+    font-family: 'Helvetica Neue', sans-serif;
+    margin-bottom: 5px;
+}
+
+.transactions-modal-form input[type="text"],
+.transactions-modal-form input[type="number"],
+.transactions-modal-form input[type="date"],
+.transactions-modal-form select {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-modal-form input[type="text"]:focus,
+.transactions-modal-form input[type="number"]:focus,
+.transactions-modal-form input[type="date"]:focus,
+.transactions-modal-form select:focus {
+    outline: none;
+    border-color: #0057B8;
+}
+
+.transactions-modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.transactions-modal-button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.transactions-modal-button.submit {
+    background-color: #0057B8;
+}
+
+.transactions-modal-button.delete {
+    background-color: #E63946;
+}
+
+.transactions-modal-button.cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.transactions-modal-button:hover {
+    transform: translateY(-2px);
+}
+
+.transactions-modal-button.submit:hover {
+    background-color: #004A99;
+}
+
+.transactions-modal-button.delete:hover {
+    background-color: #C53030;
+}
+
+.transactions-modal-button.cancel:hover {
+    background-color: #bbb;
+}
+
+@media (max-width: 768px) {
+
+    .transactions-modal-form input[type="text"],
+    .transactions-modal-form input[type="number"],
+    .transactions-modal-form input[type="date"],
+    .transactions-modal-form select {
+        padding: 10px;
+    }
+
+    .transactions-modal-button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .transactions-modal-content {
+        width: 90%;
+    }
+
+    .transactions-modal-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .transactions-modal-buttons .transactions-modal-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

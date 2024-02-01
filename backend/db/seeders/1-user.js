@@ -9,27 +9,23 @@ console.log('Running the User Seeder')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    options.tableName = 'Users';
-    return queryInterface.bulkInsert(options, [
+    return queryInterface.bulkInsert('Users', [
       {
-        id: 1,
         email: 'demo@user.io',
         firstName: 'Ted',
         hashedPassword: bcrypt.hashSync('password')
       },
       {
-        id: 2,
         email: 'johnsmith@aol.com',
         firstName: 'John',
         hashedPassword: bcrypt.hashSync('password2')
       },
       {
-        id: 3,
         email: 'tdizzle@protonmail.com',
         firstName: 'Tyler',
         hashedPassword: bcrypt.hashSync('password3')
       }
-    ], { exclude: ['id'] });
+    ], {});
   },
 
   down: async (queryInterface, Sequelize) => {

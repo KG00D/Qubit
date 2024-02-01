@@ -129,6 +129,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateTransaction, deleteTransaction, addTransaction } from "../../redux/accountTransactions";
+import "./EditTransactionsModal.css";
 
 const EditTransactionsModal = ({ transaction, onClose, isAdding, holdings = [] }) => {
     console.log('Received Holdings:', holdings);
@@ -200,13 +201,14 @@ const EditTransactionsModal = ({ transaction, onClose, isAdding, holdings = [] }
 
     return (
         <div className="modal-backdrop">
-            <div className="modal-content">
-                <h2>{isAdding ? 'Add' : 'Edit'} Transaction</h2>
-                <form onSubmit={handleSubmit}>
+            <div className="modal-content transactions-modal-content">
+                <h2 className="transactions-modal-title">{isAdding ? 'Add' : 'Edit'} Transaction</h2>
+                <form onSubmit={handleSubmit} className="transactions-modal-form">
                     {/* Dropdown for Security Names */}
-                    <label>
+                    <label className="transactions-modal-label">
                         Security Name:
                         <select
+                            className="transactions-modal-select"
                             value={updatedTransaction.securityName}
                             onChange={handleSecuritySelection}
                             disabled={holdings.length === 0}>
@@ -270,11 +272,13 @@ const EditTransactionsModal = ({ transaction, onClose, isAdding, holdings = [] }
                         />
                     </label>
                     {/* Action Buttons */}
-                    <button type="submit">{isAdding ? 'Add' : 'Save'} Transaction</button>
+                    <div className="transactions-modal-buttons">
+                    <button type="submit" className="transactions-modal-button submit">{isAdding ? 'Add' : 'Save'} Transaction</button>
                     {!isAdding && (
-                        <button type="button" onClick={handleDelete}>Delete Transaction</button>
+                        <button type="button" className="transactions-modal-button delete" onClick={handleDelete}>Delete Transaction</button>
                     )}
-                    <button type="button" onClick={onClose}>Cancel</button>
+                        <button type="button"  className="transactions-modal-button cancel" onClick={onClose}>Cancel</button>
+                        </div>
                 </form>
             </div>
         </div>
