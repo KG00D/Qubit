@@ -1,6 +1,8 @@
 "use strict";
 
 let options = {};
+options.tableName = 'accountTransactions';
+
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  
   console.log('Migration options Account Transactions:', options);
