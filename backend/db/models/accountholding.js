@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       accountHolding.belongsTo(models.Account, { 
         foreignKey: 'accountId' });
-        accountHolding.hasMany(models.accountTransaction, { 
+      accountHolding.hasMany(models.accountTransaction, { 
           foreignKey: 'holdingId',
           onDelete: 'CASCADE'
       });
