@@ -55,10 +55,10 @@ const AccountHoldings = () => {
             {accounts.map(account => {
                 const accountHoldings = holdingsData[account.id]?.accountHoldings || {};
                 const accountCalculations = Object.values(accountHoldings).reduce((acc, holding) => {
-                    const totalCost = holding.quantity * holding.averagePricePaid;
-                    const totalGain = calculateTotalGain(holding.quantity, holding.averagePricePaid, holding.currentValue);
+                    const totalCost = parseFloat(holding.quantity) * parseFloat(holding.averagePricePaid);
+                    const totalGain = calculateTotalGain(parseFloat(holding.quantity), parseFloat(holding.averagePricePaid), parseFloat(holding.currentValue));
                     const totalGainPercent = calculateTotalGainPercent(totalGain, totalCost);
-                    const value = calculateTotalValue(holding.quantity, holding.currentValue);
+                    const value = calculateTotalValue(parseFloat(holding.quantity), parseFloat(holding.currentValue));
                     acc += value;
                     return acc;
                 }, 0);
