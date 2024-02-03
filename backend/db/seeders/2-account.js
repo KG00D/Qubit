@@ -15,20 +15,6 @@ module.exports = {
         subtype: '401k',
         type: 'investment',
         accountBalance: 23631.9805
-      },
-      {
-        userId: 1,
-        name: 'CitiBank',
-        subtype: null,
-        type: 'Banking',
-        accountBalance: 23631.9805
-      },
-      {
-        userId: 2,
-        name: 'Fidelity',
-        subtype: null,
-        type: 'Brokerage',
-        accountBalance: 23631.9805
       }
     ], { exclude: ['id'] });
   },

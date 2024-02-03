@@ -9,66 +9,63 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable('accountTransactions', {
       id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          autoIncrement: true,
-          primaryKey: true
-          },
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true
+      },
       holdingId: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-                references: {
-                  model: 'accountHoldings',
-                  key: 'id'
-                }
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'accountHoldings',
+          key: 'id'
         },
+        onDelete: 'CASCADE'
+      },
       accountId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-              references: {
-                model: 'Accounts',
-                key: 'id'
-              }
-          },
-    securityName: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Accounts',
+          key: 'id'
+        }
+      },
+      transactionType: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      securityName: {
         type: Sequelize.STRING,
         allowNull: true
-    },
-      holdingName: {
-          type: Sequelize.STRING,
-          allowNull: true
       },
       amount: {
-          type: Sequelize.DECIMAL,
-          allowNull: false
+        type: Sequelize.DECIMAL,
+        allowNull: true
       },
       date: {
-          type: Sequelize.DATE,
-          allowNull: false
-      },
-      fees: {
-          type: Sequelize.DECIMAL,
-          allowNull: true
+        type: Sequelize.DATE,
+        allowNull: false
       },
       transactionDescription: {
-          type: Sequelize.STRING,
-          allowNull: false
+        type: Sequelize.STRING,
+        allowNull: true
       },
       price: {
-          type: Sequelize.DECIMAL,
-          allowNull: true
+        type: Sequelize.DECIMAL,
+        allowNull: true
+      },
+      value: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
       },
       quantity: {
-          type: Sequelize.FLOAT,
-          allowNull: true
+        type: Sequelize.FLOAT,
+        allowNull: true
       },
-      subType: {
-          type: Sequelize.STRING,
-          allowNull: true
-      },
-      type: {
-          type: Sequelize.STRING,
-          allowNull: false
+      fees: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
       },
       createdAt: {
           allowNull: false,

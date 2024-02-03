@@ -34,17 +34,17 @@ router.get('/', async (req, res, next) => {
             attributes: [
                 'id',
                 'accountId',
+                'securityName',
+                'currentValue',
                 'holdingName',
-                'holdingIdentifier',
                 'quantity',
                 'averagePricePaid',
                 'positionOpenDate',
-                'currency'
             ]
         });
 
         const normalizedAccountHoldings = accountHoldings.reduce((acc, holding) => {
-            acc[holding.holdingIdentifier] = holding;
+            acc[holding.securityName] = holding;
             return acc;
         }, {});
 
@@ -63,16 +63,15 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const accountId = req.params.accountId;
-        const { holdingName, holdingIdentifier, quantity, averagePricePaid, positionOpenDate, currency } = req.body;
+        const { securityName, holdingName, quantity, averagePricePaid, positionOpenDate } = req.body;
 
         const newHolding = await accountHolding.create({
             accountId,
+            securityName,
             holdingName,
-            holdingIdentifier,
             quantity,
             averagePricePaid,
             positionOpenDate,
-            currency
         });
 
         res.status(201).json(newHolding);
@@ -84,7 +83,7 @@ router.post('/', async (req, res, next) => {
 router.put('/:holdingId', async (req, res, next) => {
     try {
         const { holdingId, accountId } = req.params;
-        const { holdingName, holdingIdentifier, quantity, averagePricePaid, positionOpenDate, currency } = req.body;
+        const { securityName, holdingName, quantity, averagePricePaid, positionOpenDate } = req.body;
 
         const holding = await accountHolding.findOne({
             where: { id: holdingId, accountId: accountId }
@@ -95,12 +94,11 @@ router.put('/:holdingId', async (req, res, next) => {
         }
 
         await holding.update({
+            securityName,
             holdingName,
-            holdingIdentifier,
             quantity,
             averagePricePaid,
-            positionOpenDate,
-            currency
+            positionOpenDate
         });
 
         res.json({ message: "Holding updated successfully" });
@@ -110,7 +108,7 @@ router.put('/:holdingId', async (req, res, next) => {
 });
 
 
-router.delete('/:accountId/holdings/:holdingId', async (req, res, next) => {
+router.delete('/:holdingId', async (req, res, next) => {
     try {
         const { holdingId, accountId } = req.params;
 

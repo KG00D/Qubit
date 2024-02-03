@@ -12,40 +12,12 @@ module.exports = {
     await queryInterface.bulkInsert('accountHoldings', [
       {
         accountId: 1,
+        securityName: 'AAPL',
         holdingName: 'Apple Stock',
-        holdingIdentifier: 'AAPL',
         quantity: 15,
         averagePricePaid: 140.0,
-        positionOpenDate: '12/1/2022',
-        currency: 'USD'
-      },
-      {
-        accountId: 1,
-        holdingName: 'Tesla',
-        holdingIdentifier: 'TSLA',
-        quantity: 5,
-        averagePricePaid: 680.0,
-        positionOpenDate: '12/1/2022',
-        currency: 'USD'
-      },
-      {
-        accountId: 3,
-        holdingName: 'Tesla',
-        holdingIdentifier: 'TSLA',
-        quantity: 5.0,
-        averagePricePaid: 680.0,
-        positionOpenDate: '12/1/2022',
-        currency: 'USD'
-      },
-      {
-        id: 4,
-        accountId: 3,
-        holdingName: 'PepeCoin',
-        holdingIdentifier: 'PEPE',
-        quantity: 50000.00,
-        averagePricePaid: 0.00045,
-        positionOpenDate: '12/1/2022',
-        currency: 'USD'
+        positionOpenDate: new Date('2023-01-05'),
+        currentValue: 2100.00
       }
     ], { exclude: ['id'] });
   }

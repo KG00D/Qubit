@@ -30,17 +30,21 @@ const deleteTransactionFail = error => ({ type: DELETE_TRANSACTION_FAIL, payload
 
 export const fetchAccountTransactions = (accountId = null, holdingId = null) => async dispatch => {
     dispatch(fetchTransactionsStart());
-    let endpoint = '/api/accounttransactions';
-    if (accountId) endpoint += `?accountId=${accountId}`;
-    if (holdingId) endpoint += `&holdingId=${holdingId}`;
+
+    let endpoint = `/api/accounttransactions`; 
+    const params = new URLSearchParams();
+
+    if (accountId) params.append('accountId', accountId);
+    if (holdingId) params.append('holdingId', holdingId);
+
+    endpoint += params.toString() ? `?${params.toString()}` : '';
+
     try {
-        const response = await csrfFetch(endpoint);
-        if (!response.ok) {
-            throw new Error('Failed to fetch transactions');
-        }
-        const transactions = await response.json();
-        dispatch(fetchTransactionsSuccess(transactions));
+        const response = await csrfFetch(endpoint); 
+        const transactionsData = await response.json();
+        dispatch(fetchTransactionsSuccess(transactionsData));
     } catch (error) {
+        console.error('API Error:', error.message);
         dispatch(fetchTransactionsFail(error.message));
     }
 };
@@ -77,14 +81,16 @@ export const updateTransaction = (transactionId, transactionData) => async dispa
             },
             body: JSON.stringify(transactionData),
         });
-        console.log("API request sent, response status:", response.status);
         if (!response.ok) {
             throw new Error('Failed to update transaction');
         }
         const updatedTransaction = await response.json();
-        console.log("Transaction updated successfully:", updatedTransaction);
 
         dispatch(updateTransactionSuccess(updatedTransaction));
+
+        const accountId = updatedTransaction.accountId;
+        dispatch(fetchAccountHoldings(accountId));
+        dispatch(fetchAccountDetails(accountId));
     } catch (error) {
         console.error("Error in updating transaction:", error);
         dispatch(updateTransactionFail(error.message));
@@ -99,8 +105,12 @@ export const deleteTransaction = (transactionId) => async dispatch => {
         });
         if (!response.ok) {
             throw new Error('Failed to delete transaction');
+            
         }
         dispatch(deleteTransactionSuccess(transactionId));
+        const accountId = updatedTransaction.accountId;
+        dispatch(fetchAccountHoldings(accountId));
+        dispatch(fetchAccountDetails(accountId));
     } catch (error) {
         dispatch(deleteTransactionFail(error.message));
     }

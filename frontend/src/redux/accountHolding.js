@@ -85,7 +85,6 @@ export const fetchAccountHoldings = (accountId) => {
 
     
 export const updateHolding = (accountId, holdingId, updatedDetails) => async dispatch => {
-
         dispatch(updateHoldingStart());
         try {
             const response = await csrfFetch(`/api/accounts/${accountId}/accountholdings/${holdingId}`, {
@@ -102,7 +101,6 @@ export const updateHolding = (accountId, holdingId, updatedDetails) => async dis
             const data = await response.json();
             dispatch(updateHoldingSuccess(data));
             dispatch(fetchAccountHoldings(accountId));
-
         } catch (error) {
             dispatch(updateHoldingFail(error.message));
         }
@@ -112,7 +110,8 @@ export const updateHolding = (accountId, holdingId, updatedDetails) => async dis
 export const deleteHolding = (accountId, holdingId) => async dispatch => {
         dispatch(deleteHoldingStart());
         try {
-            const response = await csrfFetch(`/api/accounts/${accountId}/accountholdings/${holdingId}`, { method: 'DELETE' });
+            const response = await csrfFetch(`/api/accounts/${accountId}/accountholdings/${holdingId}`,
+            { method: 'DELETE' });
             if (!response.ok) {
                 throw new Error('Failed to delete holding');
             }
@@ -174,11 +173,15 @@ const accountHoldingsReducer = (state = initialState, action) => {
         case DELETE_HOLDING_START:
             return { ...state, loading: true, error: null};
         case DELETE_HOLDING_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                holdings: state.holdings.filter(holding => holding.id !== action.payload)
-            };
+            const { accountId, holdingIdentifier } = action.payload;
+        const newState = { ...state };
+        if (newState[accountId] && newState[accountId].accountHoldings && newState[accountId].accountHoldings[holdingIdentifier]) {
+        delete newState[accountId].accountHoldings[holdingIdentifier];
+                }
+                return {
+                    ...newState,
+                    loading: false,
+                };
         case DELETE_HOLDING_FAIL:
             return { ...state, loading: false, error: action.payload };
         default:

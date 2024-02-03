@@ -7,19 +7,20 @@ module.exports = (sequelize, DataTypes) => {
       accountHolding.belongsTo(models.Account, { 
         foreignKey: 'accountId' });
         accountHolding.hasMany(models.accountTransaction, { 
-        foreignKey: 'holdingId'
+          foreignKey: 'holdingId',
+          onDelete: 'CASCADE'
       });
     }
 }
 
 accountHolding.init({
     accountId: DataTypes.INTEGER,
+    securityName: DataTypes.STRING,
     holdingName: DataTypes.STRING,
-    holdingIdentifier: DataTypes.STRING,
     quantity: DataTypes.DECIMAL,
     averagePricePaid: DataTypes.DECIMAL,
     positionOpenDate: DataTypes.DATE,
-    currency: DataTypes.STRING
+    currentValue: DataTypes.DECIMAL,
   }, {
     sequelize,
     modelName: 'accountHolding',

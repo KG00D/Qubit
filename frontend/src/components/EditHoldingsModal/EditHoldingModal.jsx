@@ -8,11 +8,10 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
 
     const defaultHolding = {
         holdingName: '',
-        holdingIdentifier: '',
+        securityName: '',
         quantity: '',
         averagePricePaid: '',
         positionOpenDate: '',
-        currency: '',
     };
     
     const initialHolding = isAdding ? defaultHolding : holding;
@@ -70,11 +69,11 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
                         />
                     </label>
                     <label>
-                        Identifier:
+                        Security:
                         <input
                             type="text"
-                            name="holdingIdentifier"
-                            value={updatedHolding.holdingIdentifier || ''}
+                            name="securityName"
+                            value={updatedHolding.securityName || ''}
                             onChange={handleInputChange}
                         />
                     </label>
@@ -102,15 +101,6 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
                             type="date"
                             name="positionOpenDate"
                             value={updatedHolding.positionOpenDate || ''}
-                            onChange={handleInputChange}
-                        />
-                    </label>
-                    <label>
-                        Currency:
-                        <input
-                            type="text"
-                            name="currency"
-                            value={updatedHolding.currency || ''}
                             onChange={handleInputChange}
                         />
                     </label>
