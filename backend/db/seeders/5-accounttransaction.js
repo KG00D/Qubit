@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     options.tableName = 'accountTransactions';
-    await queryInterface.bulkInsert('accountTransactions', [
+    await queryInterface.bulkInsert(options, [
     {
         holdingId: 1,
         accountId: 1,
