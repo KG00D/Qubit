@@ -15,7 +15,7 @@ module.exports = {
       {
         userId: 1,
         name: 'Plaid 401k',
-        subtype: '401k',
+        subType: '401k',
         type: 'investment',
         accountBalance: 23631.9805
       }
