@@ -23,9 +23,25 @@ const AccountHoldings = () => {
         });
     }, [accounts, dispatch]);
 
-    const calculateTotalGain = (quantity, averagePricePaid, currentValue) => parseFloat(currentValue) - (parseFloat(averagePricePaid) * parseFloat(quantity));
-    const calculateTotalGainPercent = (totalGain, totalCost) => (totalGain / totalCost) * 100;
-    const calculateTotalValue = (quantity, currentValue) => (parseFloat(currentValue) * parseFloat(quantity));
+    const calculateTotalGain = (quantity, averagePricePaid, currentValue) => {
+    const qty = parseFloat(quantity);
+    const avgPrice = parseFloat(averagePricePaid);
+    const currValue = parseFloat(currentValue);
+    if (isNaN(qty) || isNaN(avgPrice) || isNaN(currValue)) return 0;
+    return currValue - (avgPrice * qty);
+    };
+
+    const calculateTotalGainPercent = (totalGain, totalCost) => {
+    if (totalCost === 0 || isNaN(totalGain) || isNaN(totalCost)) return 0;
+    return (totalGain / totalCost) * 100;
+    };
+
+    const calculateTotalValue = (quantity, currentValue) => {
+        const qty = parseFloat(quantity);
+        const currValue = parseFloat(currentValue);
+        if (isNaN(qty) || isNaN(currValue)) return 0;
+        return currValue * qty;
+    };
 
     let totalPortfolioValue = 0;
 
