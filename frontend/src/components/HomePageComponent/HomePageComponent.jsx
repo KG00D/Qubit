@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LeftPanelComponent from '../LeftPanelComponent';
 import AccountHoldings from '../AccountHoldings';
 import AccountTransactions from '../AccountTransactions';
-import NetWorthOverTime from '../NetWorthOverTime';
+// import NetWorthOverTime from '../NetWorthOverTime';
 import { fetchAccounts } from '../../redux/account';
 import { fetchAccountHoldings } from '../../redux/accountHolding';
 import "./HomePageComponent.css";
@@ -77,9 +77,9 @@ const HomepageComponent = () => {
                         {viewAccountTransactions && selectedAccountId && (
                             <AccountTransactions accountId={selectedAccountId} />
                         )}
-                        {!viewAccountHoldings && !viewAccountTransactions && (
+                        {/* {!viewAccountHoldings && !viewAccountTransactions && (
                             <NetWorthOverTime data={totalBalancesData} />
-                        )}
+                        )} */}
                         <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button>
                     </>
                 )}
