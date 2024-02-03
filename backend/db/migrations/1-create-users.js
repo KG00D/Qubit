@@ -1,9 +1,9 @@
 "use strict";
 
 let options = {};
+options.tableName = 'Users';
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
-   console.log('Migration options Users:', options);
 }
 
 module.exports = {
