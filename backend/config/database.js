@@ -14,6 +14,7 @@ module.exports = {
         database,
         host,
         dialect: 'sqlite',
+        storage: './dev.db', 
         seederStorage: 'sequelize'
     },
     production: {

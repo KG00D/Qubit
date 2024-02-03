@@ -8,7 +8,8 @@ if (process.env.NODE_ENV === 'production') {
 console.log('Running the User Seeder')
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+    up: async (queryInterface, Sequelize) => {
+    options.tableName = 'Users';
     return queryInterface.bulkInsert('Users', [
       {
         email: 'demo@user.io',
