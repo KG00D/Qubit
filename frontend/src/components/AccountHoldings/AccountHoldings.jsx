@@ -86,7 +86,7 @@ const AccountHoldings = () => {
                             </thead>
                             <tbody>
                                 {Object.values(accountHoldings).map(holding => {
-                                    const totalCost = holding.quantity * holding.averagePricePaid;
+                                    const totalCost = parseFloat(holding.quantity) * parseFloat(holding.averagePricePaid);
                                     const totalGain = calculateTotalGain(holding.quantity, holding.averagePricePaid, holding.currentValue);
                                     const totalGainPercent = calculateTotalGainPercent(totalGain, totalCost);
                                     const value = calculateTotalValue(holding.quantity, holding.currentValue);
