@@ -43,10 +43,16 @@ router.get('/', async (req, res, next) => {
             ]
         });
 
-        const normalizedAccountHoldings = accountHoldings.reduce((acc, holding) => {
-            acc[holding.securityName] = holding;
-            return acc;
-        }, {});
+        // const normalizedAccountHoldings = accountHoldings.reduce((acc, holding) => {
+        //     acc[holding.securityName] = holding;
+        //     return acc;
+        // }, {});
+        const normalizedAccountHoldings = accountHoldings.map(holding => ({
+            ...holding.toJSON(), 
+                currentValue: parseFloat(holding.currentValue),
+                quantity: parseFloat(holding.quantity),
+                averagePricePaid: parseFloat(holding.averagePricePaid),
+            }));
 
         const responseData = {
             account: account,
