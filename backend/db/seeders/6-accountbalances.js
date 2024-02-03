@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('AccountBalances', [
+    await queryInterface.bulkInsert(options, [
       {
         accountId: 1,
         accountBalance: 100000.00,

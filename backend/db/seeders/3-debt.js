@@ -11,8 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-    options.tableName = 'Debts';
-    await queryInterface.bulkInsert('Debts', [
+    await queryInterface.bulkInsert(options, [
       {
         userId: 1,
         debtName: 'Capital One Credit Card',
