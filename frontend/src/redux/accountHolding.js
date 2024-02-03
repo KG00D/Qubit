@@ -52,6 +52,8 @@ export const fetchAccountHoldings = (accountId) => {
             const holdings = await response.json();
 
             dispatch(fetchAccountHoldingsSuccess(holdings));
+            console.log('Data fetched for account', holdings);
+
         } catch (error) {
             console.error('Fetch error:', error);
             dispatch(fetchAccountHoldingsFail(error.message));
