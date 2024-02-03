@@ -9,6 +9,50 @@ const router = express.Router({ mergeParams: true });
 
 router.use(restoreUser)
 
+// router.get('/', requireAuth, async (req, res, next) => {
+//   try {
+//     const { accountId, holdingId } = req.query;
+//     const currentUserId = req.user.id;
+
+//     let filters = {};
+//     if (accountId) {
+//       filters.accountId = accountId;
+//     }
+//     if (holdingId) {
+//       filters.holdingId = holdingId;
+//     }
+
+//     const allowedAccountIds = await Account.findAll({
+//       where: { userId: currentUserId },
+//       attributes: ['id'],
+//       raw: true, 
+//     });
+
+//     const accountTransactions = await accountTransaction.findAll({
+//       where: filters,
+//       include: [
+//         {
+//           model: accountHolding,
+//           attributes: ['id', 'holdingName', 'securityName'],
+//         },
+//       ],
+//       attributes: [
+//                  'id', 'holdingId', 'accountId', 'securityName', 'amount',
+//                  'date', 'fees', 'transactionType', 'transactionDescription', 'price', 'quantity'
+//              ],
+//       where: {
+//         accountId: {
+//           [Op.in]: allowedAccountIds.map(a => a.id), 
+//         },
+//       },
+//     });
+
+//     res.json(accountTransactions);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 router.get('/', requireAuth, async (req, res, next) => {
   try {
     const { accountId, holdingId } = req.query;
@@ -25,11 +69,16 @@ router.get('/', requireAuth, async (req, res, next) => {
     const allowedAccountIds = await Account.findAll({
       where: { userId: currentUserId },
       attributes: ['id'],
-      raw: true, 
+      raw: true,
     });
 
-    const accountTransactions = await accountTransaction.findAll({
-      where: filters,
+    let accountTransactions = await accountTransaction.findAll({
+      where: {
+        ...filters,
+        accountId: {
+          [Op.in]: allowedAccountIds.map(a => a.id),
+        },
+      },
       include: [
         {
           model: accountHolding,
@@ -37,15 +86,18 @@ router.get('/', requireAuth, async (req, res, next) => {
         },
       ],
       attributes: [
-                 'id', 'holdingId', 'accountId', 'securityName', 'amount',
-                 'date', 'fees', 'transactionType', 'transactionDescription', 'price', 'quantity'
-             ],
-      where: {
-        accountId: {
-          [Op.in]: allowedAccountIds.map(a => a.id), 
-        },
-      },
+        'id', 'holdingId', 'accountId', 'securityName', 'amount',
+        'date', 'fees', 'transactionType', 'transactionDescription', 'price', 'quantity'
+      ],
     });
+
+    accountTransactions = accountTransactions.map(transaction => ({
+      ...transaction.toJSON(), 
+      amount: parseFloat(transaction.amount),
+      fees: parseFloat(transaction.fees),
+      price: parseFloat(transaction.price),
+      quantity: parseFloat(transaction.quantity),
+    }));
 
     res.json(accountTransactions);
   } catch (error) {
