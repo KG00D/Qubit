@@ -23,10 +23,9 @@ const AccountHoldings = () => {
         });
     }, [accounts, dispatch]);
 
-    console.log('calculateTotalGain inputs:', { quantity, averagePricePaid, currentValue });
-    const calculateTotalGain = (quantity, averagePricePaid, currentValue) => (currentValue) - (averagePricePaid * quantity);
+    const calculateTotalGain = (quantity, averagePricePaid, currentValue) => parseFloat(currentValue) - (parseFloat(averagePricePaid) * parseFloat(quantity));
     const calculateTotalGainPercent = (totalGain, totalCost) => (totalGain / totalCost) * 100;
-    const calculateTotalValue = (quantity, currentValue) => currentValue;
+    const calculateTotalValue = (quantity, currentValue) => (parseFloat(currentValue) * parseFloat(quantity));
 
     let totalPortfolioValue = 0;
 
