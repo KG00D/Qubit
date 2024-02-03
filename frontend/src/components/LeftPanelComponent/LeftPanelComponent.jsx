@@ -17,6 +17,8 @@ const LeftPanelComponent = ({ data: netWorth,
     const dispatch = useDispatch();
 
     const { accounts } = useSelector(state => state.accounts);
+    const holdingsData = useSelector(state => state.holdings);
+
     
     const [isAccountsOpen, setIsAccountsOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -45,14 +47,6 @@ const LeftPanelComponent = ({ data: netWorth,
         setIsAddMode(false);
     };
 
-    // const handleUpdateAccount = (accountId, updatedAccount) => {
-    //     handleCloseEditModal();
-    // };
-
-    // const handleDeleteAccount = (accountId) => {
-    //     handleCloseEditModal();
-    // };
-
     const handleAccountPerformanceClick = () => {
         onAccountPerformanceClick();
     };
@@ -70,11 +64,23 @@ const LeftPanelComponent = ({ data: netWorth,
     setIsEditModalOpen(true);
     };
 
+    const calculateTotalPortfolioValue = (accounts, holdingsData) => {
+    return accounts.reduce((total, account) => {
+                const accountHoldings = holdingsData[account.id]?.accountHoldings || {};
+                const accountTotal = Object.values(accountHoldings).reduce((acc, holding) => {
+                    return acc + holding.currentValue;
+                }, 0);
+                return total + accountTotal;
+            }, 0);
+    };
+
+    const totalPortfolioValue = calculateTotalPortfolioValue(accounts, holdingsData);
+
     return (
         <div className="left-panel">
             <div className='net-worth'>
                 <p>Net Worth</p>
-                <p className='net-worth-value'>${netWorth.toLocaleString()}</p>
+                <p className='net-worth-value'>${totalPortfolioValue}</p>
             </div>
             <div className="accounts-section">
                 <h1 onClick={toggleAccounts}>
@@ -89,7 +95,6 @@ const LeftPanelComponent = ({ data: netWorth,
                 ))}
             </div>
 
-            {/* Edit/Add Account Modal */}
             {isEditModalOpen && (
                 <EditAccountModal
                     account={isAddMode ? {} : selectedAccountForEdit}
@@ -97,18 +102,6 @@ const LeftPanelComponent = ({ data: netWorth,
                     isAddMode={isAddMode}
                 />
             )}
-
-            {/* Edit Account Modal */}
-            {/* {isEditModalOpen && selectedAccountForEdit && (
-                <EditAccountModal
-                    account={selectedAccountForEdit}
-                    onClose={handleCloseEditModal}
-                    onUpdate={handleUpdateAccount}
-                    onDelete={handleDeleteAccount}
-                />
-            )} */}
-
-            {/* Reports Section */}
              <div className="reports-section">
                 <h1 onClick={toggleReports}>
                     Reports

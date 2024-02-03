@@ -1,23 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTransaction, fetchAccountTransactions, updateTransaction, addTransaction } from "../../redux/accountTransactions";
+import { fetchAccountTransactions } from "../../redux/accountTransactions";
 import EditTransactionsModal from '../EditTransactionsModal';
 import "./AccountTransactions.css";
 
-    const getUniqueSecurityNamesByAccount = (transactions) => {
-        const securityNamesMap = {};
-
-        transactions.forEach(transaction => {
-            if (transaction.accountId) {
-                if (!securityNamesMap[transaction.accountId]) {
-                    securityNamesMap[transaction.accountId] = new Set();
-                }
-                securityNamesMap[transaction.accountId].add(transaction.securityName);
-            }
-        });
-
-        return Object.values(securityNamesMap).flatMap(item => [...item]);
-    };
 const AccountTransactions = () => {
     const dispatch = useDispatch();
     const [currentTransaction, setCurrentTransaction] = useState(null);
@@ -26,176 +12,120 @@ const AccountTransactions = () => {
 
     const accountsData = useSelector(state => state.accounts.accounts) || [];
     const transactionsData = useSelector(state => state.transactions.accountTransactions) || [];
-    const [modalHoldings, setModalHoldings] = useState(getUniqueSecurityNamesByAccount(transactionsData));
     const holdingsData = useSelector(state => state.holdings) || {};
-    const loading = useSelector(state => state.transactions.loading);
-    const error = useSelector(state => state.transactions.error);
-
-    const [currentAccountId, setCurrentAccountId] = useState(null);
-    const [currentHoldingId, setCurrentHoldingId] = useState(null);
 
     useEffect(() => {
         dispatch(fetchAccountTransactions());
     }, [dispatch]);
 
-    const accountNamesMap = accountsData.reduce((acc, account) => {
-        acc[account.id] = account.name;
-        return acc;
-    }, {});
-
-
-
-    const uniqueSecurityNamesByAccount = getUniqueSecurityNamesByAccount(transactionsData);
-    console.log(uniqueSecurityNamesByAccount, 'UNIQUE SECURITY NAMES ARE HERE')
-
-    const groupedTransactions = transactionsData.reduce((acc, transaction) => {
-        const { accountId, holdingId } = transaction;
-        const accountName = accountNamesMap[accountId];
-
-        if (!acc[accountId]) {
-            acc[accountId] = { accountName, holdings: {} };
+    const getHoldingsForAccount = (accountId) => {
+        const accountHoldings = holdingsData[accountId]?.accountHoldings;
+        if (!accountHoldings) {
+            return [];
         }
-        if (!acc[accountId].holdings[holdingId]) {
-            acc[accountId].holdings[holdingId] = { transactions: [] };
-        }
+        return Object.values(accountHoldings).map(holding => ({
+            id: holding.id,
+            securityName: holding.securityName,
+            holdingName: holding.holdingName,
+        }));
+    };
 
-        acc[accountId].holdings[holdingId].transactions.push(transaction);
-        return acc;
-            },
-        {});
+    const [modalHoldings, setModalHoldings] = useState([]);
 
     const handleAddNewTransactionClick = () => {
-    setIsAddingNewTransaction(true);
-    setCurrentTransaction(null);
-    const holdingsForModal = currentAccountId && uniqueSecurityNamesByAccount[currentAccountId]
-        ? Array.from(uniqueSecurityNamesByAccount[currentAccountId]).map(name => ({
-              id: name,
-              securityName: name
-          }))
-        : [];
-    setIsModalOpen(true, holdingsForModal);
-};
-
-
-    const handleUpdate = (updatedTransaction) => {
-        const transactionId = updatedTransaction.id;
-        dispatch(updateTransaction(transactionId, updatedTransaction))
-            .finally(handleCloseModal);
+        setIsAddingNewTransaction(true);
+        setCurrentTransaction(null);
+        const holdingsForModal = getHoldingsForAccount(currentAccountId);
+        setModalHoldings(holdingsForModal);
+        setIsModalOpen(true);
     };
 
     const handleEditClick = (transaction) => {
-    setIsAddingNewTransaction(false);
-    setCurrentTransaction(transaction);
-    setCurrentAccountId(transaction.accountId);
-    setCurrentHoldingId(transaction.holdingId);
-    const holdingsForModal = transaction.accountId && uniqueSecurityNamesByAccount[transaction.accountId]
-        ? Array.from(uniqueSecurityNamesByAccount[transaction.accountId]).map(name => ({
-              id: name,
-              securityName: name
-          }))
-        : [];
-    setIsModalOpen(true, holdingsForModal);
+        setIsAddingNewTransaction(false);
+        setCurrentTransaction(transaction);
+        const holdingsForModal = getHoldingsForAccount(transaction.accountId);
+        setModalHoldings(holdingsForModal);
+        setIsModalOpen(true);
     };
-    
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setCurrentTransaction(null);
-        setCurrentAccountId(null);
-        setCurrentHoldingId(null);
     };
 
-    const handleSubmit = (transactionData) => {
-        if (isAddingNewTransaction) {
-            dispatch(addTransaction(transactionData)) 
-                .finally(handleCloseModal);
-        } else {
-            const transactionId = transactionData.id;
-            dispatch(updateTransaction(transactionId, transactionData))
-                .finally(handleCloseModal);
+    const handleSubmit = (transactionData) => {};
+    const handleDelete = (transactionId) => {};
+
+    const [currentAccountId, setCurrentAccountId] = useState(accountsData[0]?.id);
+
+    useEffect(() => {
+        if (currentAccountId) {
+            setModalHoldings(getHoldingsForAccount(currentAccountId));
         }
-    };
+    }, [currentAccountId, holdingsData]);
 
-    const handleDelete = (transactionId) => {
-        dispatch(deleteTransaction(transactionId))
-            .finally(handleCloseModal);
-    };
+    const groupedTransactions = transactionsData.reduce((acc, transaction) => {
+        const { accountId, holdingId } = transaction;
 
-    const openModalWithHoldings = (isOpen, holdings = []) => {
-    setIsModalOpen(isOpen);
-    setModalHoldings(holdings);
-    };
+        if (!acc[accountId]) acc[accountId] = {};
+        if (!acc[accountId][holdingId]) acc[accountId][holdingId] = [];
 
-    console.log("Current Account ID:", currentAccountId);
-    console.log("Unique Security Names by Account:", uniqueSecurityNamesByAccount);
-
-    console.log("Is Modal Open:", isModalOpen);
-    console.log("Modal Holdings:", modalHoldings);
-
-
-    const holdingsForDropdown = currentAccountId && uniqueSecurityNamesByAccount[currentAccountId]
-            ? Array.from(uniqueSecurityNamesByAccount[currentAccountId]).map(name => ({
-          id: name,
-          securityName: name
-      }))
-    : [];
-
-    console.log("Holdings for Dropdown:", holdingsForDropdown);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+        acc[accountId][holdingId].push(transaction);
+        return acc;
+    }, {});
 
     return (
         <div>
             <button onClick={handleAddNewTransactionClick}>Add New Transaction</button>
-            {Object.entries(groupedTransactions).map(([accountId, accountData]) => (
-                <div key={accountId}>
-                    <h2>{accountData.accountName} Transactions</h2>
-                    {Object.entries(accountData.holdings).map(([holdingId, holdingData]) => (
-                        <div key={holdingId}>
-                            <h3>{holdingData.securityName}</h3>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Security Name</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        <th>Transaction Description</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {holdingData.transactions.map(transaction => (
-                                        <tr key={transaction.id}>
-                                            <td>{transaction.securityName}</td>
-                                            <td>${transaction.amount.toFixed(2)}</td>
-                                            <td>{transaction.date}</td>
-                                            <td>{transaction.transactionDescription}</td>
-                                            <td>${transaction.price.toFixed(2)}</td>
-                                            <td>{transaction.quantity}</td>
-                                            <td>
-                                                <button onClick={() => handleEditClick(transaction)}>Edit</button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    ))}
+            <div>
+    {Object.entries(groupedTransactions).map(([accountId, holdings]) => (
+        <div key={accountId}>
+            <h2>{accountsData.find(account => account.id.toString() === accountId)?.name} Transactions</h2>
+            {Object.entries(holdings).map(([holdingId, transactions]) => (
+                <div key={holdingId}>
+                    <h3>{holdingsData[accountId]?.accountHoldings[holdingId]?.holdingName || 'Unknown Holding'}</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Security</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {transactions.map((transaction) => (
+                                <tr key={transaction.id}>
+                                    <td>{transaction.securityName}</td>
+                                    <td>${transaction.amount?.toFixed(2) || 'N/A'}</td>
+                                    <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                                    <td>{transaction.transactionDescription}</td>
+                                    <td>${transaction.price?.toFixed(2) || 'N/A'}</td>
+                                    <td>{transaction.quantity}</td>
+                                    <td>
+                                        <button onClick={() => handleEditClick(transaction)}>Edit</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             ))}
+        </div>
+    ))}
+</div>
             
             {isModalOpen && (
                 <EditTransactionsModal
                     transaction={currentTransaction}
-                    accountId={currentAccountId}
-                    holdingId={currentHoldingId}
                     onClose={handleCloseModal}
-                    onUpdate={handleUpdate}
+                    onUpdate={handleSubmit}
                     onDelete={handleDelete}
+                    isAdding={isAddingNewTransaction}
                     holdings={modalHoldings}
-                    //holdings={[{ id: '1', securityName: 'Test Security' }]}
                 />
             )}
         </div>

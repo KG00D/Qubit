@@ -21,14 +21,15 @@ module.exports = {
           model: 'Accounts', 
           key: 'id' 
         },
+         onDelete: 'CASCADE'
       },
-      holdingName: {
+      securityName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      holdingIdentifier: {
+      holdingName: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false
       },
       quantity: {
         type: Sequelize.DECIMAL,
@@ -42,8 +43,8 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true
       },
-      currency: {
-        type: Sequelize.STRING,
+      currentValue: {
+        type: Sequelize.DECIMAL,
         allowNull: true
       },
       createdAt: {

@@ -5,7 +5,7 @@ import AccountHoldings from '../AccountHoldings';
 import AccountTransactions from '../AccountTransactions';
 import NetWorthOverTime from '../NetWorthOverTime';
 import { fetchAccounts } from '../../redux/account';
-import { fetchTotalBalancesByDate } from '../../redux/accountBalances';
+import { fetchAccountHoldings } from '../../redux/accountHolding';
 import "./HomePageComponent.css";
 
 const HomepageComponent = () => {
@@ -19,7 +19,7 @@ const HomepageComponent = () => {
 
     useEffect(() => {
         dispatch(fetchAccounts());
-        dispatch(fetchTotalBalancesByDate());
+        // dispatch(fetchTotalBalancesByDate());
     }, [dispatch]);
 
     const handleAccountClick = (accountId) => {

@@ -44,15 +44,6 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
         setUpdatedAccount({ ...updatedAccount, [name]: value });
     };
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (isAddMode) {
-    //         dispatch(addAccount(updatedAccount));
-    //     } else {
-    //         dispatch(updateAccount(account.id, updatedAccount));
-    //     }
-    //     onClose();
-    // };
     const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAddMode) {

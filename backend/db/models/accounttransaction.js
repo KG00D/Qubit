@@ -15,16 +15,15 @@ module.exports = (sequelize, DataTypes) => {
 accountTransaction.init({
     holdingId: DataTypes.INTEGER,
     accountId: DataTypes.INTEGER,
+    transactionType: DataTypes.STRING,
     securityName: DataTypes.STRING,
-    holdingName: DataTypes.STRING,
     amount: DataTypes.DECIMAL,
     date: DataTypes.DATE,
     fees: DataTypes.DECIMAL,
     transactionDescription: DataTypes.STRING,
     price: DataTypes.DECIMAL,
+    value: DataTypes.DECIMAL,
     quantity: DataTypes.FLOAT,
-    subtype: DataTypes.STRING,
-    type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'accountTransaction',
