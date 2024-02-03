@@ -23,6 +23,7 @@ const AccountHoldings = () => {
         });
     }, [accounts, dispatch]);
 
+    console.log('calculateTotalGain inputs:', { quantity, averagePricePaid, currentValue });
     const calculateTotalGain = (quantity, averagePricePaid, currentValue) => (currentValue) - (averagePricePaid * quantity);
     const calculateTotalGainPercent = (totalGain, totalCost) => (totalGain / totalCost) * 100;
     const calculateTotalValue = (quantity, currentValue) => currentValue;
@@ -64,6 +65,7 @@ const AccountHoldings = () => {
                 }, 0);
 
                 totalPortfolioValue += accountCalculations;
+                console.log('Account Holdings:', accountHoldings);
 
                 return (
                     <div key={account.id}>
@@ -85,7 +87,9 @@ const AccountHoldings = () => {
                                 </tr>
                             </thead>
                             <tbody>
+
                                 {Object.values(accountHoldings).map(holding => {
+                                    console.log('Holding:', holding);
                                     const totalCost = parseFloat(holding.quantity) * parseFloat(holding.averagePricePaid);
                                     const totalGain = calculateTotalGain(parseFloat(holding.quantity), parseFloat(holding.averagePricePaid), parseFloat(holding.currentValue));
                                     const totalGainPercent = calculateTotalGainPercent(totalGain, totalCost);
