@@ -2,6 +2,9 @@
 const bcrypt = require("bcryptjs");
 
 let options = {};
+options.tableName = 'Debts';
+
+
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  
 }
