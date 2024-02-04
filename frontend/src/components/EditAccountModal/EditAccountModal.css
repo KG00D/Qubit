@@ -12,7 +12,7 @@
     animation: fadeIn 0.3s;
 }
 
-.modal-content {
+.edit-account-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -22,14 +22,15 @@
     z-index: 1001;
     display: grid;
     grid-gap: 20px;
+    text-align: center;
 }
 
-h2 {
+/* .edit-account-modal-content {
     font-size: 1.5em;
     margin-bottom: 20px;
     color: #333;
-    /* Assuming you want to keep the color for h2 */
-}
+    text-align: center;
+} */
 
 form {
     display: grid;
@@ -43,24 +44,20 @@ label {
     margin-bottom: 5px;
     font-weight: bold;
     color: #666;
-    /* Assuming you want to keep the color for labels */
 }
 
 input[type="text"],
 input[type="number"] {
     width: 100%;
-    /* Assuming you want to keep the width at 100% */
     padding: 10px;
     border: 1px solid #ccc;
-    /* Assuming you want the lighter border color */
     border-radius: 4px;
     font-size: 1em;
     box-sizing: border-box;
-    /* Added from the second definition */
 }
 
-button {
-    padding: 10px 20px;
+edit-account-modal-button {
+    /* padding: 10px 20px;
     border: none;
     border-radius: 4px;
     font-size: 1em;
@@ -68,7 +65,43 @@ button {
     transition: background-color 0.3s;
     background-color: #007bff;
     color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s; */
+    padding: 15px 30px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #0057B8;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s;
 }
+
+/* button[type="submit"] {
+    padding: 15px 30px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0057B8;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+} */
+
+button[type="submit"]:hover {
+    background-color: #f44336;;
+    transform: translateY(-2px);
+}
+
 
 button[type="submit"] {
     background-color: #4CAF50;
@@ -132,7 +165,7 @@ button[type="button"]:last-of-type:hover {
     z-index: 1000;
 }
 
-.modal-content {
+/* .modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -140,31 +173,31 @@ button[type="button"]:last-of-type:hover {
     max-width: 500px;
     width: 90%;
     z-index: 1001;
-}
-
+} */
+/* 
 .modal-content h2 {
     margin-top: 0;
     color: #333;
-}
+} */
 
-.modal-content form {
+/* .modal-content form {
     display: grid;
     grid-gap: 10px;
-}
+} */
 
-.modal-content label {
+/* .modal-content label {
     display: block;
     margin-bottom: 5px;
     color: #666;
-}
-
+} */
+/* 
 .modal-content input[type="text"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
-}
+} */
 
 button {
     padding: 10px 15px;
@@ -187,7 +220,7 @@ button[type="cancel-account-add-button"] {
 button[type="cancel-account-add-button"]:hover {
     background-color: #545b62;
 }
-
+/* 
 .modal-content {
     background-color: white;
     padding: 20px;
@@ -199,14 +232,14 @@ button[type="cancel-account-add-button"]:hover {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-}
-
+} */
+/* 
 .modal-content h2 {
     font-size: 1.5em;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
-}
+} */
 
 .account-form {
     display: flex;
@@ -233,13 +266,11 @@ button[type="cancel-account-add-button"]:hover {
 .account-buttons {
     display: flex;
     justify-content: space-between;
-    /* This will place buttons at each end */
     align-items: center;
     margin-top: 20px;
-    /* Add some space above the button group */
 }
 
-.account-button {
+/* .account-button {
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
@@ -247,25 +278,23 @@ button[type="cancel-account-add-button"]:hover {
     cursor: pointer;
     transition: background-color 0.3s;
     flex-grow: 1;
-    /* This will make all buttons grow and fill the space */
     margin: 0 5px;
-    /* Add some space between buttons */
-}
+} */
 
-.account-button.submit {
+/* .account-button.submit {
     background-color: #0057B8;
     color: white;
-}
+} */
 
-.account-button.delete {
+/* .account-button.delete {
     background-color: #E63946;
     color: white;
-}
+} */
 
-.account-button.cancel-account-add-button {
+/* .account-button.cancel-account-add-button {
     background-color: #6c757d;
     color: white;
-}
+} */
 
 /* Hover effects for buttons */
 .account-button.submit:hover {
@@ -286,15 +315,12 @@ button[type="cancel-account-add-button"]:hover {
         padding: 20px;
     }
 
-    .account-buttons {
+    /* .account-buttons {
         flex-direction: column;
-        /* Stack buttons vertically on small screens */
     }
 
     .account-button {
         width: 100%;
-        /* Full-width buttons on small screens */
         margin: 5px 0;
-        /* Add margin between stacked buttons */
     }
-}
+} */

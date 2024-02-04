@@ -7,9 +7,6 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
   const dispatch = useDispatch();
   const [availableSubtypes, setAvailableSubtypes] = useState([]);
 
-  const initialAccount = isAddMode ? emptyAccount : account;
-  const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
-
   const [selectedAssetType, setSelectedAssetType] = useState(
     isAddMode ? "" : account.type || ""
   );
@@ -25,6 +22,9 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
       onClose();
     }
   };
+
+  const initialAccount = isAddMode ? emptyAccount : account;
+  const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
 
   useEffect(() => {
     if (selectedAssetType) {
@@ -76,8 +76,10 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
-      <div className="modal-content">
-        <h2>{isAddMode ? "Add Account" : "Edit Account"}</h2>
+      <div className="edit-account-modal-content">
+        <h2 classNAme="edit-account-modal-content">
+          {isAddMode ? "Add Account" : "Edit Account"}
+        </h2>
         <form onSubmit={handleSubmit} className="account-form">
           <label className="account-label">
             Name:
@@ -125,21 +127,21 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
             </select>
           </label>
           <div className="account-buttons">
-            <button type="submit" className="account-button submit">
+            <button type="submit" className="modal-button submit">
               {isAddMode ? "Add Account" : "Save Changes"}
             </button>
             {!isAddMode && (
               <>
                 <button
                   type="button"
-                  className="account-button delete"
+                  className="modal-button submit"
                   onClick={handleDelete}
                 >
                   Delete Account
                 </button>
                 <button
                   type="button"
-                  className="account-button cancel-account-add-button"
+                  className="modal-button submit"
                   onClick={onClose}
                 >
                   Cancel

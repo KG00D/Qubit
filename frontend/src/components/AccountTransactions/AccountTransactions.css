@@ -4,16 +4,25 @@ table {
     font-family: Raleway;
 }
 
-th, td {
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
+}
+
+th,
+td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
     font-family: Raleway;
 }
 
-.holdings-performance {
-    font-family: Bitter;
-    size: 22px;
+.reports-header {
+    font-family: 'Raleway', sans-serif;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
 
 th {
