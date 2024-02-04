@@ -72,7 +72,6 @@ export const updateTransaction = (transactionId, transactionData) => async dispa
 
     dispatch(updateTransactionStart());
     try {
-        console.log("Sending API request to update transaction");
         const response = await csrfFetch(`/api/accounttransactions/${transactionId}`, {
             method: 'PUT',
             headers: {

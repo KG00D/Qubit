@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import "./Navigation.css";
 
 function Navigation() {
@@ -8,7 +8,7 @@ function Navigation() {
   const navigate = useNavigate();
 
   const handleResetToDefaultView = () => {
-    navigate('/homepage');
+    navigate("/homepage");
   };
 
   return (
@@ -16,11 +16,11 @@ function Navigation() {
       <ul>
         {user ? (
           <li className="net-worth-overview-button">
-            <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button>
+            {/* <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button> */}
           </li>
         ) : (
           <li className="home-button">
-            <NavLink to="/">Home</NavLink>
+            {/* <NavLink to="/">Home</NavLink> */}
           </li>
         )}
         <li className="profile-button-container">
