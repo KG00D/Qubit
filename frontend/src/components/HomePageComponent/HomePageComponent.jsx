@@ -68,7 +68,7 @@ const HomepageComponent = () => {
       </div>
       <div className="right-content">
         {accounts.length === 0 ? (
-          <button onClick={handleStartHereClick}>Start Here</button>
+          <h2>Add Your First Account</h2>
         ) : (
           <>
             {viewAccountHoldings && selectedAccountId && (
@@ -77,7 +77,7 @@ const HomepageComponent = () => {
             {viewAccountTransactions && selectedAccountId && (
               <AccountTransactions accountId={selectedAccountId} />
             )}
-            {/* ... naything else I add ... */}
+            {/* ... naything else I add TODO: remove all my weird comments and prose */}
           </>
         )}
       </div>

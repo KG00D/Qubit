@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { thunkLogin } from "../../redux/session"; // Adjust the import according to your actual file structure
+import { thunkLogin } from "../../redux/session";
 import { useNavigate, Navigate } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormModal() {
-  // function LoginFormPage() {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
