@@ -9,6 +9,7 @@ const AccountHoldings = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentHolding, setCurrentHolding] = useState(null);
     const [isAddingNewHolding, setIsAddingNewHolding] = useState(false);
+    const [currentAccountHoldings, setCurrentAccountHoldings] = useState([]);
 
     const accounts = useSelector(state => state.accounts.accounts);
     const holdingsData = useSelector(state => state.holdings);
@@ -23,87 +24,99 @@ const AccountHoldings = () => {
         });
     }, [accounts, dispatch]);
 
-    const calculateTotalGain = (quantity, averagePricePaid, currentValue) => parseFloat(currentValue) - (parseFloat(averagePricePaid) * parseFloat(quantity));
+    const calculateTotalGain = (quantity, averagePricePaid, currentValue) => currentValue - (averagePricePaid * quantity);
     const calculateTotalGainPercent = (totalGain, totalCost) => (totalGain / totalCost) * 100;
-    const calculateTotalValue = (quantity, currentValue) => (parseFloat(currentValue) * parseFloat(quantity));
 
     let totalPortfolioValue = 0;
 
     const handleEditClick = (holding) => {
-        setCurrentHolding(holding);
-        setIsAddingNewHolding(false);
-        setIsModalOpen(true);
-    };
+    const accountType = accounts.find(account => account.id === holding.accountId)?.type;
+    
+    setCurrentHolding({ ...holding, type: accountType });
+    setIsAddingNewHolding(false);
+    setIsModalOpen(true);
+    setCurrentAccountHoldings(holdingsData[holding.accountId]?.accountHoldings || []);
+};
+
+    const handleAddNewHoldingClick = (accountId) => {
+    const accountType = accounts.find(account => account.id === accountId)?.type;
+    setCurrentHolding({ accountId, type: accountType });
+    setIsAddingNewHolding(true);
+    setIsModalOpen(true);
+    setCurrentAccountHoldings(holdingsData[accountId]?.accountHoldings || []);
+};
+
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setCurrentHolding(null);
+        setCurrentAccountHoldings([]);
     };
-
-    const handleAddNewHoldingClick = (accountId) => {
-    setCurrentHolding({ accountId });
-    setIsAddingNewHolding(true);
-    setIsModalOpen(true);
-    };
-
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
+    const typesWithNoAveragePrice = ['PersonalProperty', 'RealEstate'];
+    // const averagePricePaidContent = typesWithNoAveragePrice.includes(accounts.type) ? 'N/A' : `$${accounts.averagePricePaid.toFixed(2)}`;
+
+    const averagePricePaidContent = typesWithNoAveragePrice.includes(accounts.type) || accounts.averagePricePaid == null
+    ? 'N/A'
+    : `$${Number(accounts.averagePricePaid).toFixed(2)}`;
+
+    // const averagePricePaidContent = typesWithNoAveragePrice.includes(accounts.type) ? 'N/A' : `${holding.averagePricePaid.toFixed(2)}`;
+
     return (
         <div>
             {accounts.map(account => {
-                const accountHoldings = holdingsData[account.id]?.accountHoldings || {};
-                const accountCalculations = Object.values(accountHoldings).reduce((acc, holding) => {
-                    const totalCost = parseFloat(holding.quantity) * parseFloat(holding.averagePricePaid);
-                    const totalGain = calculateTotalGain(parseFloat(holding.quantity), parseFloat(holding.averagePricePaid), parseFloat(holding.currentValue));
-                    const totalGainPercent = calculateTotalGainPercent(totalGain, totalCost);
-                    const value = calculateTotalValue(parseFloat(holding.quantity), parseFloat(holding.currentValue));
-                    acc += value;
+                const accountHoldings = holdingsData[account.id]?.accountHoldings || [];
+                const accountCalculations = accountHoldings.reduce((acc, holding) => {
+                const totalGain = calculateTotalGain(holding.quantity, holding.averagePricePaid, holding.currentValue);
+                const totalGainPercent = calculateTotalGainPercent(totalGain, holding.totalCost);
+                const value = holding.currentValue;
+                acc += value;
                     return acc;
                 }, 0);
 
                 totalPortfolioValue += accountCalculations;
-                console.log('Account Holdings:', accountHoldings);
 
                 return (
                     <div key={account.id}>
                         <h2 className="holdings-header">{account.name} Holdings & Performance</h2>
                         <hr className="divider" />
                         <button className="add-holding-btn" onClick={() => handleAddNewHoldingClick(account.id)}>Add New Holding</button>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Holding Name</th>
-                                    <th>Security</th>
-                                    <th>Qty #</th>
-                                    <th>Average Price Paid</th>
-                                    <th>Total Cost</th>
-                                    <th>Total Gain</th>
-                                    <th>Total Gain %</th>
-                                    <th>Value</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                <table>
+                                <thead>
+                                    <tr>
+                                        <th>Holding Name</th>
+                                        <th>Security</th>
+                                        <th>Qty #</th>
+                                        <th>Average Price Paid</th>
+                                        <th>Total Cost</th>
+                                        <th>Total Gain</th>
+                                        <th>Total Gain %</th>
+                                        <th>Value</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
                                 {Object.values(accountHoldings).map(holding => {
-                                    console.log('Holding:', holding);
-                                    const totalCost = parseFloat(holding.quantity) * parseFloat(holding.averagePricePaid);
-                                    const totalGain = calculateTotalGain(parseFloat(holding.quantity), parseFloat(holding.averagePricePaid), parseFloat(holding.currentValue));
-                                    const totalGainPercent = calculateTotalGainPercent(totalGain, totalCost);
-                                    const value = calculateTotalValue(parseFloat(holding.quantity), parseFloat(holding.currentValue));
+
+                                    const totalGain = calculateTotalGain(holding.quantity, holding.averagePricePaid, holding.currentValue);
+                                    const totalGainPercent = calculateTotalGainPercent(totalGain, holding.totalCost);
+                                    const value = holding.currentValue;
 
                                     return (
                                         <tr key={holding.id}>
                                             <td>{holding.holdingName}</td>
                                             <td>{holding.securityName}</td>
                                             <td>{holding.quantity}</td>
-                                            <td>${holding.averagePricePaid.toFixed(2)}</td>
-                                            <td>${totalCost.toFixed(2)}</td>
-                                            <td>${totalGain.toFixed(2)}</td>
-                                            <td>{totalGainPercent.toFixed(2)}%</td>
-                                            <td>${value.toFixed(2)}</td>
+                                            <td>{averagePricePaidContent}</td>
+
+                                            <td>{holding.totalCost || '0.00'}</td>
+                                            <td>${totalGain?.toFixed(2) || '0.00'}</td>
+                                            <td>{totalGainPercent?.toFixed(2) || '0.00'}%</td>
+                                            <td>${value?.toFixed(2) || '0.00'}</td>
                                             <td>
                                                 <button onClick={() => handleEditClick(holding)}>Edit</button>
                                             </td>
@@ -112,7 +125,7 @@ const AccountHoldings = () => {
                                 })}
                             </tbody>
                         </table>
-                        <p>Account Total Value: ${accountCalculations.toFixed(2)}</p>
+                        <p className="account-total-value">Account Total Value: ${accountCalculations.toFixed(2)}</p>
                     </div>
                 );
             })}
@@ -122,9 +135,11 @@ const AccountHoldings = () => {
             {isModalOpen && (
                 <EditHoldingsModal
                     accountId={currentHolding?.accountId}
+                    type={currentHolding?.type}
                     holding={isAddingNewHolding ? null : currentHolding}
                     onClose={handleCloseModal}
                     isAdding={isAddingNewHolding}
+                    existingHoldings={currentAccountHoldings}
                 />
             )}
         </div>

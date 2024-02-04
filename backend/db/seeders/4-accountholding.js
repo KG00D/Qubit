@@ -19,8 +19,9 @@ module.exports = {
         holdingName: 'Apple Stock',
         quantity: 15,
         averagePricePaid: 140.0,
+        totalCost: 2100.00,
         positionOpenDate: new Date('2023-01-05'),
-        currentValue: 2100.00
+        currentValue: 3984.23
       }
     ], { exclude: ['id'] });
   }

@@ -39,21 +39,20 @@ router.get('/', async (req, res, next) => {
                 'holdingName',
                 'quantity',
                 'averagePricePaid',
+                'totalCost',
                 'positionOpenDate',
             ]
         });
 
-        // const normalizedAccountHoldings = accountHoldings.reduce((acc, holding) => {
-        //     acc[holding.securityName] = holding;
-        //     return acc;
-        // }, {});
         const normalizedAccountHoldings = accountHoldings.map(holding => ({
             ...holding.toJSON(), 
                 currentValue: parseFloat(holding.currentValue),
                 quantity: parseFloat(holding.quantity),
                 averagePricePaid: parseFloat(holding.averagePricePaid),
+                totalCost: parseFloat(holding.totalCost)
             }));
 
+        console.log(normalizedAccountHoldings, 'holdings hereeeeee');
         const responseData = {
             account: account,
             accountHoldings: normalizedAccountHoldings
@@ -69,17 +68,25 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const accountId = req.params.accountId;
-        const { securityName, holdingName, quantity, averagePricePaid, positionOpenDate } = req.body;
+        const { securityName,
+            holdingName,
+            quantity,
+            currentValue,
+            totalCost,
+            averagePricePaid,
+            positionOpenDate } = req.body;
 
         const newHolding = await accountHolding.create({
             accountId,
             securityName,
             holdingName,
             quantity,
+            currentValue,
+            totalCost,
             averagePricePaid,
             positionOpenDate,
         });
-
+        console.log(newHolding, 'New holding being created')
         res.status(201).json(newHolding);
     } catch (error) {
         next(error);
@@ -89,7 +96,13 @@ router.post('/', async (req, res, next) => {
 router.put('/:holdingId', async (req, res, next) => {
     try {
         const { holdingId, accountId } = req.params;
-        const { securityName, holdingName, quantity, averagePricePaid, positionOpenDate } = req.body;
+        const { securityName,
+            holdingName,
+            quantity,
+            currentValue,
+            averagePricePaid,
+            totalCost,
+            positionOpenDate } = req.body;
 
         const holding = await accountHolding.findOne({
             where: { id: holdingId, accountId: accountId }
@@ -103,7 +116,9 @@ router.put('/:holdingId', async (req, res, next) => {
             securityName,
             holdingName,
             quantity,
+            currentValue,
             averagePricePaid,
+            totalCost,
             positionOpenDate
         });
 

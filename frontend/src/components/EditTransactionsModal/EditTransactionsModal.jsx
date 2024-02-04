@@ -83,7 +83,6 @@ const EditTransactionsModal = ({ transaction, onClose, isAdding, holdings = [] }
         <div className="modal-backdrop">
             <div className="modal-content transactions-modal-content">
                 <h2 className="transactions-modal-title">{isAdding ? 'Add' : 'Edit'} Transaction</h2>
-                console.log("Prepared data for submission:", preparedTransactionData);
                 <form onSubmit={handleSubmit} className="transactions-modal-form">
                     <label className="transactions-modal-label">
                         Security:

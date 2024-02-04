@@ -5,51 +5,51 @@ import './EditAccountModal.css'
 
 const EditAccountModal = ({ account, onClose, isAddMode }) => {
     const dispatch = useDispatch();
+    
+    const [selectedAssetType, setSelectedAssetType] = useState('');
+    const [availableSubtypes, setAvailableSubtypes] = useState([]);
 
     const emptyAccount = {
         name: '',
         type: '',
-        subType: '',
-        accountBalance: '',
+        subType: ''
     };
-
-    // const initialAccount = isAddMode ? emptyAccount : account;
-    // const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
 
     const initialAccount = isAddMode ? emptyAccount : account;
     const [updatedAccount, setUpdatedAccount] = useState(initialAccount);
     
-    // useEffect(() => {
-    //     setUpdatedAccount(initialAccount);
-    // }, [isAddMode]);
-
     const handleBackdropClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
 
-
     useEffect(() => {
-            console.log('useEffect triggered');
-            console.log('isAddMode:', isAddMode);
-            console.log('account:', account);
-        setUpdatedAccount(isAddMode ? emptyAccount : account);
-    }, [isAddMode, account]);
+        if (selectedAssetType) {
+            setAvailableSubtypes(assetOptions[selectedAssetType] || []);
+        } else {
+            setAvailableSubtypes([]);
+        }
+    }, [selectedAssetType]);
 
 
     const handleInputChange = (e) => {
-         const { name, value } = e.target;
-        console.log('Input Change:', name, value);
+        const { name, value } = e.target;
         setUpdatedAccount({ ...updatedAccount, [name]: value });
     };
 
     const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const payload = {
+        ...updatedAccount,
+        type: selectedAssetType, 
+    };
+
     if (isAddMode) {
-        await dispatch(addAccount(updatedAccount));
+        await dispatch(addAccount(payload)); 
     } else {
-        await dispatch(updateAccount(account.id, updatedAccount));
+        await dispatch(updateAccount(account.id, payload));
     }
     onClose();
 };
@@ -62,10 +62,18 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
         }
     };
 
+    const assetOptions = {
+        Retirement: ['401k', '403b', 'ROTH 401k', 'ROTH IRA', 'IRA'],
+        Brokerage: ['Individual', 'Joint', 'Custodial'],
+        Crypto: ['CoinBase', 'Cold Wallet' , 'Hot Wallet', 'NFT'],
+        RealEstate: ['Residential', 'Commercial', 'Land'],
+        PersonalProperty: ['Vehicle', 'Boats', 'Art', 'Jewlery']
+    };
+
       return (
         <div className="modal-backdrop" onClick={handleBackdropClick}>
             <div className="modal-content">
-                <h2>{isAddMode ? 'Add Account' : 'Edit Account'}</h2>
+                  <h2>{isAddMode ? 'Add Account' : 'Edit Account'}</h2>
                 <form onSubmit={handleSubmit} className="account-form">
                     <label className="account-label">
                         Name:
@@ -77,35 +85,34 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
                             className="account-input"
                         />
                     </label>
-                    <label className="account-label">
-                        Type:
-                        <input
-                            type="text"
+                <label>
+                        Asset Type:
+                        <select
                             name="type"
-                            value={updatedAccount.type || ''}
-                            onChange={handleInputChange}
-                            className="account-input"
-                        />
+                            value={selectedAssetType}
+                            onChange={(e) => setSelectedAssetType(e.target.value)}
+                            className="asset-input"
+                        >
+                            <option value="">Select Asset Type</option>
+                            {Object.keys(assetOptions).map((type) => (
+                                <option key={type} value={type}>{type}</option>
+                            ))}
+                        </select>
                     </label>
-                    <label className="account-label">
-                        Sub Type:
-                        <input
-                            type="text"
+                    <label>
+                        Asset Subtype:
+                        <select
                             name="subType"
                             value={updatedAccount.subType || ''}
                             onChange={handleInputChange}
-                            className="account-input"
-                        />
-                    </label>
-                    <label className="account-label">
-                        Account Balance:
-                        <input
-                            type="text"
-                            name="accountBalance"
-                            value={updatedAccount.accountBalance || ''}
-                            onChange={handleInputChange}
-                            className="account-input"
-                        />
+                            className="asset-input"
+                            disabled={!selectedAssetType} 
+                        >
+                            <option value="">Select Asset Subtype</option>
+                            {availableSubtypes.map((subType) => (
+                                <option key={subType} value={subType}>{subType}</option>
+                            ))}
+                        </select>
                     </label>
                     <div className="account-buttons">
                         <button type="submit" className="account-button submit">{isAddMode ? 'Add Account' : 'Save Changes'}</button>

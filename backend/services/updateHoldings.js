@@ -9,7 +9,6 @@ async function updateHoldingFromTransaction(transaction) {
                 securityName: transaction.securityName,
             }
         });
-        // console.log('1 holding ', holding, transaction);
 
         if (!holding) {
             holding = await db.accountHolding.create({

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { updateHolding, deleteHolding, createHolding } from "../../redux/accountHolding";
 import "./EditHoldingModal.css";
 
-const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
+const EditHoldingModal = ({ accountId, type: accountType, holding, onClose, isAdding, existingHoldings }) => {
     const dispatch = useDispatch();
 
     const defaultHolding = {
@@ -12,14 +12,13 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
         quantity: '',
         averagePricePaid: '',
         positionOpenDate: '',
+        currentValue: 0
     };
-    
-    const initialHolding = isAdding ? defaultHolding : holding;
+
     const [updatedHolding, setUpdatedHolding] = useState(isAdding ? defaultHolding : holding);
 
     useEffect(() => {
-
-            if (!isAdding && holding) {
+        if (!isAdding && holding) {
             setUpdatedHolding(holding);
         }
     }, [holding, isAdding]);
@@ -29,7 +28,20 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
         setUpdatedHolding({ ...updatedHolding, [name]: value });
     };
 
-    const handleUpdate = (updatedHolding) => {
+    const handleAddNewHolding = (newHolding) => {
+        const holdingExists = existingHoldings.some(existingHolding => 
+            existingHolding.securityName === newHolding.securityName);
+
+        if (holdingExists) {
+            alert('This holding already exists in the account. Please add a transaction or remove the holding');
+            return;
+        }
+
+        dispatch(createHolding(accountId, newHolding))
+            .finally(onClose);
+    };
+
+    const handleUpdate = () => {
         dispatch(updateHolding(accountId, holding.id, updatedHolding))
             .finally(onClose);
     };
@@ -38,33 +50,40 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
         dispatch(deleteHolding(accountId, holding.id))
             .finally(onClose);
     };
-    
-        const handleAddNewHolding = () => {
-        dispatch(createHolding(accountId, updatedHolding))
-        .finally(onClose);
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isAdding) {
             handleAddNewHolding(updatedHolding);
         } else {
-            handleUpdate(updatedHolding); 
+            handleUpdate(); 
         }
     };
 
- 
-  return (
-    <div className="modal-backdrop">
-        <div className="modal">
-            <h2>{isAdding ? 'Add New Holding' : 'Edit Holding'}</h2>
-            <form onSubmit={handleSubmit} className="modal-form">
+    const disabledConditions = [
+        'Retirement',
+        'Brokerage'
+    ];
+
+    const shouldDisableCurrentValue = (accountType) => {
+        return disabledConditions.includes(accountType);
+    };
+
+    const disableCurrentValue = shouldDisableCurrentValue(accountType);
+
+    return (
+        <div className="modal-backdrop">
+            <div className="modal">
+                <h2>{isAdding ? 'Add New Holding' : 'Edit Holding'}</h2>
+                <form onSubmit={handleSubmit} className="modal-form">
                     <label>
                         Holding Name:
                         <input
                             type="text"
                             name="holdingName"
                             value={updatedHolding.holdingName || ''}
+                            minLength="1"
+                            maxLength="15" 
                             onChange={handleInputChange}
                         />
                     </label>
@@ -74,6 +93,8 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
                             type="text"
                             name="securityName"
                             value={updatedHolding.securityName || ''}
+                            minLength="1"
+                            maxLength="6"      
                             onChange={handleInputChange}
                         />
                     </label>
@@ -83,15 +104,17 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
                             type="number"
                             name="quantity"
                             value={updatedHolding.quantity || ''}
+                            min="1"
                             onChange={handleInputChange}
                         />
                     </label>
                     <label>
-                        Average Price Paid:
+                        Total Cost:
                         <input
                             type="number"
-                            name="averagePricePaid"
-                            value={updatedHolding.averagePricePaid || ''}
+                            name="totalCost"
+                            value={updatedHolding.totalCost || ''}
+                            min="1"
                             onChange={handleInputChange}
                         />
                     </label>
@@ -102,6 +125,16 @@ const EditHoldingModal = ({ accountId, holding, onClose, isAdding }) => {
                             name="positionOpenDate"
                             value={updatedHolding.positionOpenDate || ''}
                             onChange={handleInputChange}
+                        />
+                    </label>
+                    <label>
+                        Current Value:
+                        <input
+                            type="number"
+                            name="currentValue"
+                            value={updatedHolding.currentValue || ''}
+                            onChange={handleInputChange}
+                            disabled={disableCurrentValue} 
                         />
                     </label>
                     <div className="modal-buttons">

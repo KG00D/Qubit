@@ -16,7 +16,7 @@ module.exports = {
         userId: 1,
         name: 'Plaid 401k',
         subType: '401k',
-        type: 'investment',
+        type: 'Retirement',
         accountBalance: 23631.9805
       }
     ], { exclude: ['id'] });

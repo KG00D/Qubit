@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import LeftPanelComponent from '../LeftPanelComponent';
 import AccountHoldings from '../AccountHoldings';
 import AccountTransactions from '../AccountTransactions';
-// import NetWorthOverTime from '../NetWorthOverTime';
 import { fetchAccounts } from '../../redux/account';
 import { fetchAccountHoldings } from '../../redux/accountHolding';
 import "./HomePageComponent.css";
@@ -19,7 +18,6 @@ const HomepageComponent = () => {
 
     useEffect(() => {
         dispatch(fetchAccounts());
-        // dispatch(fetchTotalBalancesByDate());
     }, [dispatch]);
 
     const handleAccountClick = (accountId) => {
@@ -52,6 +50,7 @@ const HomepageComponent = () => {
 
 
     const totalBalancesData = useSelector(state => state.balances.totalBalancesByDate);
+    console.log(totalBalancesData);
     const latestBalance = totalBalancesData[totalBalancesData.length - 1]?.totalBalance || 0;
     const netWorth = latestBalance;
 
@@ -77,9 +76,6 @@ const HomepageComponent = () => {
                         {viewAccountTransactions && selectedAccountId && (
                             <AccountTransactions accountId={selectedAccountId} />
                         )}
-                        {/* {!viewAccountHoldings && !viewAccountTransactions && (
-                            <NetWorthOverTime data={totalBalancesData} />
-                        )} */}
                         <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button>
                     </>
                 )}
