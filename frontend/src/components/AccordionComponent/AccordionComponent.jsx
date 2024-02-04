@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function AccountAccordion({ accounts }) {
   const [openAccountId, setOpenAccountId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleAccordion = accountId => {
+  const toggleAccordion = (accountId) => {
     if (openAccountId === accountId) {
       setOpenAccountId(null);
     } else {
@@ -12,14 +12,16 @@ function AccountAccordion({ accounts }) {
     }
   };
 
- return (
+  return (
     <div>
       <div className="account-item" onClick={() => setIsOpen(!isOpen)}>
-        <p className='account-name'>{name}</p>
+        <p className="account-name">{name}</p>
       </div>
       {isOpen && (
         <div className="account-details">
-          <button onClick={() => onAccountClick(accountId)}>View Details</button>
+          <button onClick={() => onAccountClick(accountId)}>
+            View Details
+          </button>
         </div>
       )}
     </div>
@@ -27,4 +29,3 @@ function AccountAccordion({ accounts }) {
 }
 
 export default AccountAccordion;
-

@@ -1,0 +1,45 @@
+/* Splash.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Raleway', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 10px 50px;
+}
+
+.brand {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.nav {
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+}
+
+.main {
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.loginButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: teal;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
