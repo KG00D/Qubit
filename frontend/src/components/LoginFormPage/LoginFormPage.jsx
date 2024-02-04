@@ -29,10 +29,8 @@ function LoginFormPage() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      console.log("Before navigating");
-      navigate("/");
+      navigate("/homepage");
       closeModal();
-      console.log("After navigating");
     }
   };
 

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { FiMoreHorizontal } from "react-icons/fi";
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faBars, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faBars, faMinus, faPlus);
 
 import { useSelector } from "react-redux";
 import "./LeftPanelComponent.css";
@@ -86,7 +91,7 @@ const LeftPanelComponent = ({
         <p className="net-worth-value">${totalPortfolioValue}</p>
       </div>
       <div className="accounts-section">
-        <h1 onClick={toggleAccounts}>
+        <h1 className="reports-headings" onClick={toggleAccounts}>
           Accounts
           <FontAwesomeIcon icon={isAccountsOpen ? faMinus : faPlus} />
         </h1>
@@ -98,7 +103,8 @@ const LeftPanelComponent = ({
                 className="edit-icon"
                 onClick={(e) => handleEditIconClick(e, account)}
               >
-                ✏️
+                {" "}
+                <FiMoreHorizontal />
               </button>
             </div>
           ))}
@@ -112,7 +118,7 @@ const LeftPanelComponent = ({
         />
       )}
       <div className="reports-section">
-        <h1 onClick={toggleReports}>
+        <h1 className="reports-headings" onClick={toggleReports}>
           Reports
           <FontAwesomeIcon icon={isReportsOpen ? faMinus : faPlus} />
         </h1>
@@ -131,8 +137,6 @@ const LeftPanelComponent = ({
           </div>
         )}
       </div>
-      <p>Arbitrage-AI</p>
-      <p>Qubit Score</p>
       <button className="add-account-button" onClick={handleAddAccountClick}>
         Add Account
       </button>

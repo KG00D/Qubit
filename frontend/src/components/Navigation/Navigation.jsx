@@ -1,31 +1,33 @@
-import { NavLink, useNavigate } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { thunkAuthenticate } from "../../redux/session";
 import "./Navigation.css";
 
 function Navigation() {
-  const user = useSelector((store) => store.session.user);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const user = useSelector((state) => state.session.user);
 
-  const handleResetToDefaultView = () => {
-    navigate("/homepage");
-  };
+  useEffect(() => {
+    dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
+  }, [dispatch]);
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  const isLoggedIn = !!user;
 
   return (
     <div className="nav-bar">
+      <div className="brand">Qubit</div>
       <ul>
-        {user ? (
-          <li className="net-worth-overview-button">
-            {/* <button onClick={handleResetToDefaultView}>Back to Net Worth Overview</button> */}
-          </li>
-        ) : (
-          <li className="home-button">
-            {/* <NavLink to="/">Home</NavLink> */}
+        {isLoggedIn && (
+          <li className="profile-button-container">
+            <ProfileButton />
           </li>
         )}
-        <li className="profile-button-container">
-          <ProfileButton />
-        </li>
       </ul>
     </div>
   );

@@ -72,3 +72,11 @@
 .profile-dropdown li:hover {
   background-color: #f2f2f2;
 }
+
+.brand {
+  font-weight: bold;
+  font-size: 24px;
+  font-family: 'Raleway', sans-serif;
+  color: white;
+  padding-left: 15px;
+}

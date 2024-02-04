@@ -86,7 +86,7 @@ const AccountHoldings = () => {
 
         return (
           <div key={account.id}>
-            <h2 className="holdings-header">
+            <h2 className="reports-header">
               {account.name} Holdings & Performance
             </h2>
             <hr className="divider" />

@@ -6,9 +6,7 @@
   height: 100vh;
   overflow-y: auto;
   padding: 15px;
-  /* Adjusted for consistency */
   font-family: 'Railway', sans-serif;
-  /* Corrected the font family name */
   font-size: 14px;
 }
 
@@ -21,16 +19,13 @@
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 5px;
   font-family: 'Railway', sans-serif;
-  /* Using the same font family for consistency */
 }
 
 .net-worth-value {
   font-size: 38px;
   font-style: italic;
   margin: 10px 0;
-  /* Simplified margin for top and bottom */
   font-family: 'Railway', sans-serif;
-  /* Using the same font family for consistency */
 }
 
 .section-item {
@@ -39,11 +34,8 @@
   border-radius: 5px;
   margin-bottom: 10px;
   display: flex;
-  /* Using flexbox for internal alignment */
   align-items: center;
-  /* Vertically center the items */
   justify-content: space-between;
-  /* Space between the items */
 }
 
 .link-button,
@@ -55,7 +47,6 @@
   border-radius: 5px;
   display: block;
   width: calc(100% - 24px);
-  /* Adjust width to account for padding */
   box-sizing: border-box;
   text-decoration: none;
   margin-top: 10px;
@@ -63,25 +54,18 @@
   font-size: 16px;
   font-weight: bold;
   transition: background-color 0.3s;
-  /* Smooth background color transition */
 }
 
 .add-account-button {
   background: linear-gradient(to right, #196BCA, #6433E0);
   padding: 10px 20px;
-  /* Reduced padding for a smaller button */
   font-size: 18px;
-  /* Optional: Reduce font size if the button looks too big */
   border-radius: 8px;
   font-weight: 800;
   margin: 10px auto;
-  /* Added margin auto for horizontal centering */
   display: block;
-  /* Ensures the button is a block-level element */
   width: auto;
-  /* Allows the button to shrink to fit its content */
   text-align: center;
-  /* Ensures text is centered within the button */
 }
 
 .add-account-button:hover {
@@ -90,7 +74,6 @@
 
 .add-account-button:active {
   transform: translateY(2px);
-  /* Subtle button press effect */
 }
 
 .alert-message {
@@ -99,75 +82,83 @@
   margin-bottom: 10px;
 }
 
-/* Remove any unnecessary rotation and image background on the span */
 .add-account-button span {
   margin-left: 10px;
-  /* Adjusted for proper spacing */
   display: inline-block;
-  /* Changed to inline-block for better control */
-  /* Removed rotation and background image properties */
 }
 
-/* Ensures dropdowns have a consistent look and feel */
+.account-item {
+  display: flex;
+  align-items: center;
+}
+
+.accounts-dropdown,
+.edit-icon {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 2px;
+  margin-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
 .reports-dropdown,
 .accounts-dropdown {
-  display: flex; /* Enables flexbox */
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically, effective if there is a height set */
+  font-size: 18px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: left; 
+  justify-content: center; 
 }
 
-/* Dropdowns expand to show content */
 .reports-section .reports-dropdown,
 .accounts-section .accounts-dropdown {
   max-height: 1000px;
-  /* Adjusted for potential content size */
   transition: max-height 0.3s ease-in;
 }
 
-/* Improvements for hover and active states */
 .link-button:hover {
   background-color: #1976d2;
-  /* A slightly lighter shade for hover */
 }
 
 .link-button:active {
   background-color: #145a9e;
-  /* A slightly darker shade for active */
 }
 
 .accounts-dropdown li {
   width: 100%;
-  /* Each item takes full width of the parent */
   text-align: center;
-  /* Text inside each item is centered */
   margin-bottom: 5px;
-  /* Adds a little space between items */
 }
 
-/* Consistent box shadows for a subtle depth effect */
+.reports-headings {
+  text-align: left;
+}
+
 .section-item,
 .link-button,
 .add-account-button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Adjustments for responsive design */
 @media (max-width: 600px) {
   .left-panel {
     padding: 10px;
-    /* Reduced padding on smaller screens */
   }
 
   .net-worth-value,
   .section-header {
     font-size: 16px;
-    /* Adjusted font sizes for readability */
   }
 
   .link-button,
   .add-account-button {
     padding: 10px;
-    /* Smaller buttons for smaller screens */
   }
+}
+
+.edit-icon {
+  align-content: flex-end;
 }
