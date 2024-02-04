@@ -1,0 +1,9 @@
+input.error {
+    border: 1px solid #D8000C;
+    background-color: #FFD2D2;
+}
+
+input.error:focus {
+    border-color: #B80000;
+    box-shadow: 0 0 0 2px rgba(216, 0, 12, 0.2);
+}
