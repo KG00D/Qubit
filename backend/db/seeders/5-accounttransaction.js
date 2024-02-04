@@ -20,7 +20,7 @@ module.exports = {
         amount: 1453.0,
         date: new Date('2023-01-05'),
         transactionDescription: "Open position for AAPL",
-        price: 330.12, 
+        price: 100, 
         value: 3449.75, 
         quantity: 10.45, 
     },
@@ -34,7 +34,8 @@ module.exports = {
         fees: 9.99,
         transactionDescription: "Buy more AAPL shares",
         price: 333.12, 
-        value: 4949.66, 
+        value: 4949.66,
+        quantity: 10.45
     },
     {
         holdingId: 1,

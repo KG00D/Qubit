@@ -147,6 +147,8 @@ export const fetchAccountHoldings = (accountId) => {
 };
 
 export const addAccount = accountDetails => async dispatch => {
+    
+    console.log(accountDetails, 'ACCOUNT DETAILS SENT TO REDUX STORE BEFORE API')
     dispatch(createAccountStart());
     try {
         const response = await csrfFetch('/api/accounts/', {
@@ -163,7 +165,7 @@ export const addAccount = accountDetails => async dispatch => {
             dispatch(fetchAccounts());
         } else {
             const errorBody = await response.json();
-            dispatch(createAccountFail(errorBody.error || 'Failed to Create Account')); // Dispatch a fail action if not ok
+            dispatch(createAccountFail(errorBody.error || 'Failed to Create Account')); 
         }
     } catch (error) {
         dispatch(createAccountFail(error.message));

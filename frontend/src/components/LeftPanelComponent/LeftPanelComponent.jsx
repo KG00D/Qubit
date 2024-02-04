@@ -73,9 +73,10 @@ const LeftPanelComponent = ({ data: netWorth,
                 return total + accountTotal;
             }, 0);
     };
-
+    console.log(accounts, 'accounts here')
+    console.log(holdingsData, 'holdings data here')
     const totalPortfolioValue = calculateTotalPortfolioValue(accounts, holdingsData);
-
+    console.log(totalPortfolioValue, 'IM SO RICH');
     return (
         <div className="left-panel">
             <div className='net-worth'>

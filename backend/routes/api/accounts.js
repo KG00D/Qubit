@@ -57,8 +57,12 @@ router.get('/', requireAuth, async (req, res, next) => {
 });
 
 router.post('/', requireAuth, async (req, res, next) => {
+    console.log('Received data:', req.body);
     try {
         const { name, subType, type } = req.body;
+
+        console.log('Extracted fields:', { name, subType, type });
+
         const newAccount = await Account.create({
             userId: req.user.id, 
             name, 

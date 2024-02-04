@@ -24,7 +24,6 @@ router.get('/:accountId', requireAuth, async (req, res, next) => {
     }
 });
 
-// Create Account Balance
 router.post('/', requireAuth, async (req, res, next) => {
     try {
         const { accountId, accountBalance, balanceDate } = req.body;
@@ -40,7 +39,6 @@ router.post('/', requireAuth, async (req, res, next) => {
     }
 });
 
-// Update Account Balance
 router.put('/:id', requireAuth, async (req, res, next) => {
     try {
         const id = req.params.id;

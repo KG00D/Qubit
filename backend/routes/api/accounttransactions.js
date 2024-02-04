@@ -9,50 +9,6 @@ const router = express.Router({ mergeParams: true });
 
 router.use(restoreUser)
 
-// router.get('/', requireAuth, async (req, res, next) => {
-//   try {
-//     const { accountId, holdingId } = req.query;
-//     const currentUserId = req.user.id;
-
-//     let filters = {};
-//     if (accountId) {
-//       filters.accountId = accountId;
-//     }
-//     if (holdingId) {
-//       filters.holdingId = holdingId;
-//     }
-
-//     const allowedAccountIds = await Account.findAll({
-//       where: { userId: currentUserId },
-//       attributes: ['id'],
-//       raw: true, 
-//     });
-
-//     const accountTransactions = await accountTransaction.findAll({
-//       where: filters,
-//       include: [
-//         {
-//           model: accountHolding,
-//           attributes: ['id', 'holdingName', 'securityName'],
-//         },
-//       ],
-//       attributes: [
-//                  'id', 'holdingId', 'accountId', 'securityName', 'amount',
-//                  'date', 'fees', 'transactionType', 'transactionDescription', 'price', 'quantity'
-//              ],
-//       where: {
-//         accountId: {
-//           [Op.in]: allowedAccountIds.map(a => a.id), 
-//         },
-//       },
-//     });
-
-//     res.json(accountTransactions);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 router.get('/', requireAuth, async (req, res, next) => {
   try {
     const { accountId, holdingId } = req.query;
@@ -210,7 +166,5 @@ router.delete('/:transactionId', requireAuth, async (req, res, next) => {
         next(error);
     }
 });
-
-
 
 module.exports = router;

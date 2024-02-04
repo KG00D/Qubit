@@ -9,6 +9,7 @@ const AccountTransactions = () => {
     const [currentTransaction, setCurrentTransaction] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddingNewTransaction, setIsAddingNewTransaction] = useState(false);
+    const [currentAccountId, setCurrentAccountId] = useState(null);
 
     const accountsData = useSelector(state => state.accounts.accounts) || [];
     const transactionsData = useSelector(state => state.transactions.accountTransactions) || [];
@@ -17,6 +18,12 @@ const AccountTransactions = () => {
     useEffect(() => {
         dispatch(fetchAccountTransactions());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (accountsData.length > 0 && !currentAccountId) {
+            setCurrentAccountId(accountsData[0].id);
+        }
+    }, [accountsData, currentAccountId]);
 
     const getHoldingsForAccount = (accountId) => {
         const accountHoldings = holdingsData[accountId]?.accountHoldings;
@@ -32,10 +39,11 @@ const AccountTransactions = () => {
 
     const [modalHoldings, setModalHoldings] = useState([]);
 
-    const handleAddNewTransactionClick = () => {
+    const handleAddNewTransactionClick = (accountId) => {
         setIsAddingNewTransaction(true);
         setCurrentTransaction(null);
-        const holdingsForModal = getHoldingsForAccount(currentAccountId);
+        setCurrentAccountId(accountId); 
+        const holdingsForModal = getHoldingsForAccount(accountId);
         setModalHoldings(holdingsForModal);
         setIsModalOpen(true);
     };
@@ -43,6 +51,7 @@ const AccountTransactions = () => {
     const handleEditClick = (transaction) => {
         setIsAddingNewTransaction(false);
         setCurrentTransaction(transaction);
+        setCurrentAccountId(transaction.accountId);
         const holdingsForModal = getHoldingsForAccount(transaction.accountId);
         setModalHoldings(holdingsForModal);
         setIsModalOpen(true);
@@ -56,14 +65,6 @@ const AccountTransactions = () => {
     const handleSubmit = (transactionData) => {};
     const handleDelete = (transactionId) => {};
 
-    const [currentAccountId, setCurrentAccountId] = useState(accountsData[0]?.id);
-
-    useEffect(() => {
-        if (currentAccountId) {
-            setModalHoldings(getHoldingsForAccount(currentAccountId));
-        }
-    }, [currentAccountId, holdingsData]);
-
     const groupedTransactions = transactionsData.reduce((acc, transaction) => {
         const { accountId, holdingId } = transaction;
 
@@ -76,48 +77,49 @@ const AccountTransactions = () => {
 
     return (
         <div>
-            <button onClick={handleAddNewTransactionClick}>Add New Transaction</button>
-            <div>
-    {Object.entries(groupedTransactions).map(([accountId, holdings]) => (
-        <div key={accountId}>
-            <h2>{accountsData.find(account => account.id.toString() === accountId)?.name} Transactions</h2>
-            {Object.entries(holdings).map(([holdingId, transactions]) => (
-                <div key={holdingId}>
-                    <h3>{holdingsData[accountId]?.accountHoldings[holdingId]?.holdingName || 'Unknown Holding'}</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Security</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactions.map((transaction) => (
-                                <tr key={transaction.id}>
-                                    <td>{transaction.securityName}</td>
-                                    <td>${transaction.amount?.toFixed(2) || 'N/A'}</td>
-                                    <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                                    <td>{transaction.transactionDescription}</td>
-                                    <td>${transaction.price?.toFixed(2) || 'N/A'}</td>
-                                    <td>{transaction.quantity}</td>
-                                    <td>
-                                        <button onClick={() => handleEditClick(transaction)}>Edit</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            ))}
-        </div>
-    ))}
-</div>
-            
+            {accountsData.map((account) => {
+                const accountTransactions = groupedTransactions[account.id] || {};
+
+                return (
+                    <div key={account.id}>
+                        <h2>{account.name} Transactions</h2>
+                        <button onClick={() => handleAddNewTransactionClick(account.id)}>Add New Transaction</button>
+                        {Object.entries(accountTransactions).map(([holdingId, transactions]) => (
+                            <div key={holdingId}>
+                                <h3>{holdingsData[account.id]?.accountHoldings[holdingId]?.holdingName || 'Unknown Holding'}</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Security</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {transactions.map((transaction) => (
+                                            <tr key={transaction.id}>
+                                                <td>{transaction.securityName}</td>
+                                                <td>${transaction.amount?.toFixed(2) || 'N/A'}</td>
+                                                <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                                                <td>{transaction.transactionDescription}</td>
+                                                <td>${transaction.price?.toFixed(2) || 'N/A'}</td>
+                                                <td>{transaction.quantity}</td>
+                                                <td>
+                                                    <button onClick={() => handleEditClick(transaction)}>Edit</button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ))}
+                    </div>
+                );
+            })}
             {isModalOpen && (
                 <EditTransactionsModal
                     transaction={currentTransaction}
@@ -126,6 +128,7 @@ const AccountTransactions = () => {
                     onDelete={handleDelete}
                     isAdding={isAddingNewTransaction}
                     holdings={modalHoldings}
+                    accountId={currentAccountId} 
                 />
             )}
         </div>

@@ -5,7 +5,6 @@ options.tableName = 'accountHoldings';
 
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  
-  console.log('Migration options Account Holdings:', options);
 }
 
 module.exports = {
@@ -39,6 +38,10 @@ module.exports = {
         allowNull: true
       },
       averagePricePaid: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
+      },
+      totalCost: {
         type: Sequelize.DECIMAL,
         allowNull: true
       },

@@ -62,7 +62,7 @@ export const fetchAccountHoldings = (accountId) => {
     };
 
 
-    export const createHolding = (accountId, holdingDetails) => async dispatch => {
+export const createHolding = (accountId, holdingDetails) => async dispatch => {
     dispatch(createHoldingStart());
     try {
         const response = await csrfFetch(`/api/accounts/${accountId}/accountholdings`, {
@@ -128,7 +128,6 @@ export const deleteHolding = (accountId, holdingId) => async dispatch => {
 
 const initialState = {
     holdings: {},
-    // holdingDetail: null,
     loading: false,
     error: null
 };

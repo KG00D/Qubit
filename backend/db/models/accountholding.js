@@ -19,6 +19,7 @@ accountHolding.init({
     holdingName: DataTypes.STRING,
     quantity: DataTypes.DECIMAL,
     averagePricePaid: DataTypes.DECIMAL,
+    totalCost: DataTypes.DECIMAL,
     positionOpenDate: DataTypes.DATE,
     currentValue: DataTypes.DECIMAL,
   }, {
