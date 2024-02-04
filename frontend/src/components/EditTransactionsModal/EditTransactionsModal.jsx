@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
 import {
   updateTransaction,
   deleteTransaction,
@@ -18,22 +19,21 @@ const EditTransactionsModal = ({
   // Assuming the accounts state is correctly structured and contains the required data
   const accounts = useSelector((state) => state.accounts.accounts);
 
-  const defaultTransaction = {
-    holdingId: "",
-    accountId: "",
-    transactionType: "",
-    amount: "",
-    date: "",
-    fees: "",
-    securityName: "",
-    transactionDescription: "",
-    price: "",
-    quantity: "",
-  };
-
-  //   const [updatedTransaction, setUpdatedTransaction] = useState(
-  //     isAdding ? defaultTransaction : transaction || defaultTransaction
-  //   );
+  const defaultTransaction = useMemo(
+    () => ({
+      holdingId: "",
+      accountId: "",
+      transactionType: "",
+      amount: "",
+      date: "",
+      fees: "",
+      securityName: "",
+      transactionDescription: "",
+      price: "",
+      quantity: "",
+    }),
+    []
+  );
 
   const formatDateForInput = (dateString) => {
     const date = new Date(dateString);
