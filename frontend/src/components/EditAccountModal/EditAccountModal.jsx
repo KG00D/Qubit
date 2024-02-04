@@ -26,14 +26,6 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
     }
   };
 
-  //   useEffect(() => {
-  //     if (selectedAssetType) {
-  //       setAvailableSubtypes(assetOptions[selectedAssetType] || []);
-  //     } else {
-  //       setAvailableSubtypes([]);
-  //     }
-  //   }, [selectedAssetType]);
-
   useEffect(() => {
     if (selectedAssetType) {
       setAvailableSubtypes(assetOptions[selectedAssetType] || []);
@@ -41,12 +33,11 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
       setAvailableSubtypes([]);
     }
 
-    // Adjusted to use account.positionOpenDate directly
     if (account && account.positionOpenDate) {
       const formattedDate = account.positionOpenDate.split("T")[0];
       setUpdatedAccount({ ...updatedAccount, positionOpenDate: formattedDate });
     }
-  }, [selectedAssetType, account]); // Changed dependency to `account`
+  }, [selectedAssetType, account]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
