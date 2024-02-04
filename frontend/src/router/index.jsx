@@ -5,7 +5,6 @@ import Accounts from '../components/Accounts';
 import AccountHoldings from '../components/AccountHoldings';
 import AccountTransactions from '../components/AccountTransactions';
 import HomepageComponent from '../components/HomePageComponent';
-import LandingPage from '../components/LandingPage';
 import Layout from './Layout';
 import Splash from '../components/Splash';
 
