@@ -95,20 +95,11 @@ const HomepageComponent = () => {
           onAccountPerformanceClick={handleAccountPerformanceClick}
           onAccountTransactionsClick={handleAccountTransactionsClick}
         />
-        {/* Other content */}
       </div>
       <div className="right-content">
         {accounts.length === 0 ? (
           <div>
             <h2>Add Your First Account</h2>
-            {/* Optionally, provide a button or link that directs the user to the account addition flow */}
-            <button
-              onClick={() => {
-                /* logic to navigate to add account form */
-              }}
-            >
-              Add Account
-            </button>
           </div>
         ) : (
           <>
@@ -118,10 +109,11 @@ const HomepageComponent = () => {
             {viewAccountTransactions && selectedAccountId && (
               <AccountTransactions accountId={selectedAccountId} />
             )}
-            {/* More conditional content */}
+            {!viewAccountHoldings && !viewAccountTransactions && (
+              <h1>Coming Soon!</h1>
+            )}
           </>
         )}
-        {showComingSoon && <h1>Coming Soon!</h1>}
       </div>
       <footer className="footer--pin">
         <button className="footer--button" onClick={handleResetToDefaultView}>
