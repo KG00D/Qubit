@@ -17,34 +17,26 @@ const HomepageComponent = () => {
   const accounts = useSelector((state) => state.accounts.accounts);
   const holdingsData = useSelector((state) => state.holdings);
   const [showComingSoon, setShowComingSoon] = useState(true);
-
-  //   useEffect(() => {
-  //     dispatch(fetchAccounts());
-  //     dispatch(fetchAccountHoldings());
-  //   }, [dispatch]);
-
-  //   useEffect(() => {
-  //     dispatch(fetchAccounts());
-  //     accounts.forEach((account) => {
-  //       if (!holdingsData[account.id]) {
-  //         dispatch(fetchAccountHoldings(account.id));
-  //       }
-  //     });
-  //   }, [accounts, dispatch]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    if (accounts.length && !holdingsAlreadyFetched(accounts, holdingsData)) {
-      accounts.forEach((account) => {
-        if (!holdingsData[account.id]) {
-          dispatch(fetchAccountHoldings(account.id));
-        }
+    dispatch(fetchAccounts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const shouldFetchHoldings = (account) => {
+      const holdings = holdingsData[account.id];
+      return !holdings || holdings.status !== "complete";
+    };
+
+    const accountsNeedingHoldings = accounts.filter(shouldFetchHoldings);
+
+    if (accountsNeedingHoldings.length > 0) {
+      accountsNeedingHoldings.forEach((account) => {
+        dispatch(fetchAccountHoldings(account.id));
       });
     }
   }, [accounts, dispatch]);
-
-  function holdingsAlreadyFetched(accounts, holdingsData) {
-    return accounts.every((account) => holdingsData.hasOwnProperty(account.id));
-  }
 
   const handleAccountClick = (accountId) => {
     setSelectedAccountId(accountId);
@@ -53,10 +45,15 @@ const HomepageComponent = () => {
   };
 
   const handleAccountPerformanceClick = () => {
-    setSelectedAccountId(accounts.length > 0 ? accounts[0].id : null);
-    setViewAccountHoldings(true);
-    setViewAccountTransactions(false);
-    setShowComingSoon(false);
+    if (accounts.length === 0) {
+      alert(
+        "No accounts found. Please add an account to view account performance."
+      );
+    } else {
+      setSelectedAccountId(accounts[0].id);
+      setViewAccountHoldings(true);
+      setViewAccountTransactions(false);
+    }
   };
 
   const handleAccountTransactionsClick = (accountId) => {
@@ -91,6 +88,7 @@ const HomepageComponent = () => {
       <div className="left-panel">
         <LeftPanelComponent
           data={netWorth}
+          accounts={accounts}
           onAccountClick={handleAccountClick}
           onAccountPerformanceClick={handleAccountPerformanceClick}
           onAccountTransactionsClick={handleAccountTransactionsClick}
