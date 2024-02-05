@@ -250,9 +250,9 @@ const EditTransactionsModal = ({
         </form>
         {hasRealEstateAccount && (
           <p className="disabled-message">
-            At this time, adding/editing transactions for 'RealEstate' accounts
-            is disabled. "SCAs", or "Slowly Changing Assets" should be managed
-            in the "Account Performance" screen.
+            At this time, adding/editing transactions for RealEstate accounts is
+            disabled. SCAs, or Slowly Changing Assets should be managed in the
+            Account Performance screen.
           </p>
         )}
       </div>

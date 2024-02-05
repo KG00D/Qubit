@@ -77,7 +77,7 @@ const EditAccountModal = ({ account, onClose, isAddMode }) => {
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
       <div className="edit-account-modal-content">
-        <h2 classNAme="edit-account-modal-content">
+        <h2 className="edit-account-modal-content">
           {isAddMode ? "Add Account" : "Edit Account"}
         </h2>
         <form onSubmit={handleSubmit} className="account-form">

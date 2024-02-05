@@ -30,18 +30,6 @@ const EditHoldingModal = ({
     isAdding ? defaultHolding : holding
   );
 
-  // useEffect(() => {
-  //     if (!isAdding && holding) {
-  //         setUpdatedHolding(holding);
-  //     }
-  // }, [holding, isAdding]);
-
-  //   useEffect(() => {
-  //     if (!isAdding) {
-  //       setUpdatedHolding(holding || defaultHolding);
-  //     }
-  //   }, [holding, isAdding]);
-
   useEffect(() => {
     if (!isAdding && holding) {
       setUpdatedHolding({
@@ -51,7 +39,7 @@ const EditHoldingModal = ({
     } else {
       setUpdatedHolding(defaultHolding);
     }
-  }, [holding, isAdding, defaultHolding]);
+  }, [holding, isAdding]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

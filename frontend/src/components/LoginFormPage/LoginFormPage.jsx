@@ -25,20 +25,25 @@ function LoginFormPage() {
         password,
       })
     );
+    console.log("api response ", serverResponse);
 
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      navigate("/homepage");
+      console.log("Before navigating");
+      navigate("/");
       closeModal();
+      console.log("After navigating");
     }
+    // } catch (error) {
+    //   console.log("err", error);
+    //   setErrors(["something went wrong"]);
+    // }
   };
 
   return (
     <>
       <h1>Log In</h1>
-      {errors.length > 0 &&
-        errors.map((message) => <p key={message}>{message}</p>)}
       <form onSubmit={handleSubmit}>
         <label>
           Email
@@ -60,6 +65,15 @@ function LoginFormPage() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
+        {
+          errors && (
+            // errors.map((error) => (
+            <p className="login-error-message" key={errors}>
+              {errors.message}
+            </p>
+          )
+          // ))
+        }
         <button type="submit">Log In</button>
       </form>
     </>
