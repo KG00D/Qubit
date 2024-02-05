@@ -9,7 +9,7 @@ import "./Navigation.css";
 function Navigation() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector((state) => state.session.user); 
+  const user = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
@@ -19,9 +19,11 @@ function Navigation() {
     return null;
   }
 
-  const isLoggedIn = !!user; 
+  const isLoggedIn = !!user;
 
-  const linkDestination = isLoggedIn ? "/homepage" : "/";
+  const linkDestination = isLoggedIn
+    ? "/accounts/:accountId/accountholdings"
+    : "/";
 
   return (
     <div className="nav-bar">

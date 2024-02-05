@@ -46,3 +46,8 @@ tr:hover {
 .add-holding-btn {
     margin-bottom: 25px;
 }
+
+.account-holdings-container {
+    max-height: 90vh;
+    overflow-y: auto;
+}
