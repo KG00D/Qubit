@@ -68,7 +68,7 @@ const AccountHoldings = () => {
       {accounts.map((account) => {
         const accountHoldings = holdingsData[account.id]?.accountHoldings || [];
         const accountCalculations = accountHoldings.reduce((acc, holding) => {
-          const averagePricePaid = holding.totalCost / holding.quantity; // Corrected average price paid calculation
+          const averagePricePaid = holding.totalCost / holding.quantity;
           const totalGain = calculateTotalGain(
             holding.quantity,
             averagePricePaid,
@@ -112,7 +112,7 @@ const AccountHoldings = () => {
               </thead>
               <tbody>
                 {accountHoldings.map((holding) => {
-                  const averagePricePaid = holding.totalCost / holding.quantity; // Use corrected calculation
+                  const averagePricePaid = holding.totalCost / holding.quantity;
                   const totalGain = calculateTotalGain(
                     holding.quantity,
                     averagePricePaid,
