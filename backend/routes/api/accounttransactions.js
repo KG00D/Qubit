@@ -63,7 +63,7 @@ router.get('/', requireAuth, async (req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
     try {
-        const { holdingId, accountId, transactionType, securityName, amount, date, fees,
+        let { holdingId, accountId, transactionType, securityName, amount, date, fees,
           transactionDescription, price, quantity } = req.body;
       
         quantity = parseFloat(quantity);
