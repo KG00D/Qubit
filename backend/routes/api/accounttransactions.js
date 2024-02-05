@@ -64,13 +64,16 @@ router.get('/', requireAuth, async (req, res, next) => {
 router.post('/', requireAuth, async (req, res, next) => {
     try {
         const { holdingId, accountId, transactionType, securityName, amount, date, fees,
-            transactionDescription, price, quantity } = req.body;
-        console.log("Received transaction data:", req.body);
-
+          transactionDescription, price, quantity } = req.body;
+      
+        quantity = parseFloat(quantity);
+        amount = parseFloat(amount);
+        fees = parseFloat(fees);
+        price = parseFloat(price);
+        quantity = parseFloat(quantity);
+      
         const currentUserId = req.user.id;
-
         const userAccount = await Account.findOne({ where: { userId: currentUserId } });
-        
         const newTransaction = await accountTransaction.create({
             holdingId,
             accountId: userAccount.id,
@@ -83,7 +86,7 @@ router.post('/', requireAuth, async (req, res, next) => {
             price,
             quantity
         });
-        
+      
         await updateHoldingFromTransaction(newTransaction);
 
         res.status(201).json({transaction: newTransaction});
@@ -95,8 +98,14 @@ router.post('/', requireAuth, async (req, res, next) => {
 router.put('/:transactionId', requireAuth, async (req, res, next) => {
     try {
         const { transactionId } = req.params;
-        const { securityName, amount, date, transactionDescription, price, quantity, subType, type } = req.body;
+        let { securityName, amount, date, transactionDescription, price, quantity, subType, type } = req.body;
         const currentUserId = req.user.id;
+      
+        quantity = parseFloat(quantity);
+        amount = parseFloat(amount);
+        fees = parseFloat(fees);
+        price = parseFloat(price);
+        quantity = parseFloat(quantity);
 
         const transaction = await accountTransaction.findOne({ 
             where: { id: transactionId },
