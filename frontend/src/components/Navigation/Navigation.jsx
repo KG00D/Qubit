@@ -21,9 +21,7 @@ function Navigation() {
 
   const isLoggedIn = !!user;
 
-  const linkDestination = isLoggedIn
-    ? "/accounts/:accountId/accountholdings"
-    : "/";
+  const linkDestination = isLoggedIn ? "/homepage" : "/";
 
   return (
     <div className="nav-bar">

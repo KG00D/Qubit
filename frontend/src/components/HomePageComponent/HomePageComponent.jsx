@@ -16,42 +16,61 @@ const HomepageComponent = () => {
   const dispatch = useDispatch();
   const accounts = useSelector((state) => state.accounts.accounts);
   const holdingsData = useSelector((state) => state.holdings);
+  const [showComingSoon, setShowComingSoon] = useState(true);
 
   //   useEffect(() => {
   //     dispatch(fetchAccounts());
   //     dispatch(fetchAccountHoldings());
   //   }, [dispatch]);
 
+  //   useEffect(() => {
+  //     dispatch(fetchAccounts());
+  //     accounts.forEach((account) => {
+  //       if (!holdingsData[account.id]) {
+  //         dispatch(fetchAccountHoldings(account.id));
+  //       }
+  //     });
+  //   }, [accounts, dispatch]);
+
   useEffect(() => {
-    dispatch(fetchAccounts());
-    accounts.forEach((account) => {
-      if (!holdingsData[account.id]) {
-        dispatch(fetchAccountHoldings(account.id));
-      }
-    });
+    if (accounts.length && !holdingsAlreadyFetched(accounts, holdingsData)) {
+      accounts.forEach((account) => {
+        if (!holdingsData[account.id]) {
+          dispatch(fetchAccountHoldings(account.id));
+        }
+      });
+    }
   }, [accounts, dispatch]);
+
+  function holdingsAlreadyFetched(accounts, holdingsData) {
+    return accounts.every((account) => holdingsData.hasOwnProperty(account.id));
+  }
 
   const handleAccountClick = (accountId) => {
     setSelectedAccountId(accountId);
     setViewAccountHoldings(true);
+    setShowComingSoon(false);
   };
 
   const handleAccountPerformanceClick = () => {
     setSelectedAccountId(accounts.length > 0 ? accounts[0].id : null);
     setViewAccountHoldings(true);
     setViewAccountTransactions(false);
+    setShowComingSoon(false);
   };
 
   const handleAccountTransactionsClick = (accountId) => {
     setSelectedAccountId(accountId);
     setViewAccountHoldings(false);
     setViewAccountTransactions(true);
+    setShowComingSoon(false);
   };
 
   const handleResetToDefaultView = () => {
     setViewAccountHoldings(false);
     setViewAccountTransactions(false);
     setSelectedAccountId(null);
+    setShowComingSoon(true);
   };
 
   const handleStartHereClick = () => {
@@ -76,11 +95,21 @@ const HomepageComponent = () => {
           onAccountPerformanceClick={handleAccountPerformanceClick}
           onAccountTransactionsClick={handleAccountTransactionsClick}
         />
-        {/* .yadda yadda yadda */}
+        {/* Other content */}
       </div>
       <div className="right-content">
         {accounts.length === 0 ? (
-          <h2>Add Your First Account</h2>
+          <div>
+            <h2>Add Your First Account</h2>
+            {/* Optionally, provide a button or link that directs the user to the account addition flow */}
+            <button
+              onClick={() => {
+                /* logic to navigate to add account form */
+              }}
+            >
+              Add Account
+            </button>
+          </div>
         ) : (
           <>
             {viewAccountHoldings && selectedAccountId && (
@@ -89,10 +118,10 @@ const HomepageComponent = () => {
             {viewAccountTransactions && selectedAccountId && (
               <AccountTransactions accountId={selectedAccountId} />
             )}
-            {/* ... naything else I add TODO: remove all my weird comments and prose */}
+            {/* More conditional content */}
           </>
         )}
-        <h1>Coming Soon!</h1>
+        {showComingSoon && <h1>Coming Soon!</h1>}
       </div>
       <footer className="footer--pin">
         <button className="footer--button" onClick={handleResetToDefaultView}>
