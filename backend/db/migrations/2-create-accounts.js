@@ -36,7 +36,7 @@ module.exports = {
         allowNull: false
       },
       accountBalance: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       currencyCode: {
