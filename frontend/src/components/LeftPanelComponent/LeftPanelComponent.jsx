@@ -14,13 +14,14 @@ import EditAccountModal from "../EditAccountModal";
 
 const LeftPanelComponent = ({
   data: netWorth,
+  accounts,
   onAccountClick,
   onAccountPerformanceClick,
   onAccountTransactionsClick,
 }) => {
   const dispatch = useDispatch();
 
-  const { accounts } = useSelector((state) => state.accounts);
+  //   const { accounts } = useSelector((state) => state.accounts);
   const holdingsData = useSelector((state) => state.holdings);
 
   const [isAccountsOpen, setIsAccountsOpen] = useState(false);
