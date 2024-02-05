@@ -80,6 +80,7 @@ const HomepageComponent = () => {
             {/* ... naything else I add TODO: remove all my weird comments and prose */}
           </>
         )}
+        <h1>Coming Soon!</h1>
       </div>
       <footer className="footer--pin">
         <button className="footer--button" onClick={handleResetToDefaultView}>

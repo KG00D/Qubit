@@ -1,13 +1,15 @@
-import ProfileButton from "./ProfileButton";
+import React from "react";
+import { Link } from "react-router-dom"; // Import Link
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { thunkAuthenticate } from "../../redux/session";
+import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
 function Navigation() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector((state) => state.session.user);
+  const user = useSelector((state) => state.session.user); 
 
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
@@ -17,11 +19,15 @@ function Navigation() {
     return null;
   }
 
-  const isLoggedIn = !!user;
+  const isLoggedIn = !!user; 
+
+  const linkDestination = isLoggedIn ? "/homepage" : "/";
 
   return (
     <div className="nav-bar">
-      <div className="brand">Qubit</div>
+      <Link to={linkDestination} className="brand-link">
+        <div className="brand">Qubit</div>
+      </Link>
       <ul>
         {isLoggedIn && (
           <li className="profile-button-container">

@@ -130,9 +130,9 @@ const LeftPanelComponent = ({
               </button>
             </ul>
             <ul>
-              <button onClick={handleAccountTransactionsClick}>
+              {/* <button onClick={handleAccountTransactionsClick}>
                 Account Transactions
-              </button>
+              </button> */}
             </ul>
           </div>
         )}

@@ -85,3 +85,16 @@ input.error:focus {
     border-color: #B80000;
     box-shadow: 0 0 0 2px rgba(216, 0, 12, 0.2);
 }
+
+.demoUser {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.demoUser:hover {
+    color: #0056b3;
+    text-decoration: none;
+}

@@ -12,6 +12,16 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
+  const demoUser = async () => {
+    const demoUser = {
+      credential: "demouser@demouser.io",
+      password: "demopassword",
+    };
+    const serverResponse = await dispatch(thunkLogin(demoUser)).then(
+      closeModal
+    );
+  };
+
   if (sessionUser) return <Navigate to="/accounts" replace={true} />;
 
   const handleSubmit = (e) => {
