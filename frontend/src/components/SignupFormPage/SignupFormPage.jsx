@@ -15,33 +15,17 @@ function SignupFormPage() {
 
   if (sessionUser) return <Navigate to="/homepage" replace={true} />;
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (password !== confirmPassword) {
-  //     return setErrors({
-  //       confirmPassword:
-  //         "Confirm Password field must be the same as the Password field",
-  //     });
-  //   }
-
-  //   const serverResponse = await dispatch(
-  //     thunkSignup({
-  //       email,
-  //       firstName,
-  //       password,
-  //     })
-  //   );
-
-  //   if (serverResponse) {
-  //     setErrors(serverResponse);
-  //   } else {
-  //     navigate("/homepage");
-  //   }
-  // };
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/
+      );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newErrors = {};
 
     if (password !== confirmPassword) {
       return setErrors({
@@ -50,15 +34,24 @@ function SignupFormPage() {
       });
     }
 
+    if (!validateEmail(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     setErrors({});
-    return (
-      dispatch(thunkSignup({ email, firstName, password }))
-        .catch(async (res) => {
-          const serverResponse = await res.json();
-          if (serverResponse && serverResponse.errors) {
-            setErrors(serverResponse.errors);
-          }
-        })
+
+    return dispatch(thunkSignup({ email, firstName, password })).catch(
+      async (res) => {
+        const serverResponse = await res.json();
+        if (serverResponse && serverResponse.errors) {
+          setErrors(serverResponse.errors);
+        }
+      }
     );
   };
 
