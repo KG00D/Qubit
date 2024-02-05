@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LeftPanelComponent from "../LeftPanelComponent";
 import AccountHoldings from "../AccountHoldings";
 import AccountTransactions from "../AccountTransactions";
+import { fetchAccountHoldings } from "../../redux/accountHolding";
 import { fetchAccounts } from "../../redux/account";
 import "./HomePageComponent.css";
 
@@ -14,10 +15,21 @@ const HomepageComponent = () => {
 
   const dispatch = useDispatch();
   const accounts = useSelector((state) => state.accounts.accounts);
+  const holdingsData = useSelector((state) => state.holdings);
+
+  //   useEffect(() => {
+  //     dispatch(fetchAccounts());
+  //     dispatch(fetchAccountHoldings());
+  //   }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAccounts());
-  }, [dispatch]);
+    accounts.forEach((account) => {
+      if (!holdingsData[account.id]) {
+        dispatch(fetchAccountHoldings(account.id));
+      }
+    });
+  }, [accounts, dispatch]);
 
   const handleAccountClick = (accountId) => {
     setSelectedAccountId(accountId);

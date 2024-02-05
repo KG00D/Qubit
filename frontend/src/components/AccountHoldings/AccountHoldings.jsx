@@ -71,7 +71,7 @@ const AccountHoldings = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="account-holdings-container">
       {accounts.map((account) => {
         const accountHoldings = holdingsData[account.id]?.accountHoldings || [];
         const accountCalculations = accountHoldings.reduce((acc, holding) => {
