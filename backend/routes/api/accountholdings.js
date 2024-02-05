@@ -102,13 +102,18 @@ router.post('/', async (req, res, next) => {
 router.put('/:holdingId', async (req, res, next) => {
     try {
         const { holdingId, accountId } = req.params;
-        const { securityName,
+        let { securityName,
             holdingName,
             quantity,
             currentValue,
             averagePricePaid,
             totalCost,
             positionOpenDate } = req.body;
+        
+        quantity = parseFloat(quantity);
+        currentValue = parseFloat(currentValue);
+        totalCost = parseFloat(totalCost);
+        averagePricePaid = parseFloat(averagePricePaid);
 
         const holding = await accountHolding.findOne({
             where: { id: holdingId, accountId: accountId }
