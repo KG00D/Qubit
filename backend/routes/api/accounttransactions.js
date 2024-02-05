@@ -131,7 +131,7 @@ router.put('/:transactionId', requireAuth, async (req, res, next) => {
 
         const updatedTransaction = await accountTransaction.findByPk(transactionId);
         
-        await updateHoldingFromTransaction(updatedTransaction);
+        // await updateHoldingFromTransaction(updatedTransaction);
 
         res.json(updatedTransaction);
     } catch (error) {

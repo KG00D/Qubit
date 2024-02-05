@@ -81,11 +81,11 @@ const EditHoldingModal = ({
     }
   };
 
-  const disabledConditions = ["Retirement", "Brokerage"];
+  //   const disabledConditions = ["Retirement", "Brokerage"];
 
-  const shouldDisableCurrentValue = (accountType) => {
-    return disabledConditions.includes(accountType);
-  };
+  //   const shouldDisableCurrentValue = (accountType) => {
+  //     return disabledConditions.includes(accountType);
+  //   };
 
   const formatDateForInput = (dateString) => {
     if (!dateString) return "";
@@ -97,7 +97,7 @@ const EditHoldingModal = ({
     return `${year}-${month}-${day}`;
   };
 
-  const disableCurrentValue = shouldDisableCurrentValue(accountType);
+  //   const disableCurrentValue = shouldDisableCurrentValue(accountType);
 
   return (
     <div className="modal-backdrop">
@@ -162,7 +162,7 @@ const EditHoldingModal = ({
               name="currentValue"
               value={updatedHolding.currentValue || ""}
               onChange={handleInputChange}
-              disabled={disableCurrentValue}
+            //   disabled={disableCurrentValue}
             />
           </label>
           <div className="modal-buttons">

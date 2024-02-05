@@ -15,7 +15,32 @@ function SignupFormPage() {
 
   if (sessionUser) return <Navigate to="/homepage" replace={true} />;
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (password !== confirmPassword) {
+  //     return setErrors({
+  //       confirmPassword:
+  //         "Confirm Password field must be the same as the Password field",
+  //     });
+  //   }
+
+  //   const serverResponse = await dispatch(
+  //     thunkSignup({
+  //       email,
+  //       firstName,
+  //       password,
+  //     })
+  //   );
+
+  //   if (serverResponse) {
+  //     setErrors(serverResponse);
+  //   } else {
+  //     navigate("/homepage");
+  //   }
+  // };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -25,19 +50,16 @@ function SignupFormPage() {
       });
     }
 
-    const serverResponse = await dispatch(
-      thunkSignup({
-        email,
-        firstName,
-        password,
-      })
+    setErrors({});
+    return (
+      dispatch(thunkSignup({ email, firstName, password }))
+        .catch(async (res) => {
+          const serverResponse = await res.json();
+          if (serverResponse && serverResponse.errors) {
+            setErrors(serverResponse.errors);
+          }
+        })
     );
-
-    if (serverResponse) {
-      setErrors(serverResponse);
-    } else {
-      navigate("/homepage");
-    }
   };
 
   return (
@@ -86,6 +108,9 @@ function SignupFormPage() {
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         <button type="submit">Sign Up</button>
+        {errors.credential && (
+          <p className="login-error-message">{errors.credential}</p>
+        )}
       </form>
     </>
   );

@@ -14,31 +14,29 @@ function LoginFormPage() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const demoUser = async () => {
+    const demoUser = {
+      email: "demo@user.io",
+      password: "password",
+    };
+    const serverResponse = await dispatch(thunkLogin(demoUser)).then(
+      closeModal
+    );
+  };
+
   if (sessionUser) return <Navigate to="/homepage" replace={true} />;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const serverResponse = await dispatch(
-      thunkLogin({
-        email,
-        password,
-      })
-    );
-    console.log("api response ", serverResponse);
-
-    if (serverResponse) {
-      setErrors(serverResponse);
-    } else {
-      console.log("Before navigating");
-      navigate("/");
-      closeModal();
-      console.log("After navigating");
-    }
-    // } catch (error) {
-    //   console.log("err", error);
-    //   setErrors(["something went wrong"]);
-    // }
+    setErrors({});
+    return dispatch(thunkLogin({ email, password }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const serverResponse = await res.json();
+        if (serverResponse && serverResponse.errors) {
+          setErrors(serverResponse.errors);
+        }
+      });
   };
 
   return (
@@ -64,17 +62,13 @@ function LoginFormPage() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
-        {
-          errors && (
-            // errors.map((error) => (
-            <p className="login-error-message" key={errors}>
-              {errors.message}
-            </p>
-          )
-          // ))
-        }
+        {errors.credential && (
+          <p className="login-error-message">{errors.credential}</p>
+        )}
         <button type="submit">Log In</button>
+        <p className="demoUser" onClick={demoUser}>
+          Demo Login
+        </p>
       </form>
     </>
   );
