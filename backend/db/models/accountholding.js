@@ -1,5 +1,5 @@
 'use strict';
-const { Model, DECIMAL, BOOLEAN } = require('sequelize');
+const { Model, FLOAT, BOOLEAN } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class accountHolding extends Model {
@@ -17,11 +17,11 @@ accountHolding.init({
     accountId: DataTypes.INTEGER,
     securityName: DataTypes.STRING,
     holdingName: DataTypes.STRING,
-    quantity: DataTypes.DECIMAL,
-    averagePricePaid: DataTypes.DECIMAL,
-    totalCost: DataTypes.DECIMAL,
+    quantity: DataTypes.FLOAT,
+    averagePricePaid: DataTypes.FLOAT,
+    totalCost: DataTypes.FLOAT,
     positionOpenDate: DataTypes.DATE,
-    currentValue: DataTypes.DECIMAL,
+    currentValue: DataTypes.FLOAT,
   }, {
     sequelize,
     modelName: 'accountHolding',

@@ -34,15 +34,15 @@ module.exports = {
         allowNull: false
       },
       quantity: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       averagePricePaid: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       totalCost: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       positionOpenDate: {
@@ -50,7 +50,7 @@ module.exports = {
         allowNull: true
       },
       currentValue: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       createdAt: {

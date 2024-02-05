@@ -42,7 +42,7 @@ module.exports = {
         allowNull: true
       },
       amount: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       date: {
@@ -54,11 +54,11 @@ module.exports = {
         allowNull: true
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       value: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       quantity: {
@@ -66,7 +66,7 @@ module.exports = {
         allowNull: true
       },
       fees: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: true
       },
       createdAt: {

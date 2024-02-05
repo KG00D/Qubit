@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   AccountBalances.init({
     accountId: DataTypes.INTEGER,
-    accountBalance: DataTypes.DECIMAL,
+    accountBalance: DataTypes.FLOAT,
     balanceDate: DataTypes.DATE
   }, {
     sequelize,
