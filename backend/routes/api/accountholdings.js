@@ -68,13 +68,19 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const accountId = req.params.accountId;
-        const { securityName,
+        let { securityName,
             holdingName,
             quantity,
             currentValue,
             totalCost,
             averagePricePaid,
             positionOpenDate } = req.body;
+        
+        quantity = parseFloat(quantity);
+        currentValue = parseFloat(currentValue);
+        totalCost = parseFloat(totalCost);
+        averagePricePaid = parseFloat(averagePricePaid);
+        console.log(quantity, currentValue, totalCost, averagePricePaid, 'TYPES HERE')
 
         const newHolding = await accountHolding.create({
             accountId,
