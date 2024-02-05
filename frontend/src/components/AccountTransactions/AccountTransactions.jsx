@@ -76,6 +76,13 @@ const AccountTransactions = () => {
     return acc;
   }, {});
 
+  const toFixedSafe = (value, digits = 2) => {
+    if (value === null || value === undefined || isNaN(value)) {
+      return (0).toFixed(digits);
+    }
+    return value.toFixed(digits);
+  };
+
   return (
     <div>
       {accountsData.map((account) => {
@@ -110,13 +117,13 @@ const AccountTransactions = () => {
                     <tbody>
                       {transactions.map((transaction) => (
                         <tr key={transaction.id}>
-                          <td>{transaction.securityName}</td>
+                          <td>${transaction.securityName}</td>
                           <td>${transaction.amount?.toFixed(2) || "N/A"}</td>
                           <td>
                             {new Date(transaction.date).toLocaleDateString()}
                           </td>
                           <td>{transaction.transactionDescription}</td>
-                          <td>${transaction.price?.toFixed(2) || "N/A"}</td>
+                          <td>${toFixedSafe(transaction.price) || "N/A"}</td>
                           <td>{transaction.quantity}</td>
                           <td>
                             <button

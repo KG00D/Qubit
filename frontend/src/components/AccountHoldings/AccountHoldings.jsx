@@ -44,6 +44,13 @@ const AccountHoldings = () => {
     );
   };
 
+  const toFixedSafe = (value, digits = 2) => {
+    if (value === null || value === undefined || isNaN(value)) {
+      return (0).toFixed(digits);
+    }
+    return value.toFixed(digits);
+  };
+
   const handleAddNewHoldingClick = (accountId) => {
     const accountType = accounts.find(
       (account) => account.id === accountId
@@ -128,11 +135,11 @@ const AccountHoldings = () => {
                       <td>{holding.holdingName}</td>
                       <td>{holding.securityName}</td>
                       <td>{holding.quantity}</td>
-                      <td>${averagePricePaid.toFixed(2)}</td>{" "}
-                      <td>${holding.totalCost.toFixed(2)}</td>
-                      <td>${totalGain.toFixed(2)}</td>{" "}
-                      <td>{totalGainPercent.toFixed(2)}%</td>{" "}
-                      <td>${holding.currentValue.toFixed(2)}</td>
+                      <td>${toFixedSafe(averagePricePaid)}</td>
+                      <td>${toFixedSafe(holding.totalCost)}</td>
+                      <td>${toFixedSafe(totalGain)}</td>
+                      <td>${toFixedSafe(totalGainPercent)}%</td>
+                      <td>${toFixedSafe(holding.currentValue)}</td>
                       <td>
                         <button onClick={() => handleEditClick(holding)}>
                           Edit

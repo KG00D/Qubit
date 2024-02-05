@@ -28,7 +28,7 @@ let enhancer;
     const composeEnhancers =
         window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     enhancer = composeEnhancers(applyMiddleware(thunk, logger));
-//}
+// }
 
 const configureStore = (preloadedState) => {
     return createStore(rootReducer, preloadedState, enhancer);
