@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FiMoreHorizontal } from "react-icons/fi";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropUpLine } from "react-icons/ri";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faBars, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +23,6 @@ const LeftPanelComponent = ({
 }) => {
   const dispatch = useDispatch();
 
-  //   const { accounts } = useSelector((state) => state.accounts);
   const holdingsData = useSelector((state) => state.holdings);
 
   const [isAccountsOpen, setIsAccountsOpen] = useState(false);
@@ -87,15 +88,23 @@ const LeftPanelComponent = ({
   );
   return (
     <div className="left-panel">
+      <div className="greeting"></div>
       <div className="net-worth">
         <p>Net Worth</p>
-        <p className="net-worth-value">${totalPortfolioValue}</p>
+        <p className="net-worth-value">
+          $
+          {new Intl.NumberFormat("en-US", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+          }).format(totalPortfolioValue)}
+          {/* ${totalPortfolioValue} */}
+        </p>
       </div>
       <div className="accounts-section">
-        <h1 className="reports-headings" onClick={toggleAccounts}>
+        <h2 className="reports-headings" onClick={toggleAccounts}>
           Accounts
-          <FontAwesomeIcon icon={isAccountsOpen ? faMinus : faPlus} />
-        </h1>
+          <FontAwesomeIcon icon={isAccountsOpen ? faPlus : faMinus} />
+        </h2>
         {isAccountsOpen &&
           accounts.map((account) => (
             <div key={account.id} className="account-item">
@@ -119,13 +128,13 @@ const LeftPanelComponent = ({
         />
       )}
       <div className="reports-section">
-        <h1 className="reports-headings" onClick={toggleReports}>
+        <h2 className="reports-headings" onClick={toggleReports}>
           Reports
           <FontAwesomeIcon icon={isReportsOpen ? faMinus : faPlus} />
-        </h1>
+        </h2>
         {isReportsOpen && (
           <div className="reports-dropdown">
-            <ul>
+            <ul className="reports-list">
               <button onClick={handleAccountPerformanceClick}>
                 Account Performance
               </button>

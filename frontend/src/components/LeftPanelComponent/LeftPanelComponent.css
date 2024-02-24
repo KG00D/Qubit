@@ -12,7 +12,7 @@
 
 .net-worth,
 .section-header {
-  font-size: 18px;
+  font-size: 32px;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -23,7 +23,6 @@
 
 .net-worth-value {
   font-size: 38px;
-  font-style: italic;
   margin: 10px 0;
   font-family: 'Railway', sans-serif;
 }
@@ -57,12 +56,11 @@
 }
 
 .add-account-button {
-  background: linear-gradient(to right, #196BCA, #6433E0);
+  background: linear-gradient(to right, #36A2EB, #6433E0);
   padding: 10px 20px;
   font-size: 18px;
   border-radius: 8px;
   font-weight: 800;
-  margin: 10px auto;
   display: block;
   width: auto;
   text-align: center;
@@ -117,6 +115,10 @@
 .accounts-section .accounts-dropdown {
   max-height: 1000px;
   transition: max-height 0.3s ease-in;
+}
+
+.reports-list {
+  padding-left: 0;
 }
 
 .link-button:hover {
