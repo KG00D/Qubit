@@ -29,15 +29,15 @@ module.exports = {
         allowNull: false,
       },
       monthlyIncome: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       debtAmount: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       nonSecuredDebtPayments: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       creditScore: {
@@ -49,7 +49,7 @@ module.exports = {
         allowNull: true,
       },
       monthlyHousingPayment: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       carOwnership: {
@@ -69,7 +69,7 @@ module.exports = {
         allowNull: true,
       },
       monthlyCarPayment: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       createdAt: {
