@@ -100,15 +100,15 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     monthlyIncome: {
-      type: Sequelize.FLOAT,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     debtAmount: {
-      type: Sequelize.FLOAT,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     nonSecuredDebtPayments: {
-      type: Sequelize.FLOAT,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     creditScore: {
@@ -120,7 +120,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     monthlyHousingPayment: {
-      type: Sequelize.FLOAT,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     carOwnership: {
@@ -140,7 +140,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     monthlyCarPayment: {
-      type: Sequelize.FLOAT,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     hashedPassword: {
