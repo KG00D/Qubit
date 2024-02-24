@@ -14,5 +14,27 @@ input.error {
 
 input.error:focus {
     border-color: #B80000;
-    box
+}
+
+.step-indicator {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: 10px auto;
+    font-size: 16px;
+    color: #333;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.question-container {
+    margin-bottom: 10px;
+}
+
+.question-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.question-input {
+    width: 200px;
 }

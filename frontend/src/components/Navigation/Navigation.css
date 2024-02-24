@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #3a476a;
+  background-color: #547df8;;
   padding: 0;
   height: 40px;
 }
@@ -79,4 +79,12 @@
   font-family: 'Raleway', sans-serif;
   color: white;
   padding-left: 15px;
+}
+
+.brand-link {
+  text-decoration: none;
+}
+
+.brand-link:hover {
+  text-decoration: underline;
 }

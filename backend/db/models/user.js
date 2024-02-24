@@ -36,6 +36,18 @@ module.exports = (sequelize, DataTypes) => {
       const user = await User.create({
         email,
         firstName,
+        hashedPassword,
+        monthlyIncome,
+        debtAmount,
+        nonSecuredDebtPayments,
+        creditScore,
+        housingSituation,
+        monthlyHousingPayment,
+        carOwnership,
+        carYear,
+        carMake,
+        carModel,
+        monthlyCarPayment,
         hashedPassword
       });
       return await User.scope('currentUser').findByPk(user.id);
@@ -72,13 +84,64 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false,
       validate: {
-        len: [3, 24],
+        len: [3, 255],
         isEmail: true,
       },
     },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    hashedPassword: {
+      type: DataTypes.STRING.BINARY,
+      allowNull: false,
+      validate: {
+        len: [6, 512],
+      },
+    },
+    monthlyIncome: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    debtAmount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    nonSecuredDebtPayments: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    creditScore: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    housingSituation: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    monthlyHousingPayment: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    carOwnership: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    carYear: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    carMake: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    carModel: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    monthlyCarPayment: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
     },
     hashedPassword: {
       type: DataTypes.STRING,

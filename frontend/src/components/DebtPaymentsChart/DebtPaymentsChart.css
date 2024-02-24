@@ -1,0 +1,11 @@
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.chart-space {
+    flex: 0 1 30%;
+    margin: 10px;
+}

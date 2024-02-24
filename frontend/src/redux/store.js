@@ -11,13 +11,15 @@ import accountsReducer from "./account";
 import accountHoldingsReducer from "./accountHolding";
 import transactionsReducer from "./accountTransactions";
 import balancesReducer from "./accountBalances";
+import userDataReducer from "./userData";
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     accounts: accountsReducer,
     holdings: accountHoldingsReducer,
     transactions: transactionsReducer,
-    balances: balancesReducer
+    balances: balancesReducer,
+    userData: userDataReducer,
 });
 
 let enhancer;

@@ -10,16 +10,8 @@
     text-align: left;
     font-family: Raleway;
     width: 300px;
+    float:left;
 }
-
-/* .right-content {
-    flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 60px;
-} */
 
 .top-section {
     display: flex;
@@ -28,14 +20,6 @@
     padding: 20px; 
     box-sizing: border-box; 
 }
-
-/* .bottom-section {
-    flex-grow: 1;
-    overflow-y: auto; 
-    padding: 20px; 
-    box-sizing: border-box; 
-} */
-
 
 .net-worth-container {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
@@ -46,7 +30,7 @@
 }
 
 .homepage {
-    display: flex;
+   display: flex;
     height: 100vh;
 }
 
@@ -56,22 +40,19 @@
 }
 
 .right-content {
-    display: flex;
+   /* display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex-grow: 1;*/
+    /* float:right; */
+    padding-top: 50px;
     height: 100%;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 2.5%;
+    margin-right: 15px;
 }
 
 .scrollable-content {
     overflow-y: auto;
     flex-grow: 1;
-}
-
-.right-content {
-    position: relative;
-    min-height: 100vh;
 }
 
 .footer--pin {
@@ -115,3 +96,55 @@ footer ul li {
     position: relative;
     left: 80%;
 }
+
+.footer--pin {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2.5rem;
+    z-index: 10;
+}
+
+.right-content {
+    /* display: flex; */
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 50px;
+    margin-right: 10px;
+    padding: 20px;
+}
+
+.charts-section {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap; 
+    justify-content: flex-start; 
+    align-items: flex-start;
+    gap: 10px; 
+    padding: 10px; 
+}
+
+.chart-small {
+    flex: 1 1 60%; 
+    max-width: calc(33.333% - 20px);
+    box-sizing: border-box;
+    min-width: 450px; 
+    height: auto;
+}
+
+/* @media (max-width: 1024px) {
+    .chart-small {
+        flex-basis: 48%;
+        max-width: calc(50% - 20px); 
+    }
+}
+@media (max-width: 768px) {
+    .chart-small {
+        flex-basis: 100%;
+        max-width: 100%; 
+    }
+} */
