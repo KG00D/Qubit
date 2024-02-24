@@ -3,8 +3,8 @@ require('dotenv').config();
 const db = require('../db/models');
 const axios = require('axios');
 
-const apiKey = 'bXSJUxjypggininnkMAGgNsf2utFs2YU'; // Consider using process.env.POLYGON_API_KEY
-const url = `https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?apiKey=${apiKey}`;
+const apiKey = ''
+const url = ''
 
 const fetchAllTickersData = async () => {
     try {
